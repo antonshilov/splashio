@@ -30,7 +30,7 @@ data class Photo(
         const val PHOTO_URL_BASE = "https://unsplash.it/%d?image=%d"
     }
 
-    fun getPhotoUrl(requestWidth: Int = 150): String {
+    fun getPhotoUrl(requestWidth: Int = 480): String {
         return String.format(Locale.getDefault(), PHOTO_URL_BASE, requestWidth, id)
     }
 }
