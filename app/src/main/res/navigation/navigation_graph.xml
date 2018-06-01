@@ -2,11 +2,20 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@id/imageListFragment">
+    app:startDestination="@id/fullscreenImageFragment">
 
     <fragment
         android:id="@+id/imageListFragment"
         android:name="io.github.antonshilov.splashio.ImageListFragment"
         android:label="fragment_image_list"
-        tools:layout="@layout/fragment_image_list" />
+        tools:layout="@layout/fragment_image_list">
+        <action
+            android:id="@+id/action_imageListFragment_to_fullscreenImageFragment"
+            app:destination="@id/fullscreenImageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/fullscreenImageFragment"
+        android:name="io.github.antonshilov.splashio.api.FullscreenImageFragment"
+        android:label="fragment_fullscreen_image"
+        tools:layout="@layout/fragment_fullscreen_image"></fragment>
 </navigation>
