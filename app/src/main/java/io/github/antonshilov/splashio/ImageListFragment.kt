@@ -20,6 +20,7 @@ class ImageListFragment : Fragment() {
 
   private var listener: OnFragmentInteractionListener? = null
   private lateinit var navigationController: NavController
+  private lateinit var adapter: PhotoAdapter
 
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -31,6 +32,9 @@ class ImageListFragment : Fragment() {
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
     vm = ViewModelProviders.of(this).get(PhotoListViewModel::class.java)
+    adapter = PhotoAdapter(this.context!!)
+    adapter.onItemClickListener = { navigateToFullscreen(it) }
+    imageGrid.adapter = adapter
     navigationController = findNavController()
   }
 
@@ -46,7 +50,7 @@ class ImageListFragment : Fragment() {
 
   private fun showImages(images: List<Photo>) {
     Timber.d(images.toString())
-    imageGrid.adapter = PhotoAdapter(this.context!!, images)
+    adapter.submitList(images)
   }
 
   private fun navigateToFullscreen(img: Photo) {
