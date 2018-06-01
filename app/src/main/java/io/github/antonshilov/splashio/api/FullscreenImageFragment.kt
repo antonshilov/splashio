@@ -7,8 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import io.github.antonshilov.splashio.R
+import kotlinx.android.synthetic.main.fragment_fullscreen_image.*
+import timber.log.Timber
 
 
 private const val ARG_PHOTO = "photo"
@@ -26,6 +29,17 @@ class FullscreenImageFragment : Fragment() {
     super.onCreate(savedInstanceState)
     arguments?.let {
       photo = it.getParcelable(ARG_PHOTO)
+    }
+  }
+
+  override fun onStart() {
+    super.onStart()
+    photo?.let {
+      Timber.e(it.urls.toString())
+      Glide.with(this)
+          .load(it.urls.full)
+          .transition(DrawableTransitionOptions.withCrossFade())
+          .into(photoView)
     }
   }
 

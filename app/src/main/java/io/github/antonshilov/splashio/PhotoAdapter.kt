@@ -12,7 +12,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import io.github.antonshilov.splashio.api.Photo
 import kotlinx.android.synthetic.main.item_photo.view.*
-import timber.log.Timber
 
 class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
   val photo = itemView.photo!!
@@ -30,9 +29,7 @@ class PhotoAdapter(val context: Context) : ListAdapter<Photo, PhotoViewHolder>(D
 
   override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
     val photo = getItem(position)
-    Timber.d(photo.toString())
     val url = photo.url
-    Timber.d("Photo url = %s", url)
     Glide.with(context)
         .load(url)
         .transition(DrawableTransitionOptions.withCrossFade())
