@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import io.github.antonshilov.splashio.api.FullscreenImageFragment
 import io.github.antonshilov.splashio.api.Photo
 import kotlinx.android.synthetic.main.fragment_image_list.*
 import timber.log.Timber

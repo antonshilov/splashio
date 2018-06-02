@@ -1,6 +1,7 @@
-package io.github.antonshilov.splashio.api
+package io.github.antonshilov.splashio
 
 
+import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -9,9 +10,8 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import io.github.antonshilov.splashio.R
+import io.github.antonshilov.splashio.api.Photo
 import kotlinx.android.synthetic.main.fragment_fullscreen_image.*
-import timber.log.Timber
 
 
 private const val ARG_PHOTO = "photo"
@@ -24,6 +24,8 @@ private const val ARG_PHOTO = "photo"
  */
 class FullscreenImageFragment : Fragment() {
   private var photo: Photo? = null
+  private lateinit var activity: MainActivity
+  private var statusBarHeight = 0
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -35,16 +37,31 @@ class FullscreenImageFragment : Fragment() {
   override fun onStart() {
     super.onStart()
     photo?.let {
-      Timber.e(it.urls.toString())
       Glide.with(this)
           .load(it.urls.full)
           .transition(DrawableTransitionOptions.withCrossFade())
           .into(photoView)
     }
+    activity = this.getActivity() as MainActivity
+    activity.setSupportActionBar(toolbar)
+    activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    activity.statusBarHeight.observe(this, Observer<Int> { height ->
+      val lpToolbar = toolbar
+          .layoutParams as ViewGroup.MarginLayoutParams
+      lpToolbar.topMargin += height!!
+      toolbar.layoutParams = lpToolbar
+    })
+
+  }
+
+
+  override fun onStop() {
+    super.onStop()
+    activity.setSupportActionBar(null)
   }
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                            savedInstanceState: Bundle?): View? {
+                            savedInstanceState: Bundle?): View {
     // Inflate the layout for this fragment
     return inflater.inflate(R.layout.fragment_fullscreen_image, container, false)
   }

@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/fullscreenImageFragment"
-        android:name="io.github.antonshilov.splashio.api.FullscreenImageFragment"
+        android:name="io.github.antonshilov.splashio.FullscreenImageFragment"
         android:label="fragment_fullscreen_image"
         tools:layout="@layout/fragment_fullscreen_image" />
 </navigation>

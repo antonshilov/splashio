@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".api.FullscreenImageFragment">
+    android:background="@color/fullscreenBackground"
+    android:fitsSystemWindows="true"
+    tools:context=".FullscreenImageFragment">
 
     <com.github.chrisbanes.photoview.PhotoView
+        android:fitsSystemWindows="true"
         android:id="@+id/photoView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="@style/TransparentToolbarTheme"
+        android:fitsSystemWindows="true"
+        app:title="Prevet" />
+
 </FrameLayout>

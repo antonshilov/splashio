@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#ffffff</color>
-    <color name="colorPrimaryDark">#F5F5F5</color>
+    <color name="colorPrimaryDark">#9E9E9E</color>
     <color name="colorAccent">#26292c</color>
+    <color name="colorNavBar">#8c26292c</color>
+    <color name="fullscreenImageToolbarText">#ffffff</color>
+    <color name="fullscreenBackground">#000000</color>
+    <color name="transparent">@android:color/transparent</color>
 </resources>
