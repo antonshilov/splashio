@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import io.github.antonshilov.splashio.api.Photo
@@ -25,7 +26,6 @@ private const val ARG_PHOTO = "photo"
 class FullscreenImageFragment : Fragment() {
   private var photo: Photo? = null
   private lateinit var activity: MainActivity
-  private var statusBarHeight = 0
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -38,19 +38,20 @@ class FullscreenImageFragment : Fragment() {
     super.onStart()
     photo?.let {
       Glide.with(this)
-          .load(it.urls.full)
-          .transition(DrawableTransitionOptions.withCrossFade())
-          .into(photoView)
+        .load(it.urls.full)
+        .transition(DrawableTransitionOptions.withCrossFade())
+        .into(photoView)
     }
     activity = this.getActivity() as MainActivity
-    activity.setSupportActionBar(toolbar)
-    activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
     activity.statusBarHeight.observe(this, Observer<Int> { height ->
       val lpToolbar = toolbar
-          .layoutParams as ViewGroup.MarginLayoutParams
+        .layoutParams as ViewGroup.MarginLayoutParams
       lpToolbar.topMargin += height!!
       toolbar.layoutParams = lpToolbar
     })
+    toolbar.setNavigationOnClickListener {
+      findNavController().navigateUp()
+    }
 
   }
 

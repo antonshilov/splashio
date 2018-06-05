@@ -18,6 +18,9 @@
         android:id="@+id/toolbar"
         style="@style/TransparentToolbarTheme"
         android:fitsSystemWindows="true"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
         app:title="Prevet" />
 
 </FrameLayout>
