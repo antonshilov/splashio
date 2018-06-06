@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".ImageListFragment">
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:fitsSystemWindows="true"
+  tools:context=".ImageListFragment">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/imageGrid"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layoutManager="android.support.v7.widget.StaggeredGridLayoutManager"
-        app:spanCount="@integer/photo_grid_amount" />
+  <android.support.v7.widget.RecyclerView
+    android:id="@+id/imageGrid"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clipToPadding="false"
+    android:orientation="vertical"
+    android:paddingBottom="48dp"
+    app:layoutManager="android.support.v7.widget.StaggeredGridLayoutManager"
+    app:spanCount="@integer/photo_grid_amount"
+    tools:listitem="@layout/item_photo" />
 
 </FrameLayout>
