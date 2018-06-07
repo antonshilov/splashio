@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
 
-    ViewCompat.setOnApplyWindowInsetsListener(root) { v, insets ->
+    ViewCompat.setOnApplyWindowInsetsListener(root) { _, insets ->
       statusBarHeight.postValue(insets)
       insets.consumeSystemWindowInsets()
     }

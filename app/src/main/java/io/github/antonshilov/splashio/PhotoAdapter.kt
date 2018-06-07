@@ -1,8 +1,9 @@
 package io.github.antonshilov.splashio
 
+import android.arch.paging.PageKeyedDataSource
+import android.arch.paging.PagedListAdapter
 import android.content.Context
 import android.support.constraint.ConstraintSet
-import android.support.v7.recyclerview.extensions.ListAdapter
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -11,14 +12,18 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import io.github.antonshilov.splashio.api.Photo
+import io.github.antonshilov.splashio.api.UnsplashService
 import kotlinx.android.synthetic.main.item_photo.view.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
   val photo = itemView.photo!!
   val constraint = itemView.parentContsraint!!
 }
 
-class PhotoAdapter(val context: Context) : ListAdapter<Photo, PhotoViewHolder>(DIFF_CALLBACK) {
+class PhotoAdapter(val context: Context) : PagedListAdapter<Photo, PhotoViewHolder>(DIFF_CALLBACK) {
   private val layoutInflater: LayoutInflater = LayoutInflater.from(context)
   private val set = ConstraintSet()
   var onItemClickListener: ((photo: Photo) -> Unit)? = null
@@ -28,12 +33,12 @@ class PhotoAdapter(val context: Context) : ListAdapter<Photo, PhotoViewHolder>(D
   }
 
   override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
-    val photo = getItem(position)
+    val photo = getItem(position)!!
     val url = photo.url
     Glide.with(context)
-        .load(url)
-        .transition(DrawableTransitionOptions.withCrossFade())
-        .into(holder.photo)
+      .load(url)
+      .transition(DrawableTransitionOptions.withCrossFade())
+      .into(holder.photo)
 
     val ratio = String.format("%d:%d", photo.width, photo.height)
     set.clone(holder.constraint)
@@ -56,4 +61,38 @@ class PhotoAdapter(val context: Context) : ListAdapter<Photo, PhotoViewHolder>(D
     }
   }
 
+}
+
+class PhotoDataSource(val api: UnsplashService) : PageKeyedDataSource<Int, Photo>() {
+  override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int,
+    Photo>) {
+    api.getFeed(limit = params.requestedLoadSize).enqueue(object : Callback<List<Photo>> {
+      override fun onFailure(call: Call<List<Photo>>, t: Throwable) {
+      }
+
+      override fun onResponse(call: Call<List<Photo>>, response: Response<List<Photo>>) {
+        val images = response.body()!!
+        callback.onResult(images, 1, 2)
+      }
+
+    })
+  }
+
+  override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Photo>) {
+    api.getFeed(limit = params.requestedLoadSize, page = params.key).enqueue(object :
+      Callback<List<Photo>> {
+      override fun onFailure(call: Call<List<Photo>>, t: Throwable) {
+      }
+
+      override fun onResponse(call: Call<List<Photo>>, response: Response<List<Photo>>) {
+        val images = response.body()!!
+        callback.onResult(images, params.key + 1)
+      }
+
+    })
+  }
+
+  override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Photo>) {
+//    No need to load before
+  }
 }

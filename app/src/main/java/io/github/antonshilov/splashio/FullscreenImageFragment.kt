@@ -3,18 +3,20 @@ package io.github.antonshilov.splashio
 
 import android.R.attr.uiOptions
 import android.arch.lifecycle.Observer
+import android.content.Intent
 import android.os.Bundle
 import android.support.transition.TransitionManager
 import android.support.v4.app.Fragment
 import android.support.v4.view.WindowInsetsCompat
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.support.v7.app.AppCompatActivity
+import android.view.*
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestOptions
 import io.github.antonshilov.splashio.api.Photo
 import kotlinx.android.synthetic.main.fragment_fullscreen_image.*
 
@@ -23,7 +25,7 @@ private const val ARG_PHOTO = "photo"
 
 
 class FullscreenImageFragment : Fragment() {
-  private var photo: Photo? = null
+  private lateinit var photo: Photo
   private lateinit var activity: MainActivity
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,16 +33,24 @@ class FullscreenImageFragment : Fragment() {
     arguments?.let {
       photo = it.getParcelable(ARG_PHOTO)
     }
+    setHasOptionsMenu(true)
   }
 
   override fun onStart() {
     super.onStart()
-    photo?.let {
+    photo.let {
       Glide.with(this)
         .load(it.urls.full)
         .transition(DrawableTransitionOptions.withCrossFade())
         .into(photoView)
     }
+    userName.text = photo.user.name
+    Glide.with(this)
+      .load(photo.user.profileImage.medium)
+      .apply(RequestOptions.bitmapTransform(CircleCrop()))
+      .into(avatar)
+
+
     activity = this.getActivity() as MainActivity
     activity.statusBarHeight.observe(this, Observer<WindowInsetsCompat> { insets ->
       //      TODO: handle insets in horizontal orientation
@@ -60,19 +70,45 @@ class FullscreenImageFragment : Fragment() {
     photoView.setOnPhotoTapListener { _, _, _ ->
       fullScreen()
     }
+    activity.setSupportActionBar(toolbar)
+    toolbar.title = null
 
   }
 
+  override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+    super.onCreateOptionsMenu(menu, inflater)
+    inflater?.inflate(R.menu.menu_fullscreen_image, menu)
+  }
+
+  override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    return when (item?.itemId) {
+      R.id.action_share -> {
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.type = "text/plain"
+        shareIntent.putExtra(Intent.EXTRA_TEXT, photo.links.html)
+        startActivity(Intent.createChooser(shareIntent, "Share photo using"))
+        true
+      }
+      else -> false
+    }
+  }
 
   private fun fullScreen() {
-
     toolbar.switchVisibility()
     bottomContainer.switchVisibility()
+    activity.fullSreen()
+  }
 
+  fun ViewGroup.switchVisibility() {
+    TransitionManager.beginDelayedTransition(this)
+    this.visibility = if (this.isVisible) View.INVISIBLE else View.VISIBLE
+  }
+
+  fun AppCompatActivity.fullSreen() {
     // BEGIN_INCLUDE (get_current_ui_flags)
     // The UI options currently enabled are represented by a bitfield.
     // getSystemUiVisibility() gives us that bitfield.
-    val uiOptions = activity.window.decorView.systemUiVisibility
+    val uiOptions = this.window.decorView.systemUiVisibility
     var newUiOptions = uiOptions
     // END_INCLUDE (get_current_ui_flags)
     // BEGIN_INCLUDE (toggle_ui_flags)
@@ -94,13 +130,8 @@ class FullscreenImageFragment : Fragment() {
     // the screen.
     newUiOptions = newUiOptions xor View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
 
-    activity.window.decorView.systemUiVisibility = newUiOptions
+    this.window.decorView.systemUiVisibility = newUiOptions
     //END_INCLUDE (set_ui_flags)
-  }
-
-  fun ViewGroup.switchVisibility() {
-    TransitionManager.beginDelayedTransition(this)
-    this.visibility = if (this.isVisible) View.INVISIBLE else View.VISIBLE
   }
 
   private fun isImmersiveModeEnabled(): Boolean {
@@ -114,7 +145,7 @@ class FullscreenImageFragment : Fragment() {
 
   override fun onDestroy() {
     super.onDestroy()
-    if (isImmersiveModeEnabled()) fullScreen()
+    if (isImmersiveModeEnabled()) activity.fullSreen()
   }
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -122,7 +153,6 @@ class FullscreenImageFragment : Fragment() {
     // Inflate the layout for this fragment
     return inflater.inflate(R.layout.fragment_fullscreen_image, container, false)
   }
-
 
   companion object {
     @JvmStatic

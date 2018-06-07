@@ -1,18 +1,27 @@
 package io.github.antonshilov.splashio
 
-import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.arch.paging.PagedList
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import io.github.antonshilov.splashio.api.AuthInterceptor
 import io.github.antonshilov.splashio.api.Photo
+import io.github.antonshilov.splashio.api.UnsplashService
 import kotlinx.android.synthetic.main.fragment_image_list.*
-import timber.log.Timber
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.Executor
+import java.util.concurrent.Executors
 
 class ImageListFragment : Fragment() {
   private lateinit var vm: PhotoListViewModel
@@ -39,22 +48,56 @@ class ImageListFragment : Fragment() {
 
   override fun onStart() {
     super.onStart()
-    loadImages()
+//    loadImages()
+    showImages()
   }
 
   private fun loadImages() {
-    vm.photos.observe(this, Observer { showImages(it!!) })
-    vm.loadPhotos()
+//    vm.photos.observe(this, Observer { showImages(it!!) })
+//    vm.loadPhotos()
   }
 
-  private fun showImages(images: List<Photo>) {
-    Timber.d(images.toString())
-    adapter.submitList(images)
+  private fun showImages() {
+    val httpClient = OkHttpClient.Builder()
+      .addInterceptor(AuthInterceptor())
+      .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
+      .build()
+    val unsplashApi = Retrofit.Builder()
+      .client(httpClient)
+      .baseUrl(UnsplashService.ENDPOINT)
+      .addConverterFactory(GsonConverterFactory.create())
+      .build()
+      .create(UnsplashService::class.java)
+    val config = PagedList.Config.Builder()
+      .setPageSize(10)
+      .setInitialLoadSizeHint(10)
+      .build()
+    val pagedList = PagedList.Builder<Int, Photo>(PhotoDataSource(unsplashApi), config)
+      .setNotifyExecutor(UiThreadExecutor())
+      .setFetchExecutor(BackgroundThreadExecutor())
+      .build()
+    adapter.submitList(pagedList)
+  }
+
+  internal inner class UiThreadExecutor : Executor {
+    private val mHandler = Handler(Looper.getMainLooper())
+
+    override fun execute(command: Runnable) {
+      mHandler.post(command)
+    }
+  }
+
+  internal inner class BackgroundThreadExecutor : Executor {
+    private val executorService = Executors.newFixedThreadPool(3)
+
+    override fun execute(command: Runnable) {
+      executorService.execute(command)
+    }
   }
 
   private fun navigateToFullscreen(img: Photo) {
     navigationController.navigate(R.id.action_imageListFragment_to_fullscreenImageFragment,
-        FullscreenImageFragment.bundleArgs(img))
+      FullscreenImageFragment.bundleArgs(img))
   }
 
   // TODO: Rename method, update argument and hook method into UI event
