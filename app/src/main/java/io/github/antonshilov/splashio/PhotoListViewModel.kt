@@ -3,8 +3,12 @@ package io.github.antonshilov.splashio
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.arch.paging.PagedList
+import android.os.Handler
+import android.os.Looper
 import io.github.antonshilov.splashio.api.UnsplashApi
 import io.github.antonshilov.splashio.api.model.Photo
+import java.util.concurrent.Executor
+import java.util.concurrent.Executors
 
 /**
  *

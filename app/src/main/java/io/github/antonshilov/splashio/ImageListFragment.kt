@@ -2,11 +2,15 @@ package io.github.antonshilov.splashio
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import io.github.antonshilov.splashio.api.model.Photo
-import timber.log.Timber
+import kotlinx.android.synthetic.main.fragment_image_list.*
 
 class ImageListFragment : Fragment() {
   private lateinit var vm: PhotoListViewModel
@@ -28,7 +32,6 @@ class ImageListFragment : Fragment() {
     adapter = PhotoAdapter(this.context!!)
     adapter.onItemClickListener = { navigateToFullscreen(it) }
     vm.photoList.observe(this, Observer {
-      Timber.e("SUBMITLIST")
       adapter.submitList(it)
     })
     vm.loadPhotos()

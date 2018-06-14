@@ -2,16 +2,23 @@ package io.github.antonshilov.splashio
 
 
 import android.arch.lifecycle.Observer
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import android.support.transition.TransitionManager
 import android.support.v4.app.Fragment
 import android.support.v4.view.WindowInsetsCompat
 import android.support.v7.app.AppCompatActivity
+import android.view.*
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import io.github.antonshilov.splashio.api.model.Photo
+import kotlinx.android.synthetic.main.fragment_fullscreen_image.*
 
 
 private const val ARG_PHOTO = "photo"
@@ -29,6 +36,12 @@ class FullscreenImageFragment : Fragment() {
     setHasOptionsMenu(true)
   }
 
+  override fun onAttach(context: Context?) {
+    super.onAttach(context)
+    activity = this.getActivity() as MainActivity
+
+  }
+
   override fun onStart() {
     super.onStart()
     photo.let {
@@ -38,13 +51,11 @@ class FullscreenImageFragment : Fragment() {
         .into(photoView)
     }
     userName.text = photo.user.name
-    Glide.with(this)
+    GlideApp.with(this)
       .load(photo.user.profileImage.medium)
       .apply(RequestOptions.bitmapTransform(CircleCrop()))
       .into(avatar)
 
-
-    activity = this.getActivity() as MainActivity
     activity.statusBarHeight.observe(this, Observer<WindowInsetsCompat> { insets ->
       //      TODO: handle insets in horizontal orientation
       val lpToolbar = toolbar
@@ -70,11 +81,11 @@ class FullscreenImageFragment : Fragment() {
 
   override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
     super.onCreateOptionsMenu(menu, inflater)
-    inflater.inflate(R.menu.menu_fullscreen_image, menu)
+    inflater?.inflate(R.menu.menu_fullscreen_image, menu)
   }
 
   override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-    return when (item.itemId) {
+    return when (item?.itemId) {
       R.id.action_share -> {
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.type = "text/plain"
