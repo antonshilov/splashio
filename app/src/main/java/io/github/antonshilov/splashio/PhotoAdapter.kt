@@ -2,18 +2,13 @@ package io.github.antonshilov.splashio
 
 import android.arch.paging.PageKeyedDataSource
 import android.arch.paging.PagedListAdapter
-import android.content.Context
 import android.support.constraint.ConstraintSet
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import io.github.antonshilov.splashio.api.Photo
-import io.github.antonshilov.splashio.api.UnsplashService
-import kotlinx.android.synthetic.main.item_photo.view.*
+import io.github.antonshilov.splashio.api.UnsplashApi
+import io.github.antonshilov.splashio.api.model.Photo
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -50,6 +45,7 @@ class PhotoAdapter(val context: Context) : PagedListAdapter<Photo, PhotoViewHold
   }
 
   companion object {
+    @JvmStatic
     val DIFF_CALLBACK: DiffUtil.ItemCallback<Photo> = object : DiffUtil.ItemCallback<Photo>() {
       override fun areItemsTheSame(oldItem: Photo, newItem: Photo): Boolean {
         return oldItem.id == newItem.id
@@ -63,7 +59,7 @@ class PhotoAdapter(val context: Context) : PagedListAdapter<Photo, PhotoViewHold
 
 }
 
-class PhotoDataSource(val api: UnsplashService) : PageKeyedDataSource<Int, Photo>() {
+class PhotoDataSource(val api: UnsplashApi) : PageKeyedDataSource<Int, Photo>() {
   override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int,
     Photo>) {
     api.getFeed(limit = params.requestedLoadSize).enqueue(object : Callback<List<Photo>> {

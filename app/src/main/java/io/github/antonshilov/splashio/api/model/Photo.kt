@@ -1,22 +1,6 @@
-package io.github.antonshilov.splashio.api
+package io.github.antonshilov.splashio.api.model
 
-import android.os.Parcel
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Query
-
-
-interface UnsplashService {
-  companion object {
-    const val ENDPOINT = "https://api.unsplash.com/"
-
-  }
-
-  @GET("/photos/curated")
-  fun getFeed(@Query("per_page") limit: Int = 50, @Query("page") page: Int = 1): Call<List<Photo>>
-}
 
 data class ProfileImage(
   @SerializedName("small") val small: String,

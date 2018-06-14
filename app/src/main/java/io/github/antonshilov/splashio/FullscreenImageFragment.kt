@@ -1,24 +1,17 @@
 package io.github.antonshilov.splashio
 
 
-import android.R.attr.uiOptions
 import android.arch.lifecycle.Observer
-import android.content.Intent
-import android.os.Bundle
-import android.support.transition.TransitionManager
 import android.support.v4.app.Fragment
 import android.support.v4.view.WindowInsetsCompat
 import android.support.v7.app.AppCompatActivity
-import android.view.*
 import androidx.core.os.bundleOf
-import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
-import io.github.antonshilov.splashio.api.Photo
-import kotlinx.android.synthetic.main.fragment_fullscreen_image.*
+import io.github.antonshilov.splashio.api.model.Photo
 
 
 private const val ARG_PHOTO = "photo"
@@ -68,7 +61,7 @@ class FullscreenImageFragment : Fragment() {
       findNavController().navigateUp()
     }
     photoView.setOnPhotoTapListener { _, _, _ ->
-      fullScreen()
+      fullScreen(!isImmersiveModeEnabled())
     }
     activity.setSupportActionBar(toolbar)
     toolbar.title = null
@@ -77,11 +70,11 @@ class FullscreenImageFragment : Fragment() {
 
   override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
     super.onCreateOptionsMenu(menu, inflater)
-    inflater?.inflate(R.menu.menu_fullscreen_image, menu)
+    inflater.inflate(R.menu.menu_fullscreen_image, menu)
   }
 
   override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-    return when (item?.itemId) {
+    return when (item.itemId) {
       R.id.action_share -> {
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.type = "text/plain"
@@ -93,21 +86,22 @@ class FullscreenImageFragment : Fragment() {
     }
   }
 
-  private fun fullScreen() {
-    toolbar.switchVisibility()
-    bottomContainer.switchVisibility()
-    activity.fullSreen()
+  private fun fullScreen(isEnabled: Boolean) {
+    toolbar.switchVisibility(isEnabled)
+    bottomContainer.switchVisibility(isEnabled)
+//    activity.fullSreen(isEnabled)
   }
 
-  fun ViewGroup.switchVisibility() {
+  fun ViewGroup.switchVisibility(isEnabled: Boolean) {
     TransitionManager.beginDelayedTransition(this)
-    this.visibility = if (this.isVisible) View.INVISIBLE else View.VISIBLE
+    this.visibility = if (isEnabled) View.INVISIBLE else View.VISIBLE
   }
 
-  fun AppCompatActivity.fullSreen() {
+  fun AppCompatActivity.fullSreen(isEnabled: Boolean) {
     // BEGIN_INCLUDE (get_current_ui_flags)
     // The UI options currently enabled are represented by a bitfield.
     // getSystemUiVisibility() gives us that bitfield.
+    if (isEnabled == isImmersiveModeEnabled()) return
     val uiOptions = this.window.decorView.systemUiVisibility
     var newUiOptions = uiOptions
     // END_INCLUDE (get_current_ui_flags)
@@ -135,17 +129,14 @@ class FullscreenImageFragment : Fragment() {
   }
 
   private fun isImmersiveModeEnabled(): Boolean {
-    return uiOptions or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY == uiOptions
+//    val uiOptions = activity.getWindow().getDecorView().getSystemUiVisibility()
+//    return uiOptions or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY == uiOptions
+    return !toolbar.isVisible
   }
 
-  override fun onStop() {
-    super.onStop()
-    activity.setSupportActionBar(null)
-  }
-
-  override fun onDestroy() {
-    super.onDestroy()
-    if (isImmersiveModeEnabled()) activity.fullSreen()
+  override fun onDestroyView() {
+    super.onDestroyView()
+    if (isImmersiveModeEnabled()) fullScreen(false)
   }
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
