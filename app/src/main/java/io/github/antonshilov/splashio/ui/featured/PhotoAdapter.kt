@@ -1,4 +1,4 @@
-package io.github.antonshilov.splashio
+package io.github.antonshilov.splashio.ui.featured
 
 import android.arch.paging.PageKeyedDataSource
 import android.arch.paging.PagedListAdapter
@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import io.github.antonshilov.splashio.R
 import io.github.antonshilov.splashio.api.UnsplashApi
 import io.github.antonshilov.splashio.api.model.Photo
 import kotlinx.android.synthetic.main.item_photo.view.*

@@ -1,4 +1,4 @@
-package io.github.antonshilov.splashio
+package io.github.antonshilov.splashio.ui.fullscreen
 
 
 import android.arch.lifecycle.Observer
@@ -17,7 +17,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
+import io.github.antonshilov.splashio.GlideApp
+import io.github.antonshilov.splashio.R
 import io.github.antonshilov.splashio.api.model.Photo
+import io.github.antonshilov.splashio.ui.MainActivity
 import kotlinx.android.synthetic.main.fragment_fullscreen_image.*
 
 

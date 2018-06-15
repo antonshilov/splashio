@@ -6,59 +6,59 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 28
-    defaultConfig {
-        applicationId "io.github.antonshilov.splashio"
-        minSdkVersion 21
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+  compileSdkVersion 28
+  defaultConfig {
+    applicationId "io.github.antonshilov.splashio"
+    minSdkVersion 21
+    targetSdkVersion 28
+    versionCode 1
+    versionName "1.0"
+    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+  }
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
+  }
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation Deps.kotlin_stdlib
-    implementation Deps.support_v4
-    implementation Deps.appcompat_v7
-    implementation Deps.design
-    implementation Deps.recyclerview_v7
-    implementation Deps.cardview_v7
+  implementation fileTree(include: ['*.jar'], dir: 'libs')
+  implementation Deps.kotlin_stdlib
+  implementation Deps.support_v4
+  implementation Deps.appcompat_v7
+  implementation Deps.design
+  implementation Deps.recyclerview_v7
+  implementation Deps.cardview_v7
 
-    implementation Deps.constraint_layout
+  implementation Deps.constraint_layout
 
-    implementation Deps.core_ktx
-    implementation Deps.navigation_fragment_ktx
-    implementation Deps.navigation_ui_ktx
+  implementation Deps.core_ktx
+  implementation Deps.navigation_fragment_ktx
+  implementation Deps.navigation_ui_ktx
 
-    implementation Deps.lifecycle_extensions
-    kapt Deps.lifecycle_compiler
+  implementation Deps.lifecycle_extensions
+  kapt Deps.lifecycle_compiler
 
-    implementation Deps.paging
-
-
-    implementation Deps.retrofit
-    implementation Deps.gson_converter
-    implementation Deps.okhttp
-    implementation Deps.logging_interceptor
+  implementation Deps.paging
 
 
-
-    implementation Deps.glide
-    kapt Deps.glide_compiler
-    implementation Deps.timber
-
-    implementation Deps.photo_view
+  implementation Deps.retrofit
+  implementation Deps.gson_converter
+  implementation Deps.okhttp
+  implementation Deps.logging_interceptor
 
 
-    testImplementation Deps.junit
-    androidTestImplementation Deps.test_runner
-    androidTestImplementation Deps.espresso
+
+  implementation Deps.glide
+  kapt Deps.glide_compiler
+  implementation Deps.timber
+
+  implementation Deps.photo_view
+
+
+  testImplementation Deps.junit
+  androidTestImplementation Deps.test_runner
+  androidTestImplementation Deps.espresso
 }

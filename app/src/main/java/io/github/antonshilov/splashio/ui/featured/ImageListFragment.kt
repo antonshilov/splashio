@@ -1,4 +1,4 @@
-package io.github.antonshilov.splashio
+package io.github.antonshilov.splashio.ui.featured
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -9,7 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import io.github.antonshilov.splashio.R
 import io.github.antonshilov.splashio.api.model.Photo
+import io.github.antonshilov.splashio.ui.fullscreen.FullscreenImageFragment
 import kotlinx.android.synthetic.main.fragment_image_list.*
 
 class ImageListFragment : Fragment() {

@@ -1,4 +1,4 @@
-package io.github.antonshilov.splashio
+package io.github.antonshilov.splashio.ui.featured
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel

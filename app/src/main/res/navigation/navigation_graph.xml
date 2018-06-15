@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/imageListFragment"
-        android:name="io.github.antonshilov.splashio.ImageListFragment"
+      android:name="io.github.antonshilov.splashio.ui.featured.ImageListFragment"
         android:label="fragment_image_list"
         tools:layout="@layout/fragment_image_list">
         <action
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/fullscreenImageFragment"
-        android:name="io.github.antonshilov.splashio.FullscreenImageFragment"
+      android:name="io.github.antonshilov.splashio.ui.fullscreen.FullscreenImageFragment"
         android:label="fragment_fullscreen_image"
         tools:layout="@layout/fragment_fullscreen_image" />
 </navigation>

@@ -1,4 +1,4 @@
-package io.github.antonshilov.splashio
+package io.github.antonshilov.splashio.ui
 
 
 import android.arch.lifecycle.MutableLiveData
@@ -7,6 +7,7 @@ import android.support.v4.view.ViewCompat
 import android.support.v4.view.WindowInsetsCompat
 import android.support.v7.app.AppCompatActivity
 import androidx.navigation.findNavController
+import io.github.antonshilov.splashio.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
