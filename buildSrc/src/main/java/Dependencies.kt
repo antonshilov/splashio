@@ -22,7 +22,7 @@ object Deps {
   val android_plugin = "com.android.tools.build:gradle:${Versions.android_plugin}"
 
 
-  val kotlin_stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jre7:${Versions.kotlin}"
+  val kotlin_stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}"
   val kotlin_plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
 
   val appcompat_v7 = "com.android.support:appcompat-v7:${Versions.support}"

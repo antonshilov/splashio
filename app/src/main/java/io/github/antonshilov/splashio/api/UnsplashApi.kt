@@ -21,7 +21,7 @@ interface UnsplashApi {
    * @return http call to request the photos
    */
   @GET("/photos/curated")
-  fun getFeed(@Query("per_page") limit: Int = 50, @Query("page") page: Int = 1): Call<List<Photo>>
+  fun getCuratedPhotos(@Query("per_page") limit: Int = 50, @Query("page") page: Int = 1): Call<List<Photo>>
 
   companion object {
     private const val BASE_URL = "https://api.unsplash.com/"

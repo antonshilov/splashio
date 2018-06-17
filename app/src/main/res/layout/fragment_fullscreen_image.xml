@@ -5,7 +5,6 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:background="@color/fullscreenBackground"
-  android:fitsSystemWindows="true"
   tools:context=".ui.fullscreen.FullscreenImageFragment">
 
   <com.github.chrisbanes.photoview.PhotoView
@@ -20,7 +19,6 @@
     style="@style/TransparentToolbarTheme"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:fitsSystemWindows="true"
     app:navigationIcon="?attr/homeAsUpIndicator" />
 
   <LinearLayout

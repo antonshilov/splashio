@@ -41,6 +41,7 @@ class PhotoAdapter(val context: Context) : PagedListAdapter<Photo, PhotoViewHold
       .transition(DrawableTransitionOptions.withCrossFade())
       .into(holder.photo)
 
+    // apply aspect ratio to the image
     val ratio = String.format("%d:%d", photo.width, photo.height)
     set.clone(holder.constraint)
     set.setDimensionRatio(holder.photo.id, ratio)
@@ -67,8 +68,8 @@ class PhotoAdapter(val context: Context) : PagedListAdapter<Photo, PhotoViewHold
 
 class PhotoDataSource(val api: UnsplashApi) : PageKeyedDataSource<Int, Photo>() {
   override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int,
-    Photo>) {
-    api.getFeed(limit = params.requestedLoadSize).enqueue(object : Callback<List<Photo>> {
+      Photo>) {
+    api.getCuratedPhotos(limit = params.requestedLoadSize).enqueue(object : Callback<List<Photo>> {
       override fun onFailure(call: Call<List<Photo>>, t: Throwable) {
       }
 
@@ -81,8 +82,8 @@ class PhotoDataSource(val api: UnsplashApi) : PageKeyedDataSource<Int, Photo>() 
   }
 
   override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Photo>) {
-    api.getFeed(limit = params.requestedLoadSize, page = params.key).enqueue(object :
-      Callback<List<Photo>> {
+    api.getCuratedPhotos(limit = params.requestedLoadSize, page = params.key).enqueue(object :
+        Callback<List<Photo>> {
       override fun onFailure(call: Call<List<Photo>>, t: Throwable) {
       }
 
@@ -95,6 +96,6 @@ class PhotoDataSource(val api: UnsplashApi) : PageKeyedDataSource<Int, Photo>() 
   }
 
   override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Photo>) {
-//    No need to load before
+    //    No need to load before
   }
 }
