@@ -13,18 +13,24 @@ import java.util.concurrent.Executors
 /**
  *
  */
-class PhotoListViewModel : ViewModel() {
+class PhotoListViewModel(val api: UnsplashApi) : ViewModel() {
   val photoList = MutableLiveData<PagedList<Photo>>()
-  fun loadPhotos() {
-    val api = UnsplashApi.create()
+  val pagedList: PagedList<Photo>
+
+  init {
     val config = PagedList.Config.Builder()
-      .setPageSize(10)
-      .setInitialLoadSizeHint(20)
-      .build()
-    val pagedList = PagedList.Builder<Int, Photo>(PhotoDataSource(api), config)
-      .setNotifyExecutor(UiThreadExecutor())
-      .setFetchExecutor(BackgroundThreadExecutor())
-      .build()
+        .setPageSize(10)
+        .setInitialLoadSizeHint(20)
+        .build()
+    pagedList = PagedList.Builder<Int, Photo>(PhotoDataSource(api), config)
+        .setNotifyExecutor(UiThreadExecutor())
+        .setFetchExecutor(BackgroundThreadExecutor())
+        .build()
+
+
+  }
+
+  fun loadPhotos() {
     photoList.postValue(pagedList)
   }
 

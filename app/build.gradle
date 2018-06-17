@@ -48,7 +48,7 @@ dependencies {
   implementation Deps.gson_converter
   implementation Deps.okhttp
   implementation Deps.logging_interceptor
-
+  implementation Deps.koin_arch
 
 
   implementation Deps.glide

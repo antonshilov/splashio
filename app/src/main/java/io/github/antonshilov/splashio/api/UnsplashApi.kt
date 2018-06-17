@@ -2,7 +2,6 @@ package io.github.antonshilov.splashio.api
 
 import io.github.antonshilov.splashio.api.model.Photo
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -27,21 +26,11 @@ interface UnsplashApi {
     private const val BASE_URL = "https://api.unsplash.com/"
 
     /**
-     * Factory method to create the instance of the [UnsplashApi] with a pre-defined base url.
-     */
-    fun create() = create(BASE_URL)
-
-    /**
      * Factory method to create the instance of the [UnsplashApi]
-     * @param baseUrl the base url for the api service
-     */
-    fun create(baseUrl: String): UnsplashApi {
-      val httpClient = OkHttpClient.Builder()
-        .addInterceptor(AuthInterceptor())
-        .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC })
-        .build()
+     * @param baseUrl the base url for the api service*/
+    fun create(baseUrl: String = BASE_URL, client: OkHttpClient): UnsplashApi {
       return Retrofit.Builder()
-        .client(httpClient)
+          .client(client)
         .baseUrl(baseUrl)
         .addConverterFactory(GsonConverterFactory.create())
         .build()

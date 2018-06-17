@@ -15,6 +15,7 @@ object Versions {
   val junit = "4.12"
   val test_runner = "1.0.2"
   val espresso = "3.0.2"
+  val koin = "0.9.3"
 
 }
 
@@ -57,6 +58,8 @@ object Deps {
   val navigation_fragment_ktx = "android.arch.navigation:navigation-fragment-ktx:${Versions.navigation}"
   val navigation_safe_args_plugin = "android.arch.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation}"
   val navigation_testing_ktx = "android.arch.navigation:navigation-testing-ktx:${Versions.navigation}"
+
+  val koin_arch = "org.koin:koin-android-architecture:${Versions.koin}"
 
   val junit = "junit:junit:${Versions.junit}"
   val test_runner = "com.android.support.test:runner:${Versions.test_runner}"

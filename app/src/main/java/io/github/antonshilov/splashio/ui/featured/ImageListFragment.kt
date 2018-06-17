@@ -1,7 +1,6 @@
 package io.github.antonshilov.splashio.ui.featured
 
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -13,9 +12,10 @@ import io.github.antonshilov.splashio.R
 import io.github.antonshilov.splashio.api.model.Photo
 import io.github.antonshilov.splashio.ui.fullscreen.FullscreenImageFragment
 import kotlinx.android.synthetic.main.fragment_image_list.*
+import org.koin.android.architecture.ext.viewModel
 
 class ImageListFragment : Fragment() {
-  private lateinit var vm: PhotoListViewModel
+  private val vm by viewModel<PhotoListViewModel>()
 
   private lateinit var navigationController: NavController
   private lateinit var adapter: PhotoAdapter
@@ -29,7 +29,6 @@ class ImageListFragment : Fragment() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    vm = ViewModelProviders.of(this).get(PhotoListViewModel::class.java)
     navigationController = findNavController()
     adapter = PhotoAdapter(this.context!!)
     adapter.onItemClickListener = { navigateToFullscreen(it) }
@@ -47,7 +46,7 @@ class ImageListFragment : Fragment() {
 
   private fun navigateToFullscreen(img: Photo) {
     navigationController.navigate(R.id.action_imageListFragment_to_fullscreenImageFragment,
-      FullscreenImageFragment.bundleArgs(img))
+        FullscreenImageFragment.bundleArgs(img))
   }
 
 }
