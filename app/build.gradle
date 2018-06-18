@@ -38,6 +38,8 @@ dependencies {
   implementation Deps.navigation_fragment_ktx
   implementation Deps.navigation_ui_ktx
 
+  implementation Deps.work
+
   implementation Deps.lifecycle_extensions
   kapt Deps.lifecycle_compiler
 

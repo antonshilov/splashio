@@ -16,6 +16,7 @@ object Versions {
   val test_runner = "1.0.2"
   val espresso = "3.0.2"
   val koin = "0.9.3"
+  val work = "1.0.0-alpha02"
 
 }
 
@@ -51,6 +52,8 @@ object Deps {
   val logging_interceptor = "com.squareup.okhttp3:logging-interceptor:${Versions.okhttp}"
 
   val core_ktx = "androidx.core:core-ktx:${Versions.core_ktx}"
+
+  val work = "android.arch.work:work-runtime-ktx:${Versions.work}"
   val navigation_runtime = "android.arch.navigation:navigation-runtime:${Versions.navigation}"
   val navigation_runtime_ktx = "android.arch.navigation:navigation-runtime-ktx:${Versions.navigation}"
   val navigation_ui_ktx = "android.arch.navigation:navigation-ui-ktx:${Versions.navigation}"

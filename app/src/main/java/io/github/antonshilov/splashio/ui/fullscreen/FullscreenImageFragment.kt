@@ -22,6 +22,7 @@ import io.github.antonshilov.splashio.R
 import io.github.antonshilov.splashio.api.model.Photo
 import io.github.antonshilov.splashio.ui.MainActivity
 import kotlinx.android.synthetic.main.fragment_fullscreen_image.*
+import org.koin.android.architecture.ext.viewModel
 
 
 private const val ARG_PHOTO = "photo"
@@ -33,6 +34,7 @@ private const val ARG_PHOTO = "photo"
  * Hide/display controls on image tap
  */
 class FullscreenImageFragment : Fragment() {
+  private val vm by viewModel<FullscreenImageViewModel>()
   private lateinit var photo: Photo
   private lateinit var activity: MainActivity
   private lateinit var progressIndicator: CircularProgressDrawable
@@ -97,6 +99,7 @@ class FullscreenImageFragment : Fragment() {
     photoView.setOnPhotoTapListener { _, _, _ ->
       fullScreen(!isImmersiveModeEnabled())
     }
+    buttonWallpaper.setOnClickListener { vm.setWallpaper(photo) }
     activity.setSupportActionBar(toolbar)
     toolbar.title = null
 

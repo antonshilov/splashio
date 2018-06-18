@@ -4,6 +4,7 @@ import io.github.antonshilov.splashio.BuildConfig
 import io.github.antonshilov.splashio.api.AuthInterceptor
 import io.github.antonshilov.splashio.api.UnsplashApi
 import io.github.antonshilov.splashio.ui.featured.PhotoListViewModel
+import io.github.antonshilov.splashio.ui.fullscreen.FullscreenImageViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.architecture.ext.viewModel
@@ -12,6 +13,7 @@ import org.koin.dsl.module.applicationContext
 
 val appModule: Module = applicationContext {
   viewModel { PhotoListViewModel(get()) }
+  viewModel { FullscreenImageViewModel() }
 
   bean { provideOkHttpClient() }
   bean { UnsplashApi.create(client = get()) }
