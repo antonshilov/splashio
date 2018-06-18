@@ -1,19 +1,25 @@
 package io.github.antonshilov.splashio.ui.fullscreen
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
-import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.State
 import androidx.work.WorkManager
 import io.github.antonshilov.splashio.api.ImageDownloadWorker
 import io.github.antonshilov.splashio.api.model.Photo
 import timber.log.Timber
 
 class FullscreenImageViewModel : ViewModel() {
+  lateinit var wallpaperLoadStatus: LiveData<State>
   fun setWallpaper(photo: Photo) {
+    val workManager = WorkManager.getInstance()
     Timber.d("Set %s as wallpaper", photo.urls.raw)
-    val data = ImageDownloadWorker.bundleInput(photo)
-    val imageWork = OneTimeWorkRequestBuilder<ImageDownloadWorker>()
-        .setInputData(data)
-        .build()
-    WorkManager.getInstance().enqueue(imageWork)
+
+    val work = ImageDownloadWorker.createWork(photo)
+
+    wallpaperLoadStatus = Transformations.map(workManager.getStatusById(work.id)) {
+      it.state
+    }
+    workManager.enqueue(work)
   }
 }

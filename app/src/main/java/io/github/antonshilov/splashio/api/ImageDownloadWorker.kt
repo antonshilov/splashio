@@ -1,8 +1,11 @@
 package io.github.antonshilov.splashio.api
 
 import android.app.WallpaperManager
-import androidx.work.Data
-import androidx.work.Worker
+import android.content.Context
+import android.support.v4.app.NotificationCompat
+import android.support.v4.app.NotificationManagerCompat
+import androidx.work.*
+import io.github.antonshilov.splashio.R
 import io.github.antonshilov.splashio.api.ImageDownloadWorker.Companion.bundleInput
 import io.github.antonshilov.splashio.api.model.Photo
 import io.github.antonshilov.splashio.di.provideOkHttpClient
@@ -20,17 +23,22 @@ import java.io.IOException
  */
 class ImageDownloadWorker : Worker() {
 
-  val client = provideOkHttpClient()
-
+  private val client = provideOkHttpClient()
+  private val notificationManager by lazy { ImageDownloadNotificationManager(applicationContext) }
+  /**
+   * Downloads the image from the url which was passed in the parameters
+   * Then sets that image as a wallpaper using [WallpaperManager]
+   * Displays progress notification while downloading
+   */
   override fun doWork(): WorkerResult {
     // input data parsing and validation
     val photoUrl = inputData.getString(PHOTO_URL, "")
     if (photoUrl.isBlank()) return WorkerResult.FAILURE
 
+    notificationManager.start()
     val request = Request.Builder()
         .url(photoUrl)
         .build()
-
     try {
       Timber.d("Execute Load Image")
       val response = client.newCall(request).execute()!!
@@ -42,10 +50,11 @@ class ImageDownloadWorker : Worker() {
       }
     } catch (e: IOException) {
       Timber.e(e)
+      notificationManager.stop()
       return WorkerResult.FAILURE
     }
 
-
+    notificationManager.stop()
     return WorkerResult.SUCCESS
 
   }
@@ -71,10 +80,60 @@ class ImageDownloadWorker : Worker() {
 
   companion object {
     const val PHOTO_URL = "photo"
+    /**
+     * Puts [photo] to the data bundle for worker
+     *
+     * @return [Data] with the bundled input
+     */
     fun bundleInput(photo: Photo): Data {
       return Data.Builder()
           .putString(PHOTO_URL, photo.urls.raw)
           .build()
+    }
+
+    /**
+     * Creates [WorkRequest] for the [ImageDownloadWorker]
+     */
+    fun createWork(photo: Photo): OneTimeWorkRequest {
+      val constraints = Constraints.Builder()
+          .setRequiredNetworkType(NetworkType.CONNECTED)
+          .build()
+      val data = bundleInput(photo)
+      return OneTimeWorkRequestBuilder<ImageDownloadWorker>()
+          .setInputData(data)
+          .setConstraints(constraints)
+          .build()
+    }
+  }
+
+  /**
+   * Handles the notification operations for the [ImageDownloadWorker]
+   */
+  internal class ImageDownloadNotificationManager(val context: Context) {
+
+    private val notification = NotificationCompat.Builder(context)
+        .setSmallIcon(android.R.drawable.stat_sys_download)
+        .setProgress(0, 0, true)
+        .setContentTitle(context.getString(R.string.notification_set_wallpaper_progress))
+        .build()
+
+    private val notificationManager = NotificationManagerCompat.from(context)
+    /**
+     * Displays a indeterminate progress notification with animated download icon
+     */
+    fun start() {
+      notificationManager.notify(WALLPAPER_NOTIFICATION_ID, notification)
+    }
+
+    /**
+     * Cancels the notification that has been displayed in [start]
+     */
+    fun stop() {
+      notificationManager.cancel(WALLPAPER_NOTIFICATION_ID)
+    }
+
+    companion object {
+      private const val WALLPAPER_NOTIFICATION_ID = 16
     }
   }
 }

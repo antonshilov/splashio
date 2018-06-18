@@ -19,7 +19,7 @@ interface UnsplashApi {
    *
    * @return http call to request the photos
    */
-  @GET("/photos/curated")
+  @GET("/photos")
   fun getCuratedPhotos(@Query("per_page") limit: Int = 50, @Query("page") page: Int = 1): Call<List<Photo>>
 
   companion object {

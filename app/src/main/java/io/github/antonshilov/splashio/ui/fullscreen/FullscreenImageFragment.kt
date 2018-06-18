@@ -99,7 +99,9 @@ class FullscreenImageFragment : Fragment() {
     photoView.setOnPhotoTapListener { _, _, _ ->
       fullScreen(!isImmersiveModeEnabled())
     }
-    buttonWallpaper.setOnClickListener { vm.setWallpaper(photo) }
+    buttonWallpaper.setOnClickListener {
+      vm.setWallpaper(photo)
+    }
     activity.setSupportActionBar(toolbar)
     toolbar.title = null
 
