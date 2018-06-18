@@ -13,7 +13,7 @@ import timber.log.Timber
 class SplashioApp : Application() {
   override fun onCreate() {
     super.onCreate()
-    Timber.plant(Timber.DebugTree())
+    if (BuildConfig.DEBUG) Timber.plant(Timber.DebugTree())
     startKoin(listOf(appModule))
   }
 }

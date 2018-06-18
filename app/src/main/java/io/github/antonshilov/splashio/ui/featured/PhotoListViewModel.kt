@@ -7,31 +7,28 @@ import android.os.Handler
 import android.os.Looper
 import io.github.antonshilov.splashio.api.UnsplashApi
 import io.github.antonshilov.splashio.api.model.Photo
+import timber.log.Timber
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
 /**
- *
+ * [PhotoListViewModel] provides a paginated image list to display the list of curated photos
  */
 class PhotoListViewModel(val api: UnsplashApi) : ViewModel() {
   val photoList = MutableLiveData<PagedList<Photo>>()
-  val pagedList: PagedList<Photo>
+  private val pagedList: PagedList<Photo>
 
   init {
     val config = PagedList.Config.Builder()
-        .setPageSize(10)
+        .setPageSize(20)
         .setInitialLoadSizeHint(20)
         .build()
     pagedList = PagedList.Builder<Int, Photo>(PhotoDataSource(api), config)
         .setNotifyExecutor(UiThreadExecutor())
         .setFetchExecutor(BackgroundThreadExecutor())
         .build()
-
-
-  }
-
-  fun loadPhotos() {
     photoList.postValue(pagedList)
+    Timber.d("View Model has been initialized")
   }
 
   class UiThreadExecutor : Executor {

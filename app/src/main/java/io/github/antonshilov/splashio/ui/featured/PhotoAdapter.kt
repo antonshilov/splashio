@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.item_photo.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import timber.log.Timber
 
 class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
   val photo = itemView.photo!!
@@ -37,9 +38,9 @@ class PhotoAdapter(val context: Context) : PagedListAdapter<Photo, PhotoViewHold
     val photo = getItem(position)!!
     val url = photo.url
     Glide.with(context)
-      .load(url)
-      .transition(DrawableTransitionOptions.withCrossFade())
-      .into(holder.photo)
+        .load(url)
+        .transition(DrawableTransitionOptions.withCrossFade())
+        .into(holder.photo)
 
     // apply aspect ratio to the image
     val ratio = String.format("%d:%d", photo.width, photo.height)
@@ -71,9 +72,11 @@ class PhotoDataSource(val api: UnsplashApi) : PageKeyedDataSource<Int, Photo>() 
       Photo>) {
     api.getCuratedPhotos(limit = params.requestedLoadSize).enqueue(object : Callback<List<Photo>> {
       override fun onFailure(call: Call<List<Photo>>, t: Throwable) {
+        Timber.d(t, "Initial load of curated photos has failed")
       }
 
       override fun onResponse(call: Call<List<Photo>>, response: Response<List<Photo>>) {
+        Timber.d("Initial load of curated photos succeed")
         val images = response.body()!!
         callback.onResult(images, 1, 2)
       }
@@ -85,9 +88,11 @@ class PhotoDataSource(val api: UnsplashApi) : PageKeyedDataSource<Int, Photo>() 
     api.getCuratedPhotos(limit = params.requestedLoadSize, page = params.key).enqueue(object :
         Callback<List<Photo>> {
       override fun onFailure(call: Call<List<Photo>>, t: Throwable) {
+        Timber.d(t, "Load of curated photos has failed")
       }
 
       override fun onResponse(call: Call<List<Photo>>, response: Response<List<Photo>>) {
+        Timber.d("Load of curated photos succeed")
         val images = response.body()!!
         callback.onResult(images, params.key + 1)
       }

@@ -13,7 +13,14 @@ import io.github.antonshilov.splashio.api.model.Photo
 import io.github.antonshilov.splashio.ui.fullscreen.FullscreenImageFragment
 import kotlinx.android.synthetic.main.fragment_image_list.*
 import org.koin.android.architecture.ext.viewModel
+import timber.log.Timber
 
+/**
+ * [ImageListFragment]
+ *
+ * displays a grid of the curated images
+ * navigates to the [FullscreenImageFragment] on click on the image item
+ */
 class ImageListFragment : Fragment() {
   private val vm by viewModel<PhotoListViewModel>()
 
@@ -33,9 +40,9 @@ class ImageListFragment : Fragment() {
     adapter = PhotoAdapter(this.context!!)
     adapter.onItemClickListener = { navigateToFullscreen(it) }
     vm.photoList.observe(this, Observer {
+      Timber.d("photo list has been set to the adapter")
       adapter.submitList(it)
     })
-    vm.loadPhotos()
   }
 
   override fun onStart() {
