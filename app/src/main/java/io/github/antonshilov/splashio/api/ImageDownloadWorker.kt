@@ -30,10 +30,10 @@ class ImageDownloadWorker : Worker() {
    * Then sets that image as a wallpaper using [WallpaperManager]
    * Displays progress notification while downloading
    */
-  override fun doWork(): WorkerResult {
+  override fun doWork(): Result {
     // input data parsing and validation
     val photoUrl = inputData.getString(PHOTO_URL, "")
-    if (photoUrl.isBlank()) return WorkerResult.FAILURE
+    if (photoUrl.isBlank()) return Result.FAILURE
 
     notificationManager.start()
     val request = Request.Builder()
@@ -51,11 +51,11 @@ class ImageDownloadWorker : Worker() {
     } catch (e: IOException) {
       Timber.e(e)
       notificationManager.stop()
-      return WorkerResult.FAILURE
+      return Result.FAILURE
     }
 
     notificationManager.stop()
-    return WorkerResult.SUCCESS
+    return Result.SUCCESS
 
   }
 

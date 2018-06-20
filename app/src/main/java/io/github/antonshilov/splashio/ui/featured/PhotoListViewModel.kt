@@ -1,7 +1,10 @@
 package io.github.antonshilov.splashio.ui.featured
 
-import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
+import android.arch.paging.DataSource
+import android.arch.paging.DataSource.Factory
+import android.arch.paging.LivePagedListBuilder
 import android.arch.paging.PagedList
 import android.os.Handler
 import android.os.Looper
@@ -15,19 +18,21 @@ import java.util.concurrent.Executors
  * [PhotoListViewModel] provides a paginated image list to display the list of curated photos
  */
 class PhotoListViewModel(val api: UnsplashApi) : ViewModel() {
-  val photoList = MutableLiveData<PagedList<Photo>>()
-  private val pagedList: PagedList<Photo>
+  val photoList: LiveData<PagedList<Photo>>
 
   init {
     val config = PagedList.Config.Builder()
         .setPageSize(20)
         .setInitialLoadSizeHint(20)
         .build()
-    pagedList = PagedList.Builder<Int, Photo>(PhotoDataSource(api), config)
-        .setNotifyExecutor(UiThreadExecutor())
+    photoList = LivePagedListBuilder<Int, Photo>(object : Factory<Int, Photo>() {
+      override fun create(): DataSource<Int, Photo> {
+        return PhotoDataSource(api)
+      }
+
+    }, config)
         .setFetchExecutor(BackgroundThreadExecutor())
         .build()
-    photoList.postValue(pagedList)
     Timber.d("View Model has been initialized")
   }
 

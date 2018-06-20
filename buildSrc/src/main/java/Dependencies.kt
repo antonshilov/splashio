@@ -1,6 +1,7 @@
 object Versions {
   const val kotlin = "1.2.50"
   val android_plugin = "3.2.0-alpha18"
+  val versions_plugin = "0.20.0"
   val support = "28.0.0-alpha3"
   val constraint_layout = "1.1.1"
   val navigation = "1.0.0-alpha02"
@@ -16,12 +17,13 @@ object Versions {
   val test_runner = "1.0.2"
   val espresso = "3.0.2"
   val koin = "0.9.3"
-  val work = "1.0.0-alpha02"
+  val work = "1.0.0-alpha03"
 
 }
 
 object Deps {
   val android_plugin = "com.android.tools.build:gradle:${Versions.android_plugin}"
+  val versions_plugin = "com.github.ben-manes:gradle-versions-plugin:${Versions.versions_plugin}"
 
 
   val kotlin_stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}"
