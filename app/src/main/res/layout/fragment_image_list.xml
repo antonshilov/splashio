@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
@@ -16,6 +17,21 @@
     android:paddingBottom="48dp"
     app:layoutManager="android.support.v7.widget.StaggeredGridLayoutManager"
     app:spanCount="@integer/photo_grid_amount"
-    tools:listitem="@layout/item_photo" />
+    tools:listitem="@layout/item_photo"/>
+  <ProgressBar
+    android:id="@+id/progress"
+    android:visibility="gone"
+    android:layout_gravity="center"
+    android:indeterminate="true"
+    android:layout_width="@dimen/progress_circle"
+    android:layout_height="@dimen/progress_circle"/>
+  <TextView
+    android:id="@+id/errorText"
+    android:visibility="gone"
+    android:layout_gravity="center"
+    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+    android:text="@string/something_went_wrong"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"/>
 
 </FrameLayout>

@@ -1,5 +1,7 @@
 package io.github.antonshilov.splashio.ui.featured
 
+import android.arch.lifecycle.MutableLiveData
+import android.arch.paging.DataSource
 import android.arch.paging.PageKeyedDataSource
 import android.arch.paging.PagedListAdapter
 import android.content.Context
@@ -67,18 +69,56 @@ class PhotoAdapter(val context: Context) : PagedListAdapter<Photo, PhotoViewHold
 
 }
 
+
+enum class Status {
+  RUNNING,
+  SUCCESS,
+  FAILED
+}
+
+@Suppress("DataClassPrivateConstructor")
+data class NetworkState private constructor(
+    val status: Status,
+    val msg: String? = null) {
+  companion object {
+    val LOADED = NetworkState(Status.SUCCESS)
+    val LOADING = NetworkState(Status.RUNNING)
+    fun error(msg: String?) = NetworkState(Status.FAILED, msg)
+  }
+}
+
+/**
+ * A simple data source factory which also provides a way to observe the last created data source.
+ * This allows us to channel its network request status etc back to the UI.
+ */
+class PhotoDataSourceFactory(
+    private val api: UnsplashApi) : DataSource.Factory<Int, Photo>() {
+  val sourceLiveData = MutableLiveData<PhotoDataSource>()
+  override fun create(): DataSource<Int, Photo> {
+    val source = PhotoDataSource(api)
+    sourceLiveData.postValue(source)
+    return source
+  }
+}
+
 class PhotoDataSource(val api: UnsplashApi) : PageKeyedDataSource<Int, Photo>() {
+
+  val networkState = MutableLiveData<NetworkState>()
+
   override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int,
       Photo>) {
+    networkState.postValue(NetworkState.LOADING)
     api.getCuratedPhotos(limit = params.requestedLoadSize).enqueue(object : Callback<List<Photo>> {
       override fun onFailure(call: Call<List<Photo>>, t: Throwable) {
+        networkState.postValue(NetworkState.error(t.message ?: "unknown error"))
         Timber.d(t, "Initial load of curated photos has failed")
       }
 
       override fun onResponse(call: Call<List<Photo>>, response: Response<List<Photo>>) {
-        Timber.d("Initial load of curated photos succeed")
         val images = response.body()!!
         callback.onResult(images, 1, 2)
+        networkState.postValue(NetworkState.LOADED)
+        Timber.d("Initial load of curated photos succeed")
       }
 
     })
