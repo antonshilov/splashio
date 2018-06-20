@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.transition.TransitionManager
 import android.support.v4.app.Fragment
@@ -14,9 +15,11 @@ import android.view.*
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import io.github.antonshilov.splashio.GlideApp
 import io.github.antonshilov.splashio.R
 import io.github.antonshilov.splashio.api.model.Photo
@@ -69,16 +72,32 @@ class FullscreenImageFragment : Fragment() {
   override fun onStart() {
     super.onStart()
     photo.let {
+      photoView.isEnabled = false
+      val thumbnailRequest = GlideApp.with(this)
+          .load(photo.url)
+
       GlideApp.with(this)
           .load(it.urls.full)
-          .placeholder(progressIndicator)
+          .thumbnail(thumbnailRequest)
           .transition(DrawableTransitionOptions.withCrossFade())
+          .listener(object : RequestListener<Drawable> {
+            override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+              photoView.isEnabled = true
+              return false
+            }
+
+            override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+              photoView.isEnabled = true
+              return false
+            }
+
+          })
           .into(photoView)
     }
     userName.text = photo.user.name
     GlideApp.with(this)
         .load(photo.user.profileImage.medium)
-        .apply(RequestOptions.bitmapTransform(CircleCrop()))
+        .circleCrop()
         .into(avatar)
 
     activity.statusBarHeight.observe(this, Observer<WindowInsetsCompat> { insets ->

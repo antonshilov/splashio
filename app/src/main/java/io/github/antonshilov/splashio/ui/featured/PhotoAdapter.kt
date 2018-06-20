@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import io.github.antonshilov.splashio.GlideApp
 import io.github.antonshilov.splashio.R
 import io.github.antonshilov.splashio.api.UnsplashApi
 import io.github.antonshilov.splashio.api.model.Photo
@@ -39,8 +40,12 @@ class PhotoAdapter(val context: Context) : PagedListAdapter<Photo, PhotoViewHold
   override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
     val photo = getItem(position)!!
     val url = photo.url
+    val thumbnailRequest = GlideApp.with(context)
+        .load(photo.urls.thumb)
+        .transition(DrawableTransitionOptions.withCrossFade())
     Glide.with(context)
         .load(url)
+        .thumbnail(thumbnailRequest)
         .transition(DrawableTransitionOptions.withCrossFade())
         .into(holder.photo)
 
