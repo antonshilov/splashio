@@ -1,6 +1,6 @@
 object Versions {
   const val kotlin = "1.2.50"
-  val android_plugin = "3.2.0-alpha18"
+  val android_plugin = "3.2.0-beta01"
   val versions_plugin = "0.20.0"
   val support = "28.0.0-alpha3"
   val constraint_layout = "1.1.1"
@@ -17,6 +17,7 @@ object Versions {
   val test_runner = "1.0.2"
   val espresso = "3.0.2"
   val koin = "0.9.3"
+  val permissions_dispatcher = "3.2.0"
   val work = "1.0.0-alpha03"
 
 }
@@ -65,6 +66,9 @@ object Deps {
   val navigation_testing_ktx = "android.arch.navigation:navigation-testing-ktx:${Versions.navigation}"
 
   val koin_arch = "org.koin:koin-android-architecture:${Versions.koin}"
+
+  val permissions_dispatcher = "com.github.hotchemi:permissionsdispatcher:${Versions.permissions_dispatcher}"
+  val permissions_dispatcher_processor = "com.github.hotchemi:permissionsdispatcher-processor:${Versions.permissions_dispatcher}"
 
   val junit = "junit:junit:${Versions.junit}"
   val test_runner = "com.android.support.test:runner:${Versions.test_runner}"

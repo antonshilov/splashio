@@ -1,7 +1,11 @@
 package io.github.antonshilov.splashio.api
 
 import android.app.WallpaperManager
+import android.content.ContentValues
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.provider.MediaStore
 import android.support.v4.app.NotificationCompat
 import android.support.v4.app.NotificationManagerCompat
 import androidx.work.*
@@ -44,8 +48,11 @@ class ImageDownloadWorker : Worker() {
       val response = client.newCall(request).execute()!!
       if (response.isSuccessful) {
         Timber.d("Load Success")
-        // TODO use external intent so set a wallpaper
-        WallpaperManager.getInstance(applicationContext).setStream(response.body()!!.byteStream())
+
+        val wallpaperFile = saveToInternalStorage(response)
+        val uri = applicationContext.getImageContentUri(wallpaperFile.absolutePath)
+        applicationContext.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri))
+        sendSetWallpaperIntent(uri!!)
         Timber.d("Image is successfully set as wallpaper")
       }
     } catch (e: IOException) {
@@ -63,19 +70,61 @@ class ImageDownloadWorker : Worker() {
    * Saves image from the [response] to the internal storage
    * @param response response to the image download request
    */
-  private fun saveToInternalStorage(response: Response) {
+  private fun saveToInternalStorage(response: Response): File {
     // https://stackoverflow.com/a/35381424/4998244
-    val file = File(applicationContext.filesDir, "testImage.jpg")
+    val file = getPrivateAlbumStorageDir(applicationContext)
     Timber.d("%s file created", file.absolutePath)
     val sink = Okio.buffer(Okio.sink(file))
     sink.writeAll(response.body()!!.source())
     Timber.d("File saved")
     sink.close()
     response.body()!!.close()
-//    val intent = Intent(Intent.ACTION_ATTACH_DATA)
-//    intent.setDataAndType(file.toUri(), "image/*")
-//    intent.putExtra("jpg", "image/*")
-//    applicationContext.startActivity(Intent.createChooser(intent, "Set wallpaper"))
+    return file
+  }
+
+  fun Context.getImageContentUri(absPath: String): Uri? {
+    val cursor = contentResolver.query(
+        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, arrayOf(MediaStore.Images.Media._ID), MediaStore.Images.Media.DATA + "=? ", arrayOf(absPath), null)
+
+    if (cursor != null && cursor.moveToFirst()) {
+      val id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID))
+      return Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, Integer.toString(id))
+
+    } else if (!absPath.isEmpty()) {
+      val values = ContentValues()
+      values.put(MediaStore.Images.Media.DATA, absPath)
+      return contentResolver.insert(
+          MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+    } else {
+      return null
+    }
+  }
+
+  private fun sendSetWallpaperIntent(wallpaperUri: Uri) {
+    try {
+      Timber.d("Crop and Set:$wallpaperUri")
+      val wallpaperIntent = WallpaperManager.getInstance(applicationContext).getCropAndSetWallpaperIntent(wallpaperUri)
+      wallpaperIntent.setDataAndType(wallpaperUri, "image/*")
+      wallpaperIntent.putExtra("mimeType", "image/*")
+      applicationContext.startActivity(wallpaperIntent)
+    } catch (e: Exception) {
+      Timber.e(e)
+      Timber.d("Chooser: $wallpaperUri")
+      val wallpaperIntent = Intent(Intent.ACTION_ATTACH_DATA)
+      wallpaperIntent.setDataAndType(wallpaperUri, "image/*")
+      wallpaperIntent.putExtra("mimeType", "image/*")
+      wallpaperIntent.addCategory(Intent.CATEGORY_DEFAULT)
+      wallpaperIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+      wallpaperIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+      wallpaperIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+      applicationContext.startActivity(Intent.createChooser(wallpaperIntent, "Set wallpaper"))
+    }
+
+  }
+
+  private fun getPrivateAlbumStorageDir(context: Context): File {
+    // Get the directory for the app's private pictures directory.
+    return File(context.getExternalFilesDir("pictures"), "testImage.jpg")
   }
 
   companion object {
@@ -87,7 +136,7 @@ class ImageDownloadWorker : Worker() {
      */
     fun bundleInput(photo: Photo): Data {
       return Data.Builder()
-          .putString(PHOTO_URL, photo.urls.raw)
+          .putString(PHOTO_URL, photo.urls.full)
           .build()
     }
 

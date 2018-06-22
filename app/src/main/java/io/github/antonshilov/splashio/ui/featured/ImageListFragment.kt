@@ -85,22 +85,23 @@ class ImageListFragment : Fragment() {
     errorText.setVisibility(networkState?.status == Status.FAILED)
   }
 
-  /**
-   * Changes view visibility
-   * @param isVisible true==VISIBLE false==GONE
-   */
-  private fun View.setVisibility(isVisible: Boolean) {
-    this.visibility = if (isVisible) {
-      View.VISIBLE
-    } else {
-      View.GONE
-    }
-  }
-
 
   private fun navigateToFullscreen(img: Photo) {
     navigationController.navigate(R.id.action_imageListFragment_to_fullscreenImageFragment,
         FullscreenImageFragment.bundleArgs(img))
   }
 
+}
+
+
+/**
+ * Changes view visibility
+ * @param isVisible true==VISIBLE false==GONE
+ */
+fun View.setVisibility(isVisible: Boolean) {
+  this.visibility = if (isVisible) {
+    View.VISIBLE
+  } else {
+    View.GONE
+  }
 }

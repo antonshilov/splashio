@@ -1,6 +1,7 @@
 package io.github.antonshilov.splashio.ui.fullscreen
 
 
+import android.Manifest
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
@@ -24,8 +25,12 @@ import io.github.antonshilov.splashio.GlideApp
 import io.github.antonshilov.splashio.R
 import io.github.antonshilov.splashio.api.model.Photo
 import io.github.antonshilov.splashio.ui.MainActivity
+import io.github.antonshilov.splashio.ui.featured.setVisibility
 import kotlinx.android.synthetic.main.fragment_fullscreen_image.*
 import org.koin.android.architecture.ext.viewModel
+import permissions.dispatcher.NeedsPermission
+import permissions.dispatcher.RuntimePermissions
+import timber.log.Timber
 
 
 private const val ARG_PHOTO = "photo"
@@ -36,6 +41,7 @@ private const val ARG_PHOTO = "photo"
  * Pinch to zoom gestures
  * Hide/display controls on image tap
  */
+@RuntimePermissions
 class FullscreenImageFragment : Fragment() {
   private val vm by viewModel<FullscreenImageViewModel>()
   private lateinit var photo: Photo
@@ -116,14 +122,28 @@ class FullscreenImageFragment : Fragment() {
       findNavController().navigateUp()
     }
     photoView.setOnPhotoTapListener { _, _, _ ->
-      fullScreen(!isImmersiveModeEnabled())
+      fullScreen(isImmersiveModeEnabled())
     }
     buttonWallpaper.setOnClickListener {
-      vm.setWallpaper(photo)
+      setWallpaperWithPermissionCheck()
     }
     activity.setSupportActionBar(toolbar)
     toolbar.title = null
 
+  }
+
+  override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    onRequestPermissionsResult(requestCode, grantResults)
+  }
+
+  /**
+   * Call view model to set a wallpaper
+   * annotated to generated checked permissions method
+   */
+  @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
+  fun setWallpaper() {
+    vm.setWallpaper(photo)
   }
 
   override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -144,22 +164,17 @@ class FullscreenImageFragment : Fragment() {
     }
   }
 
+  /**
+   * Hide/show all UI components except the image to give the user some space :)
+   */
   private fun fullScreen(isEnabled: Boolean) {
-    toolbar.switchVisibility(isEnabled)
-    bottomContainer.switchVisibility(isEnabled)
-//    activity.fullSreen(isEnabled)
+    Timber.d("Fullscreen toggle: $isEnabled")
+    TransitionManager.beginDelayedTransition(frameLayout)
+    toolbar.setVisibility(isEnabled)
+    bottomContainer.setVisibility(isEnabled)
   }
 
-  fun ViewGroup.switchVisibility(isEnabled: Boolean) {
-    TransitionManager.beginDelayedTransition(this)
-    this.visibility = if (isEnabled) View.INVISIBLE else View.VISIBLE
-  }
-
-  private fun isImmersiveModeEnabled(): Boolean {
-//    val uiOptions = activity.getWindow().getDecorView().getSystemUiVisibility()
-//    return uiOptions or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY == uiOptions
-    return !toolbar.isVisible
-  }
+  private fun isImmersiveModeEnabled(): Boolean = !toolbar.isVisible
 
   override fun onDestroyView() {
     super.onDestroyView()

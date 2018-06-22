@@ -51,6 +51,8 @@ data class Photo(
 ) : Parcelable {
   val url: String
     get() = urls.small
+  val name: String
+    get() = "${user.username}_${id}_splashio"
 
   constructor(parcel: Parcel) : this(
     parcel.readString(),
