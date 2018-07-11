@@ -2,20 +2,19 @@ package io.github.antonshilov.splashio.ui.fullscreen
 
 
 import android.Manifest
-import android.arch.lifecycle.Observer
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.transition.TransitionManager
-import android.support.v4.app.Fragment
-import android.support.v4.view.WindowInsetsCompat
+import android.support.v4.view.ViewCompat
 import android.support.v4.widget.CircularProgressDrawable
-import android.view.*
+import android.support.v7.app.AppCompatActivity
+import android.view.Menu
+import android.view.MenuItem
+import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
-import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -24,9 +23,8 @@ import com.bumptech.glide.request.target.Target
 import io.github.antonshilov.splashio.GlideApp
 import io.github.antonshilov.splashio.R
 import io.github.antonshilov.splashio.api.model.Photo
-import io.github.antonshilov.splashio.ui.MainActivity
 import io.github.antonshilov.splashio.ui.featured.setVisibility
-import kotlinx.android.synthetic.main.fragment_fullscreen_image.*
+import kotlinx.android.synthetic.main.activity_fullscreen_image.*
 import org.koin.android.architecture.ext.viewModel
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.RuntimePermissions
@@ -42,37 +40,27 @@ private const val ARG_PHOTO = "photo"
  * Hide/display controls on image tap
  */
 @RuntimePermissions
-class FullscreenImageFragment : Fragment() {
+class FullscreenImageActivity : AppCompatActivity() {
   private val vm by viewModel<FullscreenImageViewModel>()
   private lateinit var photo: Photo
-  private lateinit var activity: MainActivity
   private lateinit var progressIndicator: CircularProgressDrawable
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    arguments?.let {
-      photo = it.getParcelable(ARG_PHOTO)
-    }
-
-    setHasOptionsMenu(true)
-    initProgressIndicator()
+    setContentView(R.layout.activity_fullscreen_image)
+    intent.extras.getString("prived")
+    photo = intent.extras.getParcelable(ARG_PHOTO)
   }
 
   /**
    * Initializes [progressIndicator] property with large size and white color.
    */
   private fun initProgressIndicator() {
-    progressIndicator = CircularProgressDrawable(context!!).apply {
+    progressIndicator = CircularProgressDrawable(this).apply {
       setStyle(CircularProgressDrawable.LARGE)
       setColorSchemeColors(Color.WHITE)
       start()
     }
-  }
-
-  override fun onAttach(context: Context?) {
-    super.onAttach(context)
-    activity = this.getActivity() as MainActivity
-
   }
 
   override fun onStart() {
@@ -100,14 +88,13 @@ class FullscreenImageFragment : Fragment() {
           })
           .into(photoView)
     }
-    userName.text = photo.user.name
+    userName.text = photo.user?.name
     GlideApp.with(this)
-        .load(photo.user.profileImage.medium)
+        .load(photo.user?.profileImage?.medium)
         .circleCrop()
         .into(avatar)
 
-    activity.statusBarHeight.observe(this, Observer<WindowInsetsCompat> { insets ->
-      //      TODO: handle insets in horizontal orientation
+    ViewCompat.setOnApplyWindowInsetsListener(root) { _, insets ->
       val lpToolbar = toolbar
           .layoutParams as ViewGroup.MarginLayoutParams
       lpToolbar.topMargin = insets!!.systemWindowInsetTop
@@ -116,10 +103,10 @@ class FullscreenImageFragment : Fragment() {
           .layoutParams as ViewGroup.MarginLayoutParams
       lpBottom.bottomMargin = insets.systemWindowInsetBottom
       bottomContainer.layoutParams = lpBottom
-
-    })
+      insets.consumeSystemWindowInsets()
+    }
     toolbar.setNavigationOnClickListener {
-      findNavController().navigateUp()
+      onBackPressed()
     }
     photoView.setOnPhotoTapListener { _, _, _ ->
       fullScreen(isImmersiveModeEnabled())
@@ -127,7 +114,7 @@ class FullscreenImageFragment : Fragment() {
     buttonWallpaper.setOnClickListener {
       setWallpaperWithPermissionCheck()
     }
-    activity.setSupportActionBar(toolbar)
+    this.setSupportActionBar(toolbar)
     toolbar.title = null
 
   }
@@ -146,9 +133,9 @@ class FullscreenImageFragment : Fragment() {
     vm.setWallpaper(photo)
   }
 
-  override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-    super.onCreateOptionsMenu(menu, inflater)
-    inflater?.inflate(R.menu.menu_fullscreen_image, menu)
+  override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    menuInflater?.inflate(R.menu.menu_fullscreen_image, menu)
+    return true
   }
 
   override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -156,7 +143,7 @@ class FullscreenImageFragment : Fragment() {
       R.id.action_share -> {
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.type = "text/plain"
-        shareIntent.putExtra(Intent.EXTRA_TEXT, photo.links.html)
+        shareIntent.putExtra(Intent.EXTRA_TEXT, photo.links?.html)
         startActivity(Intent.createChooser(shareIntent, "Share photo using"))
         true
       }
@@ -169,26 +156,20 @@ class FullscreenImageFragment : Fragment() {
    */
   private fun fullScreen(isEnabled: Boolean) {
     Timber.d("Fullscreen toggle: $isEnabled")
-    TransitionManager.beginDelayedTransition(frameLayout)
+    TransitionManager.beginDelayedTransition(root)
     toolbar.setVisibility(isEnabled)
     bottomContainer.setVisibility(isEnabled)
   }
 
   private fun isImmersiveModeEnabled(): Boolean = !toolbar.isVisible
 
-  override fun onDestroyView() {
-    super.onDestroyView()
+  override fun onDestroy() {
+    super.onDestroy()
     if (isImmersiveModeEnabled()) fullScreen(false)
-  }
-
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                            savedInstanceState: Bundle?): View {
-    // Inflate the layout for this fragment
-    return inflater.inflate(R.layout.fragment_fullscreen_image, container, false)
   }
 
   companion object {
     @JvmStatic
-    fun bundleArgs(photo: Photo) = bundleOf(ARG_PHOTO to photo)
+    fun bundleArgs(photo: Photo) = bundleOf(ARG_PHOTO to photo, "prived" to "PRECED")
   }
 }

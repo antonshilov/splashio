@@ -5,8 +5,8 @@
                                              android:layout_width="match_parent"
                                              android:layout_height="match_parent"
                                              android:background="@color/fullscreenBackground"
-                                             tools:context=".ui.fullscreen.FullscreenImageFragment"
-                                             android:id="@+id/frameLayout">
+                                             tools:context=".ui.fullscreen.FullscreenImageActivity"
+                                             android:id="@+id/root">
 
   <com.github.chrisbanes.photoview.PhotoView
     android:id="@+id/photoView"

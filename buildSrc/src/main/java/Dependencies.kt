@@ -1,6 +1,6 @@
 object Versions {
-  const val kotlin = "1.2.50"
-  val android_plugin = "3.2.0-beta01"
+  const val kotlin = "1.2.51"
+  val android_plugin = "3.2.0-beta03"
   val versions_plugin = "0.20.0"
   val support = "28.0.0-alpha3"
   val constraint_layout = "1.1.1"

@@ -13,7 +13,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import io.github.antonshilov.splashio.R
 import io.github.antonshilov.splashio.api.model.Photo
-import io.github.antonshilov.splashio.ui.fullscreen.FullscreenImageFragment
+import io.github.antonshilov.splashio.ui.fullscreen.FullscreenImageActivity
 import org.koin.android.architecture.ext.viewModel
 import timber.log.Timber
 
@@ -22,7 +22,7 @@ import timber.log.Timber
  * [ImageListFragment]
  *
  * displays a grid of the curated images
- * navigates to the [FullscreenImageFragment] on click on the image item
+ * navigates to the [FullscreenImageActivity] on click on the image item
  */
 class ImageListFragment : Fragment() {
   private val vm by viewModel<PhotoListViewModel>()
@@ -87,8 +87,8 @@ class ImageListFragment : Fragment() {
 
 
   private fun navigateToFullscreen(img: Photo) {
-    navigationController.navigate(R.id.action_imageListFragment_to_fullscreenImageFragment,
-        FullscreenImageFragment.bundleArgs(img))
+    navigationController.navigate(R.id.action_imageListFragment_to_fullscreenImageActivity,
+        FullscreenImageActivity.bundleArgs(img))
   }
 
 }

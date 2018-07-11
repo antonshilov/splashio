@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@id/imageListFragment">
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            app:startDestination="@id/imageListFragment">
 
-    <fragment
-        android:id="@+id/imageListFragment"
-      android:name="io.github.antonshilov.splashio.ui.featured.ImageListFragment"
-        android:label="fragment_image_list"
-        tools:layout="@layout/fragment_image_list">
-        <action
-            android:id="@+id/action_imageListFragment_to_fullscreenImageFragment"
-            app:destination="@id/fullscreenImageFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
-    </fragment>
-    <fragment
-        android:id="@+id/fullscreenImageFragment"
-      android:name="io.github.antonshilov.splashio.ui.fullscreen.FullscreenImageFragment"
-        android:label="fragment_fullscreen_image"
-        tools:layout="@layout/fragment_fullscreen_image" />
+  <fragment
+    android:id="@+id/imageListFragment"
+    android:name="io.github.antonshilov.splashio.ui.featured.ImageListFragment"
+    android:label="fragment_image_list"
+    tools:layout="@layout/fragment_image_list">
+    <action
+      android:id="@+id/action_imageListFragment_to_fullscreenImageActivity"
+      app:destination="@id/fullscreenImageActivity"
+      app:enterAnim="@anim/nav_default_enter_anim"
+      app:exitAnim="@anim/nav_default_exit_anim"/>
+  </fragment>
+  <activity android:id="@+id/fullscreenImageActivity"
+            android:name="io.github.antonshilov.splashio.ui.fullscreen.FullscreenImageActivity"
+            android:label="activity_fullscreen_image" tools:layout="@layout/activity_fullscreen_image">
+  </activity>
 </navigation>

@@ -50,6 +50,7 @@ class ImageDownloadWorker : Worker() {
         Timber.d("Load Success")
 
         val wallpaperFile = saveToInternalStorage(response)
+        //todo fix android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: files._data (code 2067)
         val uri = applicationContext.getImageContentUri(wallpaperFile.absolutePath)
         applicationContext.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri))
         sendSetWallpaperIntent(uri!!)
@@ -160,7 +161,7 @@ class ImageDownloadWorker : Worker() {
    */
   internal class ImageDownloadNotificationManager(val context: Context) {
 
-    private val notification = NotificationCompat.Builder(context)
+    private val notification = NotificationCompat.Builder(context, "randomId")
         .setSmallIcon(android.R.drawable.stat_sys_download)
         .setProgress(0, 0, true)
         .setContentTitle(context.getString(R.string.notification_set_wallpaper_progress))
