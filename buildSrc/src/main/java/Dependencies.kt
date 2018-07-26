@@ -1,6 +1,6 @@
 object Versions {
   const val kotlin = "1.2.51"
-  val android_plugin = "3.2.0-beta03"
+  val android_plugin = "3.3.0-alpha03"
   val versions_plugin = "0.20.0"
   val support = "28.0.0-alpha3"
   val constraint_layout = "1.1.1"
@@ -16,9 +16,11 @@ object Versions {
   val junit = "4.12"
   val test_runner = "1.0.2"
   val espresso = "3.0.2"
+  val mockito = "2.0.0-RC1"
   val koin = "0.9.3"
   val permissions_dispatcher = "3.2.0"
   val work = "1.0.0-alpha03"
+  val rxkotlin = "2.2.0"
 
 }
 
@@ -67,11 +69,16 @@ object Deps {
 
   val koin_arch = "org.koin:koin-android-architecture:${Versions.koin}"
 
+  val rxkotlin = "io.reactivex.rxjava2:rxkotlin:${Versions.rxkotlin}"
+
+
   val permissions_dispatcher = "com.github.hotchemi:permissionsdispatcher:${Versions.permissions_dispatcher}"
   val permissions_dispatcher_processor = "com.github.hotchemi:permissionsdispatcher-processor:${Versions.permissions_dispatcher}"
 
   val junit = "junit:junit:${Versions.junit}"
   val test_runner = "com.android.support.test:runner:${Versions.test_runner}"
   val espresso = "com.android.support.test.espresso:espresso-core:${Versions.espresso}"
+  val mockito = "com.nhaarman.mockitokotlin2:mockito-kotlin:${Versions.mockito}"
+
 
 }
