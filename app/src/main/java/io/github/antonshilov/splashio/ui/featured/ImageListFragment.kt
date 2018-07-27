@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import io.github.antonshilov.splashio.R
 import io.github.antonshilov.splashio.api.model.Photo
@@ -27,7 +26,6 @@ import timber.log.Timber
 class ImageListFragment : Fragment() {
   private val vm by viewModel<PhotoListViewModel>()
 
-  private lateinit var navigationController: NavController
   private lateinit var adapter: PhotoAdapter
   private lateinit var imageGrid: RecyclerView
   private lateinit var progressBar: ProgressBar
@@ -35,7 +33,6 @@ class ImageListFragment : Fragment() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    navigationController = findNavController()
   }
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -87,7 +84,7 @@ class ImageListFragment : Fragment() {
 
 
   private fun navigateToFullscreen(img: Photo) {
-    navigationController.navigate(R.id.action_imageListFragment_to_fullscreenImageActivity,
+    findNavController().navigate(R.id.action_imageListFragment_to_fullscreenImageActivity,
         FullscreenImageActivity.bundleArgs(img))
   }
 

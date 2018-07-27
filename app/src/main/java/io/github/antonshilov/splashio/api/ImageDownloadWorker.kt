@@ -1,10 +1,14 @@
 package io.github.antonshilov.splashio.api
 
+import android.annotation.TargetApi
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.WallpaperManager
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.provider.MediaStore
 import android.support.v4.app.NotificationCompat
 import android.support.v4.app.NotificationManagerCompat
@@ -36,13 +40,14 @@ class ImageDownloadWorker : Worker() {
    */
   override fun doWork(): Result {
     // input data parsing and validation
-    val photoUrl = inputData.getString(PHOTO_URL, "")
-    if (photoUrl.isBlank()) return Result.FAILURE
+    val photoUrl = inputData.getString(PHOTO_URL)
+    if (photoUrl.isNullOrBlank()) return Result.FAILURE
 
     notificationManager.start()
+    @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
     val request = Request.Builder()
-        .url(photoUrl)
-        .build()
+      .url(photoUrl)
+      .build()
     try {
       Timber.d("Execute Load Image")
       val response = client.newCall(request).execute()!!
@@ -85,7 +90,7 @@ class ImageDownloadWorker : Worker() {
 
   fun Context.getImageContentUri(absPath: String): Uri? {
     val cursor = contentResolver.query(
-        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, arrayOf(MediaStore.Images.Media._ID), MediaStore.Images.Media.DATA + "=? ", arrayOf(absPath), null)
+      MediaStore.Images.Media.EXTERNAL_CONTENT_URI, arrayOf(MediaStore.Images.Media._ID), MediaStore.Images.Media.DATA + "=? ", arrayOf(absPath), null)
 
     if (cursor != null && cursor.moveToFirst()) {
       val id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID))
@@ -95,7 +100,7 @@ class ImageDownloadWorker : Worker() {
       val values = ContentValues()
       values.put(MediaStore.Images.Media.DATA, absPath)
       return contentResolver.insert(
-          MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
     } else {
       return null
     }
@@ -137,8 +142,8 @@ class ImageDownloadWorker : Worker() {
      */
     fun bundleInput(photo: Photo): Data {
       return Data.Builder()
-          .putString(PHOTO_URL, photo.urls.full)
-          .build()
+        .putString(PHOTO_URL, photo.urls.full)
+        .build()
     }
 
     /**
@@ -146,13 +151,13 @@ class ImageDownloadWorker : Worker() {
      */
     fun createWork(photo: Photo): OneTimeWorkRequest {
       val constraints = Constraints.Builder()
-          .setRequiredNetworkType(NetworkType.CONNECTED)
-          .build()
+        .setRequiredNetworkType(NetworkType.CONNECTED)
+        .build()
       val data = bundleInput(photo)
       return OneTimeWorkRequestBuilder<ImageDownloadWorker>()
-          .setInputData(data)
-          .setConstraints(constraints)
-          .build()
+        .setInputData(data)
+        .setConstraints(constraints)
+        .build()
     }
   }
 
@@ -161,13 +166,34 @@ class ImageDownloadWorker : Worker() {
    */
   internal class ImageDownloadNotificationManager(val context: Context) {
 
-    private val notification = NotificationCompat.Builder(context, "randomId")
-        .setSmallIcon(android.R.drawable.stat_sys_download)
-        .setProgress(0, 0, true)
-        .setContentTitle(context.getString(R.string.notification_set_wallpaper_progress))
-        .build()
+    private val CHANNEL_ID = "downloadStatus"
+
+    private val notification = NotificationCompat.Builder(context, CHANNEL_ID)
+      .setSmallIcon(android.R.drawable.stat_sys_download)
+      .setProgress(0, 0, true)
+      .setContentTitle(context.getString(R.string.notification_set_wallpaper_progress))
+      .build()
 
     private val notificationManager = NotificationManagerCompat.from(context)
+
+    init {
+      createNotificationChannel()
+    }
+
+    /**
+     * Initialize the [NotificationChannel] for the Oreo and higher to publish download notifications
+     */
+    @TargetApi(Build.VERSION_CODES.O)
+    private fun createNotificationChannel() {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val channel = NotificationChannel(CHANNEL_ID, context.getString(R.string.download_channel_name),
+          NotificationManager.IMPORTANCE_LOW)
+        channel.description = context.getString(R.string.download_channel_description)
+        val oreoNotificationManager = context.getSystemService(NotificationManager::class.java)
+        oreoNotificationManager.createNotificationChannel(channel)
+      }
+    }
+
     /**
      * Displays a indeterminate progress notification with animated download icon
      */
