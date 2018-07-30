@@ -25,7 +25,7 @@ import io.github.antonshilov.splashio.R
 import io.github.antonshilov.splashio.api.model.Photo
 import io.github.antonshilov.splashio.ui.featured.setVisibility
 import kotlinx.android.synthetic.main.activity_fullscreen_image.*
-import org.koin.android.architecture.ext.viewModel
+import org.koin.android.architecture.ext.android.viewModel
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.RuntimePermissions
 import timber.log.Timber
@@ -50,6 +50,8 @@ class FullscreenImageActivity : AppCompatActivity() {
     setContentView(R.layout.activity_fullscreen_image)
     intent.extras.getString("prived")
     photo = intent.extras.getParcelable(ARG_PHOTO)
+    initProgressIndicator()
+    progress.setImageDrawable(progressIndicator)
   }
 
   /**
@@ -57,7 +59,7 @@ class FullscreenImageActivity : AppCompatActivity() {
    */
   private fun initProgressIndicator() {
     progressIndicator = CircularProgressDrawable(this).apply {
-      setStyle(CircularProgressDrawable.LARGE)
+      setStyle(CircularProgressDrawable.DEFAULT)
       setColorSchemeColors(Color.WHITE)
       start()
     }
@@ -65,42 +67,44 @@ class FullscreenImageActivity : AppCompatActivity() {
 
   override fun onStart() {
     super.onStart()
-    photo.let {
-      photoView.isEnabled = false
-      val thumbnailRequest = GlideApp.with(this)
-          .load(photo.url)
 
-      GlideApp.with(this)
-          .load(it.urls.full)
-          .thumbnail(thumbnailRequest)
-          .transition(DrawableTransitionOptions.withCrossFade())
-          .listener(object : RequestListener<Drawable> {
-            override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
-              photoView.isEnabled = true
-              return false
-            }
+    photoView.isEnabled = false
+    val thumbnailRequest = GlideApp.with(this)
+      .load(photo.url)
 
-            override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-              photoView.isEnabled = true
-              return false
-            }
+    GlideApp.with(this)
+      .load(photo.urls.full)
+      .thumbnail(thumbnailRequest)
+      .transition(DrawableTransitionOptions.withCrossFade())
+      .listener(object : RequestListener<Drawable> {
+        override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+          photoView.isEnabled = true
+          progressIndicator.stop()
+          return false
+        }
 
-          })
-          .into(photoView)
-    }
+        override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+          photoView.isEnabled = true
+          progressIndicator.stop()
+          return false
+        }
+
+      })
+      .into(photoView)
+
     userName.text = photo.user?.name
     GlideApp.with(this)
-        .load(photo.user?.profileImage?.medium)
-        .circleCrop()
-        .into(avatar)
+      .load(photo.user?.profileImage?.medium)
+      .circleCrop()
+      .into(avatar)
 
     ViewCompat.setOnApplyWindowInsetsListener(root) { _, insets ->
       val lpToolbar = toolbar
-          .layoutParams as ViewGroup.MarginLayoutParams
+        .layoutParams as ViewGroup.MarginLayoutParams
       lpToolbar.topMargin = insets!!.systemWindowInsetTop
       toolbar.layoutParams = lpToolbar
       val lpBottom = bottomContainer
-          .layoutParams as ViewGroup.MarginLayoutParams
+        .layoutParams as ViewGroup.MarginLayoutParams
       lpBottom.bottomMargin = insets.systemWindowInsetBottom
       bottomContainer.layoutParams = lpBottom
       insets.consumeSystemWindowInsets()

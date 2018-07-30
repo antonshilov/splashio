@@ -7,11 +7,11 @@ import io.github.antonshilov.splashio.ui.featured.PhotoListViewModel
 import io.github.antonshilov.splashio.ui.fullscreen.FullscreenImageViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.koin.android.architecture.ext.viewModel
+import org.koin.android.architecture.ext.koin.viewModel
 import org.koin.dsl.module.Module
-import org.koin.dsl.module.applicationContext
+import org.koin.dsl.module.module
 
-val appModule: Module = applicationContext {
+val appModule: Module = module {
   viewModel { PhotoListViewModel(get()) }
   viewModel { FullscreenImageViewModel() }
 

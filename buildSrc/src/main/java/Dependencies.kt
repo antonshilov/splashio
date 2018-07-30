@@ -18,7 +18,7 @@ object Versions {
   val espresso = "3.0.2"
   val mockito = "2.0.0-alpha03"
   val koin = "1.0.0-alpha-12"
-  val permissions_dispatcher = "4.0.0-alpha1"
+  val permissions_dispatcher = "3.2.0"
   val work = "1.0.0-alpha05"
   val rxkotlin = "2.2.0"
 
@@ -45,7 +45,6 @@ object Deps {
   val paging = "android.arch.paging:runtime:${Versions.paging}"
 
   val glide = "com.github.bumptech.glide:glide:${Versions.glide}"
-  val glide_recyclerview = "com.github.bumptech.glide:recyclerview-integration:${Versions.glide}"
   val glide_compiler = "com.github.bumptech.glide:compiler:${Versions.glide}"
 
   val timber = "com.jakewharton.timber:timber:${Versions.timber}"
@@ -53,6 +52,7 @@ object Deps {
   val photo_view = "com.github.chrisbanes:PhotoView:${Versions.photo_view}"
 
   val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
+  val rxCallAdapter = "com.squareup.retrofit2:adapter-rxjava2:${Versions.retrofit}"
   val gson_converter = "com.squareup.retrofit2:converter-gson:${Versions.retrofit}"
   val okhttp = "com.squareup.okhttp3:okhttp:${Versions.okhttp}"
   val logging_interceptor = "com.squareup.okhttp3:logging-interceptor:${Versions.okhttp}"
@@ -79,6 +79,7 @@ object Deps {
   val junit = "junit:junit:${Versions.junit}"
   val test_runner = "com.android.support.test:runner:${Versions.test_runner}"
   val espresso = "com.android.support.test.espresso:espresso-core:${Versions.espresso}"
+  val mockWebServer = "com.squareup.okhttp3:mockwebserver:${Versions.okhttp}"
   val mockito = "com.nhaarman.mockitokotlin2:mockito-kotlin:${Versions.mockito}"
 
 

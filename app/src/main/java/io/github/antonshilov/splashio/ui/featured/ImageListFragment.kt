@@ -13,7 +13,7 @@ import androidx.navigation.fragment.findNavController
 import io.github.antonshilov.splashio.R
 import io.github.antonshilov.splashio.api.model.Photo
 import io.github.antonshilov.splashio.ui.fullscreen.FullscreenImageActivity
-import org.koin.android.architecture.ext.viewModel
+import org.koin.android.architecture.ext.android.viewModel
 import timber.log.Timber
 
 
