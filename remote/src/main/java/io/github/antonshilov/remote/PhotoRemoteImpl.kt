@@ -9,7 +9,7 @@ import io.reactivex.Observable
 /**
  * The implementation of [PhotoRepo] that calls remote [UnsplashApi] to retrieve the data.
  */
-class PhotoRemoteImpl(private val unsplashApi: UnsplashApi, private val entityMapper: PhotoEntityMapper) : PhotoRepo {
+open class PhotoRemoteImpl(private val unsplashApi: UnsplashApi, private val entityMapper: PhotoEntityMapper) : PhotoRepo {
   override fun getLatestPhotos(): Observable<List<Photo>> {
     return unsplashApi.getLatestPhotos()
       .map {

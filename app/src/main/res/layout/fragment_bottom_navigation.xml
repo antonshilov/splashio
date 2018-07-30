@@ -7,7 +7,10 @@
   <FrameLayout
     android:id="@+id/container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"/>
+    android:layout_height="match_parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+  />
 
   <android.support.design.widget.BottomNavigationView
     android:id="@+id/navigationView"

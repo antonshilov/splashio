@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/root"
@@ -17,7 +18,7 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    tools:src="@tools:sample/backgrounds/scenic" />
+    tools:src="@tools:sample/backgrounds/scenic"/>
 
   <ImageView
     android:id="@+id/avatar"
@@ -28,7 +29,7 @@
     app:layout_constraintBottom_toBottomOf="@+id/photoView"
     app:layout_constraintStart_toStartOf="parent"
     tools:ignore="ContentDescription"
-    tools:src="@tools:sample/avatars" />
+    tools:src="@tools:sample/avatars"/>
 
   <TextView
     android:id="@+id/userName"
@@ -39,7 +40,7 @@
     app:layout_constraintBottom_toBottomOf="@+id/avatar"
     app:layout_constraintStart_toEndOf="@+id/avatar"
     app:layout_constraintTop_toTopOf="@+id/avatar"
-    tools:text="@tools:sample/full_names" />
+    tools:text="@tools:sample/full_names"/>
 
   <android.support.design.widget.FloatingActionButton
     android:id="@+id/buttonWallpaper"
@@ -50,7 +51,7 @@
     android:src="@drawable/ic_wallpaper"
     app:fabSize="normal"
     app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent" />
+    app:layout_constraintEnd_toEndOf="parent"/>
 
   <android.support.v7.widget.Toolbar
     android:id="@+id/toolbar"
@@ -68,14 +69,16 @@
       android:layout_width="40dp"
       android:layout_height="40dp"
       android:layout_alignParentEnd="true"
-      android:layout_gravity="end" />
+      android:layout_gravity="end"/>
   </android.support.v7.widget.Toolbar>
 
   <android.support.constraint.Group
+    app:layout_constraintEnd_toEndOf="@id/root"
+    app:layout_constraintTop_toTopOf="@id/root"
     android:id="@+id/bottomContainer"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    app:constraint_referenced_ids="buttonWallpaper, avatar, userName" />
+    app:constraint_referenced_ids="buttonWallpaper, avatar, userName"/>
 
 
 </android.support.constraint.ConstraintLayout>

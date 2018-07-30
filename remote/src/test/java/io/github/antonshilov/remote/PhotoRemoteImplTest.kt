@@ -18,7 +18,7 @@ import org.junit.runners.JUnit4
 class PhotoRemoteImplTest {
   private val mapper = mock<PhotoEntityMapper>()
   private val api = mock<UnsplashApi>()
-  private val remote = mock<PhotoRemoteImpl>()
+  private val remote = PhotoRemoteImpl(api, mapper)
 
 
   @Test

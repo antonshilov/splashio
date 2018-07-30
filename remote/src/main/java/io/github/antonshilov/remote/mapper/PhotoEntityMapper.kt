@@ -6,7 +6,7 @@ import io.github.antonshilov.remote.model.PhotoModel
 /**
  * Mapper that maps [PhotoModel] from the data layer to the domain layer [Photo]
  */
-class PhotoEntityMapper : EntityMapper<PhotoModel, Photo> {
+open class PhotoEntityMapper : EntityMapper<PhotoModel, Photo> {
   override fun mapFromRemote(model: PhotoModel): Photo {
     return Photo(model.id, model.width, model.height)
   }
