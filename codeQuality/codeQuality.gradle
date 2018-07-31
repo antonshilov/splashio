@@ -28,13 +28,12 @@ codeQualityTools {
   }
   ktlint {
     enabled = true
-    String toolVersion = '0.26.0'
+    toolVersion = '0.26.0'
   }
   detekt {
     enabled = true
-    String toolVersion = '1.0.0.RC8'
-    String config = 'code_quality_tools/detekt.yml'
-    String baselineFileName = null
+    toolVersion = '1.0.0.RC8'
+    config = 'codeQuality/detekt.yml'
   }
   cpd {
     enabled = false
