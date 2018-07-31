@@ -10,19 +10,21 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
-import java.util.*
+import java.util.Random
+import java.util.UUID
 
 @RunWith(MockitoJUnitRunner::class)
 class GetPhotosTest {
   private lateinit var getPhotos: GetPhotos
-  @Mock private lateinit var repo: PhotoRepo
-  @Mock private lateinit var postExecutionThread: PostExecutionThread
+  @Mock
+  private lateinit var repo: PhotoRepo
+  @Mock
+  private lateinit var postExecutionThread: PostExecutionThread
 
   @Before
   fun setup() {
     getPhotos = GetPhotos(repo, postExecutionThread)
     stubRepo(Observable.just(PhotoDataFactory.createPhotoList(10)))
-
   }
 
   @Test
@@ -49,7 +51,6 @@ class GetPhotosTest {
     whenever(repo.getLatestPhotos())
       .thenReturn(observable)
   }
-
 }
 
 object PhotoDataFactory {

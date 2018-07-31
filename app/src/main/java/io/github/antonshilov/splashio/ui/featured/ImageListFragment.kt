@@ -16,7 +16,6 @@ import io.github.antonshilov.splashio.ui.fullscreen.FullscreenImageActivity
 import org.koin.android.architecture.ext.android.viewModel
 import timber.log.Timber
 
-
 /**
  * [ImageListFragment]
  *
@@ -35,8 +34,11 @@ class ImageListFragment : Fragment() {
     super.onCreate(savedInstanceState)
   }
 
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                            savedInstanceState: Bundle?): View? {
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View? {
     // Inflate the layout for this fragment
     val view = inflater.inflate(R.layout.fragment_image_list, container, false)
     imageGrid = view.findViewById(R.id.imageGrid)
@@ -72,7 +74,6 @@ class ImageListFragment : Fragment() {
     imageGrid.adapter = adapter
   }
 
-
   /**
    * Changes the view visibility based on the network state
    */
@@ -82,14 +83,11 @@ class ImageListFragment : Fragment() {
     errorText.setVisibility(networkState?.status == Status.FAILED)
   }
 
-
   private fun navigateToFullscreen(img: Photo) {
     findNavController().navigate(R.id.action_imageListFragment_to_fullscreenImageActivity,
         FullscreenImageActivity.bundleArgs(img))
   }
-
 }
-
 
 /**
  * Changes view visibility

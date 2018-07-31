@@ -12,7 +12,13 @@ import android.os.Build
 import android.provider.MediaStore
 import android.support.v4.app.NotificationCompat
 import android.support.v4.app.NotificationManagerCompat
-import androidx.work.*
+import androidx.work.Constraints
+import androidx.work.Data
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequest
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkRequest
+import androidx.work.Worker
 import io.github.antonshilov.splashio.R
 import io.github.antonshilov.splashio.api.ImageDownloadWorker.Companion.bundleInput
 import io.github.antonshilov.splashio.api.model.Photo
@@ -23,7 +29,6 @@ import okio.Okio
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
-
 
 /**
  * [ImageDownloadWorker] downloads a file from url passed to [bundleInput]
@@ -55,7 +60,7 @@ class ImageDownloadWorker : Worker() {
         Timber.d("Load Success")
 
         val wallpaperFile = saveToInternalStorage(response)
-        //todo fix android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: files._data (code 2067)
+        // todo fix android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: files._data (code 2067)
         val uri = applicationContext.getImageContentUri(wallpaperFile.absolutePath)
         applicationContext.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri))
         sendSetWallpaperIntent(uri!!)
@@ -69,7 +74,6 @@ class ImageDownloadWorker : Worker() {
 
     notificationManager.stop()
     return Result.SUCCESS
-
   }
 
   /**
@@ -90,17 +94,22 @@ class ImageDownloadWorker : Worker() {
 
   fun Context.getImageContentUri(absPath: String): Uri? {
     val cursor = contentResolver.query(
-      MediaStore.Images.Media.EXTERNAL_CONTENT_URI, arrayOf(MediaStore.Images.Media._ID), MediaStore.Images.Media.DATA + "=? ", arrayOf(absPath), null)
+      MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+      arrayOf(MediaStore.Images.Media._ID),
+      MediaStore.Images.Media.DATA + "=? ",
+      arrayOf(absPath),
+      null
+    )
 
     if (cursor != null && cursor.moveToFirst()) {
       val id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID))
       return Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, Integer.toString(id))
-
     } else if (!absPath.isEmpty()) {
       val values = ContentValues()
       values.put(MediaStore.Images.Media.DATA, absPath)
       return contentResolver.insert(
-        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values
+      )
     } else {
       return null
     }
@@ -125,7 +134,6 @@ class ImageDownloadWorker : Worker() {
       wallpaperIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
       applicationContext.startActivity(Intent.createChooser(wallpaperIntent, "Set wallpaper"))
     }
-
   }
 
   private fun getPrivateAlbumStorageDir(context: Context): File {
@@ -186,8 +194,10 @@ class ImageDownloadWorker : Worker() {
     @TargetApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel() {
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        val channel = NotificationChannel(CHANNEL_ID, context.getString(R.string.download_channel_name),
-          NotificationManager.IMPORTANCE_LOW)
+        val channel = NotificationChannel(
+          CHANNEL_ID, context.getString(R.string.download_channel_name),
+          NotificationManager.IMPORTANCE_LOW
+        )
         channel.description = context.getString(R.string.download_channel_description)
         val oreoNotificationManager = context.getSystemService(NotificationManager::class.java)
         oreoNotificationManager.createNotificationChannel(channel)

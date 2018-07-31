@@ -1,6 +1,6 @@
 package io.github.antonshilov.remote.factory
 
-import java.util.*
+import java.util.UUID
 import java.util.concurrent.ThreadLocalRandom
 
 object DataFactory {

@@ -1,6 +1,5 @@
 package io.github.antonshilov.splashio.ui.fullscreen
 
-
 import android.Manifest
 import android.content.Intent
 import android.graphics.Color
@@ -29,7 +28,6 @@ import org.koin.android.architecture.ext.android.viewModel
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.RuntimePermissions
 import timber.log.Timber
-
 
 private const val ARG_PHOTO = "photo"
 
@@ -88,7 +86,6 @@ class FullscreenImageActivity : AppCompatActivity() {
           progressIndicator.stop()
           return false
         }
-
       })
       .into(photoView)
 
@@ -120,7 +117,6 @@ class FullscreenImageActivity : AppCompatActivity() {
     }
     this.setSupportActionBar(toolbar)
     toolbar.title = null
-
   }
 
   override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

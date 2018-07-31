@@ -49,3 +49,8 @@ google-services.json
 freeline.py
 freeline/
 freeline_project_description.json
+!/.idea/codeStyles/
+!/.idea/codeStyles/Project.xml
+!/.idea/inspectionProfiles/
+!/.idea/inspectionProfiles/ktlint.xml
+!/.idea/inspectionProfiles/profiles_settings.xml

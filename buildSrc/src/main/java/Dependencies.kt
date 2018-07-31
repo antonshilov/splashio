@@ -2,6 +2,7 @@ object Versions {
   const val kotlin = "1.2.51"
   val android_plugin = "3.3.0-alpha03"
   val versions_plugin = "0.20.0"
+  val quality_tools_plugin = "0.12.0"
   val support = "28.0.0-alpha3"
   val constraint_layout = "1.1.1"
   val navigation = "1.0.0-alpha04"
@@ -21,13 +22,12 @@ object Versions {
   val permissions_dispatcher = "3.2.0"
   val work = "1.0.0-alpha05"
   val rxkotlin = "2.2.0"
-
 }
 
 object Deps {
   val android_plugin = "com.android.tools.build:gradle:${Versions.android_plugin}"
   val versions_plugin = "com.github.ben-manes:gradle-versions-plugin:${Versions.versions_plugin}"
-
+  val quality_tools_plugin = "com.vanniktech:gradle-code-quality-tools-plugin:${Versions.quality_tools_plugin}"
 
   val kotlin_stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}"
   val kotlin_plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
@@ -72,15 +72,13 @@ object Deps {
 
   val rxkotlin = "io.reactivex.rxjava2:rxkotlin:${Versions.rxkotlin}"
 
-
   val permissions_dispatcher = "com.github.hotchemi:permissionsdispatcher:${Versions.permissions_dispatcher}"
-  val permissions_dispatcher_processor = "com.github.hotchemi:permissionsdispatcher-processor:${Versions.permissions_dispatcher}"
+  val permissions_dispatcher_processor =
+    "com.github.hotchemi:permissionsdispatcher-processor:${Versions.permissions_dispatcher}"
 
   val junit = "junit:junit:${Versions.junit}"
   val test_runner = "com.android.support.test:runner:${Versions.test_runner}"
   val espresso = "com.android.support.test.espresso:espresso-core:${Versions.espresso}"
   val mockWebServer = "com.squareup.okhttp3:mockwebserver:${Versions.okhttp}"
   val mockito = "com.nhaarman.mockitokotlin2:mockito-kotlin:${Versions.mockito}"
-
-
 }

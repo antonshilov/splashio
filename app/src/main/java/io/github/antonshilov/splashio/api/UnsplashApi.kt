@@ -8,7 +8,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-
 interface UnsplashApi {
   /**
    * Loads the curated photos.
@@ -38,4 +37,3 @@ interface UnsplashApi {
     }
   }
 }
-

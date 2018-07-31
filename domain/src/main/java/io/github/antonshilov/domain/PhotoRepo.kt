@@ -2,7 +2,6 @@ package io.github.antonshilov.domain
 
 import io.github.antonshilov.domain.model.Photo
 import io.reactivex.Observable
-import io.reactivex.Single
 
 /**
  * [Photo] repository which defines what can be done with the photos for other layers to implement

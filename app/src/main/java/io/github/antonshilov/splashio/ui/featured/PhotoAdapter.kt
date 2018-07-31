@@ -41,13 +41,13 @@ class PhotoAdapter(val context: Context) : PagedListAdapter<Photo, PhotoViewHold
     val photo = getItem(position)!!
     val url = photo.url
     val thumbnailRequest = GlideApp.with(context)
-        .load(photo.urls.thumb)
-        .transition(DrawableTransitionOptions.withCrossFade())
+      .load(photo.urls.thumb)
+      .transition(DrawableTransitionOptions.withCrossFade())
     Glide.with(context)
-        .load(url)
-        .thumbnail(thumbnailRequest)
-        .transition(DrawableTransitionOptions.withCrossFade())
-        .into(holder.photo)
+      .load(url)
+      .thumbnail(thumbnailRequest)
+      .transition(DrawableTransitionOptions.withCrossFade())
+      .into(holder.photo)
 
     // apply aspect ratio to the image
     val ratio = String.format("%d:%d", photo.width, photo.height)
@@ -71,9 +71,7 @@ class PhotoAdapter(val context: Context) : PagedListAdapter<Photo, PhotoViewHold
       }
     }
   }
-
 }
-
 
 enum class Status {
   RUNNING,
@@ -83,8 +81,9 @@ enum class Status {
 
 @Suppress("DataClassPrivateConstructor")
 data class NetworkState private constructor(
-    val status: Status,
-    val msg: String? = null) {
+  val status: Status,
+  val msg: String? = null
+) {
   companion object {
     val LOADED = NetworkState(Status.SUCCESS)
     val LOADING = NetworkState(Status.RUNNING)
@@ -97,7 +96,8 @@ data class NetworkState private constructor(
  * This allows us to channel its network request status etc back to the UI.
  */
 class PhotoDataSourceFactory(
-    private val api: UnsplashApi) : DataSource.Factory<Int, Photo>() {
+  private val api: UnsplashApi
+) : DataSource.Factory<Int, Photo>() {
   val sourceLiveData = MutableLiveData<PhotoDataSource>()
   override fun create(): DataSource<Int, Photo> {
     val source = PhotoDataSource(api)
@@ -110,8 +110,11 @@ class PhotoDataSource(val api: UnsplashApi) : PageKeyedDataSource<Int, Photo>() 
 
   val networkState = MutableLiveData<NetworkState>()
 
-  override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int,
-      Photo>) {
+  override fun loadInitial(
+    params: LoadInitialParams<Int>,
+    callback: LoadInitialCallback<Int,
+      Photo>
+  ) {
     networkState.postValue(NetworkState.LOADING)
     api.getCuratedPhotos(limit = params.requestedLoadSize).enqueue(object : Callback<List<Photo>> {
       override fun onFailure(call: Call<List<Photo>>, t: Throwable) {
@@ -125,13 +128,12 @@ class PhotoDataSource(val api: UnsplashApi) : PageKeyedDataSource<Int, Photo>() 
         networkState.postValue(NetworkState.LOADED)
         Timber.d("Initial load of curated photos succeed")
       }
-
     })
   }
 
   override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Photo>) {
     api.getCuratedPhotos(limit = params.requestedLoadSize, page = params.key).enqueue(object :
-        Callback<List<Photo>> {
+      Callback<List<Photo>> {
       override fun onFailure(call: Call<List<Photo>>, t: Throwable) {
         Timber.d(t, "Load of curated photos has failed")
       }
@@ -141,7 +143,6 @@ class PhotoDataSource(val api: UnsplashApi) : PageKeyedDataSource<Int, Photo>() 
         val images = response.body()!!
         callback.onResult(images, params.key + 1)
       }
-
     })
   }
 

@@ -1,41 +1,22 @@
 apply plugin: "com.vanniktech.code.quality.tools"
 codeQualityTools {
-  boolean failEarly = true
+  boolean failEarly = false
   boolean xmlReports = true
   boolean htmlReports = false
   boolean textReports = false
   String[] ignoreProjects = []
 
   findbugs {
-    boolean enabled = false
-    String toolVersion = '3.0.1'
-    String excludeFilter = 'code_quality_tools/findbugs-filter.xml'
-    Boolean ignoreFailures = null
-    String source = 'src'
-    String effort = 'max'
-    String reportLevel = 'low'
+    enabled = false
   }
   checkstyle {
-    boolean enabled = false
-    String toolVersion = '8.6'
-    String configFile = 'code_quality_tools/checkstyle.xml'
-    Boolean ignoreFailures = null
-    Boolean showViolations = null
-    String source = 'src'
-    List<String> include = ['**/*.java']
-    List<String> exclude = ['**/gen/**']
+    enabled = false
   }
   pmd {
-    boolean enabled = false
-    String toolVersion = '6.0.0'
-    String ruleSetFile = 'code_quality_tools/pmd.xml'
-    Boolean ignoreFailures = null
-    String source = 'src'
-    List<String> include = ['**/*.java']
-    List<String> exclude = ['**/gen/**']
+    enabled = false
   }
   lint {
-    boolean enabled = true
+    enabled = true
     Boolean textReport = null
     String textOutput = 'stdout'
     Boolean abortOnError = null
@@ -46,24 +27,19 @@ codeQualityTools {
     File lintConfig = null
   }
   ktlint {
-    boolean enabled = true
-    String toolVersion = '0.14.0'
+    enabled = true
+    String toolVersion = '0.26.0'
   }
   detekt {
-    boolean enabled = true
-    String toolVersion = '1.0.0.RC6'
+    enabled = true
+    String toolVersion = '1.0.0.RC8'
     String config = 'code_quality_tools/detekt.yml'
     String baselineFileName = null
   }
   cpd {
-    boolean enabled = false
-    String source = 'src'
-    String language = 'java'
-    Boolean ignoreFailures = null
-    int minimumTokenCount = 50
+    enabled = false
   }
   errorProne {
-    boolean enabled = false
-    String toolVersion = '2.1.3'
+      enabled = false
   }
 }
