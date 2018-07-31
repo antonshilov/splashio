@@ -1,14 +1,19 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 apply plugin: "com.github.ben-manes.versions"
+apply from: "codeQuality/codeQuality.gradle"
 buildscript {
   repositories {
     google()
     jcenter()
+    gradlePluginPortal()
+
   }
   dependencies {
     classpath Deps.android_plugin
     classpath Deps.kotlin_plugin
     classpath Deps.versions_plugin
+    classpath "com.vanniktech:gradle-code-quality-tools-plugin:0.12.0"
+
   }
 }
 

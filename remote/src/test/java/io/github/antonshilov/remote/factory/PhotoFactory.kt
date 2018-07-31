@@ -34,6 +34,5 @@ object PhotoFactory {
 
   fun makePhotoEntity(): Photo {
     return Photo(randomUuid(), randomInt(), randomInt())
-
   }
 }

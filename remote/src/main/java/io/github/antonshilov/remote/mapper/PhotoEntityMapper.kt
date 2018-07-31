@@ -10,7 +10,6 @@ open class PhotoEntityMapper : EntityMapper<PhotoModel, Photo> {
   override fun mapFromRemote(model: PhotoModel): Photo {
     return Photo(model.id, model.width, model.height)
   }
-
 }
 
 /**
@@ -26,5 +25,4 @@ interface EntityMapper<in M, out E> {
    * Maps [M] to the [E]z
    */
   fun mapFromRemote(model: M): E
-
 }

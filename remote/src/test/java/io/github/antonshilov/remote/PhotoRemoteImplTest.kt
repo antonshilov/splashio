@@ -20,7 +20,6 @@ class PhotoRemoteImplTest {
   private val api = mock<UnsplashApi>()
   private val remote = PhotoRemoteImpl(api, mapper)
 
-
   @Test
   fun `get photos completes`() {
     stubPhotoList(Observable.just(PhotoFactory.makePhotoList()))

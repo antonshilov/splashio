@@ -20,6 +20,5 @@ class PhotoEntityMapperTest {
     assertEquals(model.id, entity.id)
     assertEquals(model.width, entity.width)
     assertEquals(model.height, entity.height)
-
   }
 }

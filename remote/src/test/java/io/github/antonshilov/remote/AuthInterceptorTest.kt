@@ -38,6 +38,4 @@ class AuthInterceptorTest {
     val recordedRequest = mockWebServer.takeRequest()
     assertEquals(AuthInterceptor.HEADER_VALUE, recordedRequest.getHeader(AuthInterceptor.HEADER_NAME))
   }
-
-
 }
