@@ -1,6 +1,6 @@
 apply plugin: "com.vanniktech.code.quality.tools"
 codeQualityTools {
-  boolean failEarly = false
+  failEarly = true
   boolean xmlReports = true
   boolean htmlReports = false
   boolean textReports = false
@@ -17,14 +17,7 @@ codeQualityTools {
   }
   lint {
     enabled = true
-    Boolean textReport = null
-    String textOutput = 'stdout'
-    Boolean abortOnError = null
-    Boolean warningsAsErrors = null
-    Boolean checkAllWarnings = null
-    String baselineFileName = null
-    Boolean absolutePaths = null
-    File lintConfig = null
+    abortOnError = false
   }
   ktlint {
     enabled = true

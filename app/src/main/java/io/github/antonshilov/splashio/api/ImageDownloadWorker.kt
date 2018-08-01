@@ -101,18 +101,21 @@ class ImageDownloadWorker : Worker() {
       null
     )
 
-    if (cursor != null && cursor.moveToFirst()) {
+    val result = if (cursor != null && cursor.moveToFirst()) {
       val id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID))
-      return Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, Integer.toString(id))
+      cursor.close()
+      Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, Integer.toString(id))
     } else if (!absPath.isEmpty()) {
       val values = ContentValues()
       values.put(MediaStore.Images.Media.DATA, absPath)
-      return contentResolver.insert(
+      contentResolver.insert(
         MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values
       )
     } else {
-      return null
+      null
     }
+    cursor.close()
+    return result
   }
 
   private fun sendSetWallpaperIntent(wallpaperUri: Uri) {

@@ -30,10 +30,6 @@ class ImageListFragment : Fragment() {
   private lateinit var progressBar: ProgressBar
   private lateinit var errorText: TextView
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-  }
-
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
