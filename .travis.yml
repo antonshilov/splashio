@@ -4,6 +4,9 @@ android:
      - tools
      - platform-tools
      - extra-android-m2repository
+    - build-tools-27.0.3
+    - android-28
+
 
 script:
   - ./gradlew build
