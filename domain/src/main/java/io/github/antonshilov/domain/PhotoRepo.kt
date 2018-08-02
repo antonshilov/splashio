@@ -8,7 +8,9 @@ import io.reactivex.Observable
  */
 interface PhotoRepo {
   /**
+   * @param page page number for the pagination query
+   * @param pageSize the number of photos returned per page
    * @return the list of latest photos uploaded by all users
    */
-  fun getLatestPhotos(): Observable<List<Photo>>
+  fun getLatestPhotos(page: Int, pageSize: Int): Observable<List<Photo>>
 }

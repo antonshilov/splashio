@@ -1,5 +1,6 @@
 package io.github.antonshilov.domain
 
+import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import io.github.antonshilov.domain.executor.PostExecutionThread
@@ -21,6 +22,8 @@ class GetPhotosTest {
   @Mock
   private lateinit var postExecutionThread: PostExecutionThread
 
+  private val defaultParams = GetPhotos.Params()
+
   @Before
   fun setup() {
     getPhotos = GetPhotos(repo, postExecutionThread)
@@ -29,26 +32,31 @@ class GetPhotosTest {
 
   @Test
   fun `get photos completes`() {
-    val observer = getPhotos.buildObservable().test()
+    val observer = getPhotos.buildObservable(defaultParams).test()
     observer.assertComplete()
   }
 
   @Test
   fun `get photos calls repo`() {
-    getPhotos.buildObservable().test()
-    verify(repo).getLatestPhotos()
+    getPhotos.buildObservable(defaultParams).test()
+    verify(repo).getLatestPhotos(defaultParams.page, defaultParams.pageSize)
   }
 
   @Test
   fun `get photos returns photos`() {
     val photos = PhotoDataFactory.createPhotoList(10)
     stubRepo(Observable.just(photos))
-    val observer = getPhotos.buildObservable().test()
+    val observer = getPhotos.buildObservable(defaultParams).test()
     observer.assertValue(photos)
   }
 
+  @Test(expected = IllegalArgumentException::class)
+  fun `get photos throws exception`() {
+    getPhotos.buildObservable().test()
+  }
+
   private fun stubRepo(observable: Observable<List<Photo>>) {
-    whenever(repo.getLatestPhotos())
+    whenever(repo.getLatestPhotos(any(), any()))
       .thenReturn(observable)
   }
 }

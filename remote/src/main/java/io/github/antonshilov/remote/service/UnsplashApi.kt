@@ -14,10 +14,10 @@ interface UnsplashApi {
    *
    * Pagination params
    * @param page number of page to load the photos
-   * @param limit amount of photos per page
+   * @param pageSize amount of photos per page
    *
    * @return http call to request the photos
    */
   @GET("/photos")
-  fun getLatestPhotos(@Query("per_page") limit: Int = 50, @Query("page") page: Int = 1): Observable<List<PhotoModel>>
+  fun getLatestPhotos(@Query("page") page: Int, @Query("per_page") pageSize: Int): Observable<List<PhotoModel>>
 }

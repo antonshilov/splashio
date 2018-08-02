@@ -20,12 +20,15 @@ class PhotoRemoteImplTest {
   private val api = mock<UnsplashApi>()
   private val remote = PhotoRemoteImpl(api, mapper)
 
+  private val pageSize = 1
+  private val page = 1
+
   @Test
   fun `get photos completes`() {
     stubPhotoList(Observable.just(PhotoFactory.makePhotoList()))
     stubMapper(any(), PhotoFactory.makePhotoEntity())
 
-    val testObserver = remote.getLatestPhotos().test()
+    val testObserver = remote.getLatestPhotos(page, pageSize).test()
     testObserver.assertComplete()
   }
 
@@ -34,12 +37,12 @@ class PhotoRemoteImplTest {
     stubPhotoList(Observable.just(PhotoFactory.makePhotoList()))
     stubMapper(any(), PhotoFactory.makePhotoEntity())
 
-    remote.getLatestPhotos().test()
-    verify(api).getLatestPhotos()
+    remote.getLatestPhotos(page, pageSize).test()
+    verify(api).getLatestPhotos(page, pageSize)
   }
 
   private fun stubPhotoList(observable: Observable<List<PhotoModel>>) {
-    whenever(api.getLatestPhotos())
+    whenever(api.getLatestPhotos(any(), any()))
       .thenReturn(observable)
   }
 

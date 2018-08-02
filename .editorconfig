@@ -3,7 +3,7 @@ charset=utf-8
 end_of_line=crlf
 insert_final_newline=false
 indent_style=space
-indent_size=4
+indent_size=2
 
 [{*.mod,*.dtd,*.ent,*.elt}]
 indent_style=space
