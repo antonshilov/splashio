@@ -4,6 +4,7 @@ import io.github.antonshilov.remote.AuthInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 /**
@@ -21,6 +22,7 @@ object UnsplashApiFactory {
     return Retrofit.Builder()
       .client(client)
       .baseUrl(BASE_URL)
+      .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
       .addConverterFactory(GsonConverterFactory.create())
       .build()
       .create(UnsplashApi::class.java)
@@ -38,6 +40,8 @@ object UnsplashApiFactory {
    * @return [HttpLoggingInterceptor] which logs http requests for the debug build
    */
   private fun createLoggingInterceptor(isDebug: Boolean): HttpLoggingInterceptor {
-    return HttpLoggingInterceptor().apply { level = if (isDebug) HttpLoggingInterceptor.Level.BASIC else HttpLoggingInterceptor.Level.NONE }
+    return HttpLoggingInterceptor().apply {
+      level = if (isDebug) HttpLoggingInterceptor.Level.BASIC else HttpLoggingInterceptor.Level.NONE
+    }
   }
 }
