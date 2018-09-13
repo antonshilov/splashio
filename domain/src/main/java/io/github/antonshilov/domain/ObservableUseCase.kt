@@ -11,9 +11,9 @@ import io.reactivex.schedulers.Schedulers
 abstract class ObservableUseCase<T, in Params> constructor(private val postExecutionThread: PostExecutionThread) {
   private val disposables = CompositeDisposable()
 
-  protected abstract fun buildObservable(params: Params? = null): Observable<T>
+  protected abstract fun buildObservable(params: Params): Observable<T>
 
-  open fun exec(observer: DisposableObserver<T>, params: Params? = null) {
+  open fun exec(observer: DisposableObserver<T>, params: Params) {
     val observable = buildObservable(params)
       .subscribeOn(Schedulers.io())
       .observeOn(postExecutionThread.scheduler)

@@ -1,6 +1,6 @@
 package io.github.antonshilov.remote.factory
 
-import io.github.antonshilov.domain.model.Photo
+import io.github.antonshilov.domain.feed.photos.model.Photo
 import io.github.antonshilov.remote.factory.DataFactory.randomBoolean
 import io.github.antonshilov.remote.factory.DataFactory.randomInt
 import io.github.antonshilov.remote.factory.DataFactory.randomUuid

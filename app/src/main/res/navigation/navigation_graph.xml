@@ -19,4 +19,9 @@
             android:name="io.github.antonshilov.splashio.ui.fullscreen.FullscreenImageActivity"
             android:label="activity_fullscreen_image" tools:layout="@layout/activity_fullscreen_image">
   </activity>
+  <fragment
+    android:id="@+id/collectionsFragment"
+    android:name="CollectionsFragment"
+    android:label="CollectionsFragment"
+    tools:layout="@layout/fragment_collections"/>
 </navigation>

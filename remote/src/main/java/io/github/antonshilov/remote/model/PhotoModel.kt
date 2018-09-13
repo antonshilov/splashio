@@ -11,15 +11,15 @@ data class PhotoModel(
   val color: String,
   val likes: Int,
   @SerializedName("liked_by_user") val likedByUser: Boolean,
-  val description: String?,
-  val user: User?,
+  val description: String,
+  val user: User,
   val urls: Urls,
-  val links: Links?
+  val links: Links
 ) {
   val url: String
     get() = urls.small
   val name: String
-    get() = "${user!!.username}_${id}_splashio"
+    get() = "${user.username}_${id}_splashio"
 }
 
 data class Links(
@@ -31,8 +31,8 @@ data class Links(
 
 data class User(
   val id: String,
-  val username: String?,
-  val name: String?,
+  val username: String,
+  val name: String,
   @SerializedName("portfolio_url") val portfolioUrl: String?,
   val bio: String?,
   val location: String?,
@@ -41,8 +41,8 @@ data class User(
   @SerializedName("total_collections") val totalCollections: Int,
   @SerializedName("instagram_username") val instagramUsername: String?,
   @SerializedName("twitter_username") val twitterUsername: String?,
-  @SerializedName("profile_image") val profileImage: ProfileImage?,
-  val links: Links?
+  @SerializedName("profile_image") val profileImage: ProfileImage,
+  val links: Links
 )
 
 data class Urls(

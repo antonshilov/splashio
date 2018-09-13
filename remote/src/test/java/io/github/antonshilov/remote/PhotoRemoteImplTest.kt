@@ -4,7 +4,7 @@ import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
-import io.github.antonshilov.domain.model.Photo
+import io.github.antonshilov.domain.feed.photos.model.Photo
 import io.github.antonshilov.remote.factory.PhotoFactory
 import io.github.antonshilov.remote.mapper.PhotoEntityMapper
 import io.github.antonshilov.remote.model.PhotoModel

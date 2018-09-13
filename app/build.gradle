@@ -5,6 +5,7 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: 'kotlin-android-extensions'
 android {
+  buildToolsVersion "28.0.1"
   compileSdkVersion 28
   defaultConfig {
     applicationId "io.github.antonshilov.splashio"
@@ -49,7 +50,9 @@ dependencies {
   implementation Deps.gson_converter
   implementation Deps.okhttp
   implementation Deps.logging_interceptor
+
   implementation Deps.koin_arch
+  implementation Deps.koin
 
   implementation(Deps.permissions_dispatcher) {
     // if you don't use android.app.Fragment you can exclude support for them

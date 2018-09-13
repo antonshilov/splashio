@@ -1,7 +1,7 @@
 package io.github.antonshilov.remote
 
 import io.github.antonshilov.domain.PhotoRepo
-import io.github.antonshilov.domain.model.Photo
+import io.github.antonshilov.domain.feed.photos.model.Photo
 import io.github.antonshilov.remote.mapper.PhotoEntityMapper
 import io.github.antonshilov.remote.service.UnsplashApi
 import io.reactivex.Observable

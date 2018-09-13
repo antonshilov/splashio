@@ -1,6 +1,6 @@
 package io.github.antonshilov.domain
 
-import io.github.antonshilov.domain.model.Photo
+import io.github.antonshilov.domain.feed.photos.model.Photo
 import io.reactivex.Observable
 
 /**

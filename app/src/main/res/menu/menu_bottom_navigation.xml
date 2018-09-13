@@ -4,7 +4,7 @@
     android:id="@+id/imageListFragment" android:title="Home" android:visible="true" android:icon="@drawable/ic_home"
     app:showAsAction="ifRoom"/>
   <item
-    android:id="@+id/collectionListFragment" android:title="Collections" android:visible="true"
+    android:id="@+id/collectionsFragment" android:title="Collections" android:visible="true"
     android:icon="@drawable/ic_collections" app:showAsAction="ifRoom"/>
 
 </menu>

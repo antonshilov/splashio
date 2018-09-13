@@ -1,6 +1,6 @@
 object Versions {
   const val kotlin = "1.2.70"
-  val android_plugin = "3.3.0-alpha03"
+  val android_plugin = "3.3.0-alpha04"
   val versions_plugin = "0.20.0"
   val quality_tools_plugin = "0.13.0"
   val support = "28.0.0-rc02"
@@ -69,6 +69,7 @@ object Deps {
   val navigation_testing_ktx = "android.arch.navigation:navigation-testing-ktx:${Versions.navigation}"
 
   val koin_arch = "org.koin:koin-android-architecture:${Versions.koin}"
+  val koin = "org.koin:koin-core:${Versions.koin}"
 
   val rxkotlin = "io.reactivex.rxjava2:rxkotlin:${Versions.rxkotlin}"
 
