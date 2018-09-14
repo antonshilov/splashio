@@ -1,14 +1,21 @@
 package io.github.antonshilov.remote.mapper
 
 import io.github.antonshilov.domain.feed.photos.model.Photo
+import io.github.antonshilov.domain.feed.photos.model.PhotoLinks
 import io.github.antonshilov.domain.feed.photos.model.ProfileImage
+import io.github.antonshilov.domain.feed.photos.model.Urls
+import io.github.antonshilov.domain.feed.photos.model.UserLinks
 import io.github.antonshilov.remote.model.PhotoModel
 import io.github.antonshilov.remote.model.User
 
 /**
  * Mapper that maps [PhotoModel] from the data layer to the domain layer [Photo]
  */
-open class PhotoEntityMapper : EntityMapper<PhotoModel, Photo> {
+open class PhotoEntityMapper(
+  private val userEntityMapper: UserEntityMapper,
+  private val urlMapper: UrlMapper, private val linksMapper: PhotoLinksMapper
+) : EntityMapper<PhotoModel, Photo> {
+
   override fun mapFromRemote(model: PhotoModel): Photo {
     return Photo(
       model.id,
@@ -18,13 +25,19 @@ open class PhotoEntityMapper : EntityMapper<PhotoModel, Photo> {
       model.likes,
       model.likedByUser,
       model.description,
-      UserEntityMapper().mapFromRemote(model.user),
-
-      )
+      userEntityMapper.mapFromRemote(model.user),
+      urlMapper.mapFromRemote(model.urls),
+      linksMapper.mapFromRemote(model.links)
+    )
   }
 }
 
-open class UserEntityMapper : EntityMapper<User, io.github.antonshilov.domain.feed.photos.model.User> {
+open class UserEntityMapper(
+  private val profileImageMapper: ProfileImageMapper,
+
+  private val userLinksMapper: UserLinksMapper
+) : EntityMapper<User, io.github.antonshilov.domain.feed.photos.model.User> {
+
   override fun mapFromRemote(model: User): io.github.antonshilov.domain.feed.photos.model.User {
     return io.github.antonshilov.domain.feed.photos.model.User(
       model.id,
@@ -36,19 +49,41 @@ open class UserEntityMapper : EntityMapper<User, io.github.antonshilov.domain.fe
       model.totalLikes,
       model.totalPhotos,
       model.totalCollections,
-      ProfileImageMapper().mapFromRemote(model.profileImage),
-      Lin
+      profileImageMapper.mapFromRemote(model.profileImage),
+      userLinksMapper.mapFromRemote(model.links)
     )
   }
 }
 
 class ProfileImageMapper : EntityMapper<io.github.antonshilov.remote.model.ProfileImage, ProfileImage> {
   override fun mapFromRemote(model: io.github.antonshilov.remote.model.ProfileImage): ProfileImage {
+    return with(model) {
+      ProfileImage(small, medium, large)
+    }
   }
 }
 
-class ProfileImageMapper : EntityMapper<io.github.antonshilov.remote.model.ProfileImage, ProfileImage> {
-  override fun mapFromRemote(model: io.github.antonshilov.remote.model.ProfileImage): ProfileImage {
+class UrlMapper : EntityMapper<io.github.antonshilov.remote.model.Urls, Urls> {
+  override fun mapFromRemote(model: io.github.antonshilov.remote.model.Urls): Urls {
+    return with(model) {
+      Urls(raw, full, regular, small, thumb)
+    }
+  }
+}
+
+class UserLinksMapper : EntityMapper<io.github.antonshilov.remote.model.UserLinks, UserLinks> {
+  override fun mapFromRemote(model: io.github.antonshilov.remote.model.UserLinks): UserLinks {
+    return with(model) {
+      UserLinks(self, html, photos, likes, portfolio)
+    }
+  }
+}
+
+class PhotoLinksMapper : EntityMapper<io.github.antonshilov.remote.model.PhotoLinks, PhotoLinks> {
+  override fun mapFromRemote(model: io.github.antonshilov.remote.model.PhotoLinks): PhotoLinks {
+    return with(model) {
+      PhotoLinks(self, html, download)
+    }
   }
 }
 

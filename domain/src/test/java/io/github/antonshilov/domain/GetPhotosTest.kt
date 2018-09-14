@@ -6,11 +6,12 @@ import com.nhaarman.mockitokotlin2.whenever
 import io.github.antonshilov.domain.executor.PostExecutionThread
 import io.github.antonshilov.domain.feed.PaginationParams
 import io.github.antonshilov.domain.feed.photos.GetPhotos
-import io.github.antonshilov.domain.feed.photos.model.Links
 import io.github.antonshilov.domain.feed.photos.model.Photo
+import io.github.antonshilov.domain.feed.photos.model.PhotoLinks
 import io.github.antonshilov.domain.feed.photos.model.ProfileImage
 import io.github.antonshilov.domain.feed.photos.model.Urls
 import io.github.antonshilov.domain.feed.photos.model.User
+import io.github.antonshilov.domain.feed.photos.model.UserLinks
 import io.reactivex.Observable
 import org.junit.Before
 import org.junit.Test
@@ -82,7 +83,7 @@ object PhotoDataFactory : BaseDataFactory() {
       randomString(),
       UserDataFactory.createUser(),
       createUrls(),
-      UserDataFactory.createLinks()
+      createLinks()
     )
 
   fun createPhotoList(count: Int): List<Photo> {
@@ -92,6 +93,12 @@ object PhotoDataFactory : BaseDataFactory() {
     }
     return photos
   }
+
+  private fun createLinks() = PhotoLinks(
+    UserDataFactory.randomString(),
+    UserDataFactory.randomString(),
+    UserDataFactory.randomString()
+  )
 
   private fun createUrls() = Urls(randomString(), randomString(), randomString(), randomString(), randomString())
 }
@@ -112,5 +119,5 @@ object UserDataFactory : BaseDataFactory() {
   )
 
   private fun createProfileImage() = ProfileImage(randomString(), randomString(), randomString())
-  fun createLinks() = Links(randomString(), randomString(), randomString(), randomString(), randomString())
+  private fun createLinks() = UserLinks(randomString(), randomString(), randomString(), randomString(), randomString())
 }

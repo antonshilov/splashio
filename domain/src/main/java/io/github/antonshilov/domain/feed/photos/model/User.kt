@@ -11,5 +11,5 @@ data class User(
   val totalPhotos: Int,
   val totalCollections: Int,
   val profileImage: ProfileImage?,
-  val links: Links
+  val userLinks: UserLinks
 )

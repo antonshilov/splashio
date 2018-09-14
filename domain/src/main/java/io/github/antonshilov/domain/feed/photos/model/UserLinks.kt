@@ -1,6 +1,6 @@
 package io.github.antonshilov.domain.feed.photos.model
 
-data class Links(
+data class UserLinks(
   val self: String,
   val html: String,
   val photos: String,

@@ -4,7 +4,7 @@ import io.github.antonshilov.domain.feed.photos.model.Photo
 import io.github.antonshilov.remote.factory.DataFactory.randomBoolean
 import io.github.antonshilov.remote.factory.DataFactory.randomInt
 import io.github.antonshilov.remote.factory.DataFactory.randomUuid
-import io.github.antonshilov.remote.model.Links
+import io.github.antonshilov.remote.model.PhotoLinks
 import io.github.antonshilov.remote.model.PhotoModel
 import io.github.antonshilov.remote.model.ProfileImage
 import io.github.antonshilov.remote.model.Urls
@@ -31,8 +31,8 @@ object PhotoFactory {
     return Urls(randomUuid(), randomUuid(), randomUuid(), randomUuid(), randomUuid())
   }
 
-  private fun makeLinks(): Links {
-    return Links(randomUuid(), randomUuid(), randomUuid(), randomUuid())
+  private fun makeLinks(): PhotoLinks {
+    return PhotoLinks(randomUuid(), randomUuid(), randomUuid(), randomUuid())
   }
 
   private fun makeUser(): User {
@@ -49,7 +49,14 @@ object PhotoFactory {
       randomUuid(),
       randomUuid(),
       makeProfileImage(),
-      makeLinks()
+      makeUserLinks()
+    )
+  }
+
+  private fun makeUserLinks(): io.github.antonshilov.remote.model.UserLinks {
+    return io.github.antonshilov.remote.model.UserLinks(
+      randomUuid(), randomUuid(), randomUuid(), randomUuid(),
+      randomUuid()
     )
   }
 
@@ -62,6 +69,6 @@ object PhotoFactory {
   }
 
   fun makePhotoEntity(): Photo {
-    return Photo(randomUuid(), randomInt(), randomInt())
+    TODO()
   }
 }

@@ -10,8 +10,8 @@ data class Photo(
   val color: String,
   val likes: Int,
   val likedByUser: Boolean,
-  val description: String,
+  val description: String?,
   val user: User,
   val urls: Urls,
-  val links: Links
+  val links: PhotoLinks
 )

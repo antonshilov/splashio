@@ -1,5 +1,6 @@
 package io.github.antonshilov.remote.service
 
+import io.github.antonshilov.remote.model.CollectionModel
 import io.github.antonshilov.remote.model.PhotoModel
 import io.reactivex.Observable
 import retrofit2.http.GET
@@ -13,11 +14,23 @@ interface UnsplashApi {
    * Loads the curated photos.
    *
    * Pagination params
-   * @param page number of page to load the photos
-   * @param pageSize amount of photos per page
+   * @param page number of page to load the items
+   * @param pageSize amount of items per page
    *
-   * @return http call to request the photos
+   * @return [Observable] that emits the page of photo items
    */
   @GET("/photos")
   fun getLatestPhotos(@Query("page") page: Int, @Query("per_page") pageSize: Int): Observable<List<PhotoModel>>
+
+  /**
+   * Request API to retrieve the latest collections
+   *
+   * Pagination params
+   * @param page number of page to load the items
+   * @param pageSize amount of items per page
+   *
+   * @return [Observable] that emits the page of collection items
+   */
+  @GET("/collections")
+  fun getLatestCollections(@Query("page") page: Int, @Query("per_page") pageSize: Int): Observable<List<CollectionModel>>
 }

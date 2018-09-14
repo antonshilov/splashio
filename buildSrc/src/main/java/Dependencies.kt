@@ -22,6 +22,7 @@ object Versions {
   val permissions_dispatcher = "3.2.0"
   val work = "1.0.0-alpha08"
   val rxkotlin = "2.3.0"
+  val rxandroid = "2.1.0"
 }
 
 object Deps {
@@ -72,6 +73,7 @@ object Deps {
   val koin = "org.koin:koin-core:${Versions.koin}"
 
   val rxkotlin = "io.reactivex.rxjava2:rxkotlin:${Versions.rxkotlin}"
+  val rxandroid = "io.reactivex.rxjava2:rxandroid:${Versions.rxandroid}"
 
   val permissions_dispatcher = "com.github.hotchemi:permissionsdispatcher:${Versions.permissions_dispatcher}"
   val permissions_dispatcher_processor =
