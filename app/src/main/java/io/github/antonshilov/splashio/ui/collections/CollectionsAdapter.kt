@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import io.github.antonshilov.domain.feed.collections.Collection
 import io.github.antonshilov.splashio.GlideApp
 import io.github.antonshilov.splashio.R
@@ -28,6 +29,7 @@ class CollectionsAdapter : ListAdapter<Collection, CollectionsAdapter.Collection
       GlideApp.with(containerView)
         .load(collection.coverPhoto.urls.small)
         .centerCrop()
+        .transition(DrawableTransitionOptions.withCrossFade())
         .into(cover)
       title.text = collection.title
     }
