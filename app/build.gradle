@@ -8,7 +8,6 @@ androidExtensions {
   experimental = true
 }
 android {
-  buildToolsVersion "28.0.1"
   compileSdkVersion 28
   defaultConfig {
     applicationId "io.github.antonshilov.splashio"

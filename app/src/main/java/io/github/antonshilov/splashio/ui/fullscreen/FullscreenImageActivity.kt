@@ -46,8 +46,9 @@ class FullscreenImageActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_fullscreen_image)
-    intent.extras.getString("prived")
-    photo = intent.extras.getParcelable(ARG_PHOTO)
+
+    photo = intent?.extras?.getParcelable(ARG_PHOTO) ?:
+      throw IllegalArgumentException("You have to pass a photo to view in fullscreen")
     initProgressIndicator()
     progress.setImageDrawable(progressIndicator)
   }
@@ -75,13 +76,24 @@ class FullscreenImageActivity : AppCompatActivity() {
       .thumbnail(thumbnailRequest)
       .transition(DrawableTransitionOptions.withCrossFade())
       .listener(object : RequestListener<Drawable> {
-        override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+        override fun onLoadFailed(
+          e: GlideException?,
+          model: Any?,
+          target: Target<Drawable>?,
+          isFirstResource: Boolean
+        ): Boolean {
           photoView.isEnabled = true
           progressIndicator.stop()
           return false
         }
 
-        override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+        override fun onResourceReady(
+          resource: Drawable?,
+          model: Any?,
+          target: Target<Drawable>?,
+          dataSource: DataSource?,
+          isFirstResource: Boolean
+        ): Boolean {
           photoView.isEnabled = true
           progressIndicator.stop()
           return false
@@ -134,7 +146,7 @@ class FullscreenImageActivity : AppCompatActivity() {
   }
 
   override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-    menuInflater?.inflate(R.menu.menu_fullscreen_image, menu)
+    menuInflater.inflate(R.menu.menu_fullscreen_image, menu)
     return true
   }
 
@@ -170,6 +182,6 @@ class FullscreenImageActivity : AppCompatActivity() {
 
   companion object {
     @JvmStatic
-    fun bundleArgs(photo: Photo) = bundleOf(ARG_PHOTO to photo, "prived" to "PRECED")
+    fun bundleArgs(photo: Photo) = bundleOf(ARG_PHOTO to photo)
   }
 }
