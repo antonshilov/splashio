@@ -48,6 +48,8 @@ dependencies {
   kapt Deps.lifecycle_compiler
 
   implementation Deps.paging
+  implementation "android.arch.paging:rxjava2:1.0.1"
+
 
 
   implementation Deps.retrofit

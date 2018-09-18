@@ -1,4 +1,5 @@
 import android.arch.lifecycle.Observer
+import android.arch.paging.PagedList
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -23,11 +24,10 @@ class CollectionsFragment : Fragment() {
   override fun onStart() {
     super.onStart()
     collections.adapter = adapter
-    vm.fetchCollections()
-    vm.collections.observe(this, Observer<List<Collection>> { if (it != null) handleCollection(it) })
+    vm.collectionsList.observe(this, Observer<PagedList<Collection>> { if (it != null) handleCollection(it) })
   }
 
-  private fun handleCollection(collections: List<Collection>) {
+  private fun handleCollection(collections: PagedList<Collection>) {
     adapter.submitList(collections)
   }
 }

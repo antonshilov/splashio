@@ -69,6 +69,9 @@ object PhotoFactory {
   }
 
   fun makePhotoEntity(): Photo {
-    TODO()
+    return Photo(
+      randomUuid(), randomInt(), randomInt(), randomUuid(), randomInt(), randomBoolean(), randomUuid(),
+      randomUuid(), makeUser(), makeLinks()
+    )
   }
 }

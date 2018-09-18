@@ -21,6 +21,7 @@ interface UnsplashApi {
    */
   @GET("/photos")
   fun getLatestPhotos(@Query("page") page: Int, @Query("per_page") pageSize: Int): Observable<List<PhotoModel>>
+  // TODO use [Url] parameter annotation to unify new/feed/curated
 
   /**
    * Request API to retrieve the latest collections
