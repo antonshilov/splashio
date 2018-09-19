@@ -20,6 +20,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import io.github.antonshilov.splashio.GlideApp
+import io.github.antonshilov.splashio.GlideRequest
 import io.github.antonshilov.splashio.R
 import io.github.antonshilov.splashio.api.model.Photo
 import io.github.antonshilov.splashio.ui.featured.setVisibility
@@ -37,6 +38,7 @@ private const val ARG_PHOTO = "photo"
  * Pinch to zoom gestures
  * Hide/display controls on image tap
  */
+
 @RuntimePermissions
 class FullscreenImageActivity : AppCompatActivity() {
   private val vm by viewModel<FullscreenImageViewModel>()
@@ -49,8 +51,16 @@ class FullscreenImageActivity : AppCompatActivity() {
 
     photo = intent?.extras?.getParcelable(ARG_PHOTO) ?:
       throw IllegalArgumentException("You have to pass a photo to view in fullscreen")
+    setupEnterTransition()
     initProgressIndicator()
     progress.setImageDrawable(progressIndicator)
+  }
+
+  private fun setupEnterTransition() {
+    supportPostponeEnterTransition()
+    // setting up a transition name dynamically because we have a lot of images with the same layout
+    // on the previous screen ImageListFragment
+    photoView.transitionName = photo.id
   }
 
   /**
@@ -68,12 +78,56 @@ class FullscreenImageActivity : AppCompatActivity() {
     super.onStart()
 
     photoView.isEnabled = false
-    val thumbnailRequest = GlideApp.with(this)
-      .load(photo.url)
+    bindPhoto()
+    setInsetListener()
+    setUpClickListeners()
+    this.setSupportActionBar(toolbar)
+    toolbar.title = null
+  }
 
+  private fun setInsetListener() {
+    ViewCompat.setOnApplyWindowInsetsListener(root) { _, insets ->
+      val lpToolbar = toolbar
+        .layoutParams as ViewGroup.MarginLayoutParams
+      lpToolbar.topMargin = insets!!.systemWindowInsetTop
+      toolbar.layoutParams = lpToolbar
+      val lpBottom = bottomContainer
+        .layoutParams as ViewGroup.MarginLayoutParams
+      lpBottom.bottomMargin = insets.systemWindowInsetBottom
+      bottomContainer.layoutParams = lpBottom
+      insets.consumeSystemWindowInsets()
+    }
+  }
+
+  private fun setUpClickListeners() {
+    toolbar.setNavigationOnClickListener {
+      onBackPressed()
+    }
+    photoView.setOnPhotoTapListener { _, _, _ ->
+      fullScreen(isImmersiveModeEnabled())
+    }
+    buttonWallpaper.setOnClickListener {
+      setWallpaperWithPermissionCheck()
+    }
+  }
+
+  private fun bindPhoto() {
+    loadPhoto()
+    userName.text = photo.user?.name
+    loadAvatar()
+  }
+
+  private fun loadAvatar() {
+    GlideApp.with(this)
+      .load(photo.user?.profileImage?.medium)
+      .circleCrop()
+      .into(avatar)
+  }
+
+  private fun loadPhoto() {
     GlideApp.with(this)
       .load(photo.urls.full)
-      .thumbnail(thumbnailRequest)
+      .thumbnail(getThumbnailLoadRequest())
       .transition(DrawableTransitionOptions.withCrossFade())
       .listener(object : RequestListener<Drawable> {
         override fun onLoadFailed(
@@ -84,6 +138,7 @@ class FullscreenImageActivity : AppCompatActivity() {
         ): Boolean {
           photoView.isEnabled = true
           progressIndicator.stop()
+          supportStartPostponedEnterTransition()
           return false
         }
 
@@ -96,39 +151,38 @@ class FullscreenImageActivity : AppCompatActivity() {
         ): Boolean {
           photoView.isEnabled = true
           progressIndicator.stop()
+          supportStartPostponedEnterTransition()
           return false
         }
       })
       .into(photoView)
+  }
 
-    userName.text = photo.user?.name
-    GlideApp.with(this)
-      .load(photo.user?.profileImage?.medium)
-      .circleCrop()
-      .into(avatar)
+  private fun getThumbnailLoadRequest(): GlideRequest<Drawable> {
+    return GlideApp.with(this)
+      .load(photo.url)
+      .listener(object : RequestListener<Drawable> {
+        override fun onLoadFailed(
+          e: GlideException?,
+          model: Any?,
+          target: Target<Drawable>?,
+          isFirstResource: Boolean
+        ): Boolean {
+          supportStartPostponedEnterTransition()
+          return false
+        }
 
-    ViewCompat.setOnApplyWindowInsetsListener(root) { _, insets ->
-      val lpToolbar = toolbar
-        .layoutParams as ViewGroup.MarginLayoutParams
-      lpToolbar.topMargin = insets!!.systemWindowInsetTop
-      toolbar.layoutParams = lpToolbar
-      val lpBottom = bottomContainer
-        .layoutParams as ViewGroup.MarginLayoutParams
-      lpBottom.bottomMargin = insets.systemWindowInsetBottom
-      bottomContainer.layoutParams = lpBottom
-      insets.consumeSystemWindowInsets()
-    }
-    toolbar.setNavigationOnClickListener {
-      onBackPressed()
-    }
-    photoView.setOnPhotoTapListener { _, _, _ ->
-      fullScreen(isImmersiveModeEnabled())
-    }
-    buttonWallpaper.setOnClickListener {
-      setWallpaperWithPermissionCheck()
-    }
-    this.setSupportActionBar(toolbar)
-    toolbar.title = null
+        override fun onResourceReady(
+          resource: Drawable?,
+          model: Any?,
+          target: Target<Drawable>?,
+          dataSource: DataSource?,
+          isFirstResource: Boolean
+        ): Boolean {
+          supportStartPostponedEnterTransition()
+          return false
+        }
+      })
   }
 
   override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
