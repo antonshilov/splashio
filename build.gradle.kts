@@ -1,12 +1,9 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
   id("com.github.ben-manes.versions") version Versions.versions_plugin
+  id("com.vanniktech.code.quality.tools") version Versions.quality_tools_plugin
 }
 buildscript {
-  //  project.apply {
-//    from("codeQuality/codeQuality.gradle")
-//    to(buildscript)
-//  }
   repositories {
     google()
     jcenter()

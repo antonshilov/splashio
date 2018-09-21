@@ -28,6 +28,17 @@ android {
       proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
     }
   }
+  packagingOptions {
+    exclude("META-INF/DEPENDENCIES")
+    exclude("META-INF/LICENSE")
+    exclude("META-INF/LICENSE.txt")
+    exclude("META-INF/license.txt")
+    exclude("META-INF/NOTICE")
+    exclude("META-INF/NOTICE.txt")
+    exclude("META-INF/notice.txt")
+    exclude("META-INF/ASL2.0")
+    exclude("META-INF/proguard/androidx-annotations.pro")
+  }
 }
 
 dependencies {
@@ -69,7 +80,7 @@ dependencies {
   implementation(Deps.koin)
 
   implementation(Deps.permissions_dispatcher) {
-    // if you don't use android.app.Fragment you can exclude support for them
+    // if you don"t use android.app.Fragment you can exclude support for them
     exclude(module = "support-v13")
   }
   kapt(Deps.permissions_dispatcher_processor)

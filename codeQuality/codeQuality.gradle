@@ -1,4 +1,3 @@
-apply plugin: "com.vanniktech.code.quality.tools"
 codeQualityTools {
   failEarly = true
   boolean xmlReports = true

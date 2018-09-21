@@ -1,11 +1,11 @@
 object Versions {
   const val kotlin = "1.2.70"
-  val android_plugin = "3.3.0-alpha10"
+  val android_plugin = "3.3.0-alpha11"
   val versions_plugin = "0.20.0"
   val quality_tools_plugin = "0.13.0"
   val support = "28.0.0-rc02"
   val constraint_layout = "1.1.1"
-  val navigation = "1.0.0-alpha05"
+  val navigation = "1.0.0-alpha06"
   val core_ktx = "0.3"
   val lifecycle = "1.1.1"
   val glide = "4.8.0"
@@ -20,7 +20,7 @@ object Versions {
   val mockito = "2.0.0-alpha03"
   val koin = "1.0.0-alpha-12"
   val permissions_dispatcher = "3.2.0"
-  val work = "1.0.0-alpha08"
+  val work = "1.0.0-alpha09"
   val rxkotlin = "2.3.0"
   val rxandroid = "2.1.0"
 }
