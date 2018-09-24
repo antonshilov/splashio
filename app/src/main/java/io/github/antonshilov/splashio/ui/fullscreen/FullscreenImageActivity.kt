@@ -49,8 +49,8 @@ class FullscreenImageActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_fullscreen_image)
 
-    photo = intent?.extras?.getParcelable(ARG_PHOTO) ?:
-      throw IllegalArgumentException("You have to pass a photo to view in fullscreen")
+    photo = intent?.extras?.getParcelable(ARG_PHOTO)
+      ?: throw IllegalArgumentException("You have to pass a photo to view in fullscreen")
     setupEnterTransition()
     initProgressIndicator()
     progress.setImageDrawable(progressIndicator)

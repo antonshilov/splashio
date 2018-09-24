@@ -13,7 +13,8 @@ import io.github.antonshilov.remote.model.User
  */
 open class PhotoEntityMapper(
   private val userEntityMapper: UserEntityMapper,
-  private val urlMapper: UrlMapper, private val linksMapper: PhotoLinksMapper
+  private val urlMapper: UrlMapper,
+  private val linksMapper: PhotoLinksMapper
 ) : EntityMapper<PhotoModel, Photo> {
 
   override fun mapFromRemote(model: PhotoModel): Photo {
@@ -34,7 +35,6 @@ open class PhotoEntityMapper(
 
 open class UserEntityMapper(
   private val profileImageMapper: ProfileImageMapper,
-
   private val userLinksMapper: UserLinksMapper
 ) : EntityMapper<User, io.github.antonshilov.domain.feed.photos.model.User> {
 

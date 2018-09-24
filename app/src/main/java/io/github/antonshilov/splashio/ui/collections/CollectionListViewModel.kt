@@ -54,7 +54,8 @@ class CollectionDataSource(private val getCollections: GetCollections, val compo
 }
 
 class CollectionDataSourceFactory(
-  private val getCollections: GetCollections, val compositeDisposable: CompositeDisposable
+  private val getCollections: GetCollections,
+  val compositeDisposable: CompositeDisposable
 ) : DataSource.Factory<Int, Collection>() {
   override fun create(): DataSource<Int, Collection> {
     return CollectionDataSource(getCollections, compositeDisposable)
