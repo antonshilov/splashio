@@ -1,7 +1,6 @@
 package io.github.antonshilov.splashio.ui.featured
 
 import android.arch.lifecycle.Observer
-import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.Fragment
@@ -12,6 +11,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.navigation.ActivityNavigator
+import androidx.navigation.fragment.findNavController
 import io.github.antonshilov.splashio.R
 import io.github.antonshilov.splashio.api.model.Photo
 import io.github.antonshilov.splashio.ui.fullscreen.FullscreenImageActivity
@@ -81,18 +82,15 @@ class ImageListFragment : Fragment() {
     errorText.setVisibility(networkState?.status == Status.FAILED)
   }
 
-  private fun navigateToFullscreen(
-    img: Photo,
-    sharedView: ImageView
-  ) {
-    val intent = Intent(context, FullscreenImageActivity::class.java)
-    intent.putExtras(FullscreenImageActivity.bundleArgs(img))
+  private fun navigateToFullscreen(img: Photo, sharedView: ImageView) {
     val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity!!, sharedView, img.id)
-    startActivity(intent, options.toBundle())
-//    findNavController().navigate(
-//      R.id.action_imageListFragment_to_fullscreenImageActivity,
-//      FullscreenImageActivity.bundleArgs(img)
-//    )
+    val extras = ActivityNavigator.Extras(options)
+    findNavController().navigate(
+      R.id.fullscreenImageActivity,
+      FullscreenImageActivity.bundleArgs(img), // Bundle of args
+      null, // NavOptions
+      extras
+    )
   }
 }
 
