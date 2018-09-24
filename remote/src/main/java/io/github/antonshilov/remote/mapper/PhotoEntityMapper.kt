@@ -34,7 +34,6 @@ open class PhotoEntityMapper(
 
 open class UserEntityMapper(
   private val profileImageMapper: ProfileImageMapper,
-
   private val userLinksMapper: UserLinksMapper
 ) : EntityMapper<User, io.github.antonshilov.domain.feed.photos.model.User> {
 
