@@ -9,11 +9,12 @@ import io.github.antonshilov.domain.feed.collections.Collection
 import io.github.antonshilov.splashio.R
 import io.github.antonshilov.splashio.ui.collections.CollectionListViewModel
 import io.github.antonshilov.splashio.ui.collections.CollectionsAdapter
+import io.github.antonshilov.splashio.ui.navigation.Scrollable
 import kotlinx.android.synthetic.main.fragment_collections.*
 import org.koin.android.architecture.ext.android.viewModel
 import org.koin.android.ext.android.inject
 
-class CollectionsFragment : Fragment() {
+class CollectionsFragment : Fragment(), Scrollable {
   private val vm by viewModel<CollectionListViewModel>()
   private val adapter: CollectionsAdapter by inject()
 
@@ -29,5 +30,9 @@ class CollectionsFragment : Fragment() {
 
   private fun handleCollection(collections: PagedList<Collection>) {
     adapter.submitList(collections)
+  }
+
+  override fun scrollTop() {
+    collections.smoothScrollToPosition(0)
   }
 }

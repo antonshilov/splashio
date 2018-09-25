@@ -23,6 +23,10 @@ object Versions {
   val work = "1.0.0-alpha09"
   val rxkotlin = "2.3.0"
   val rxandroid = "2.1.0"
+  val googleServices = "4.1.0"
+  val fabric = "1.25.4"
+  val firebaseCore = "15.0.0"
+  val crashlytics = "2.9.5"
 }
 
 object Deps {
@@ -78,6 +82,12 @@ object Deps {
   val permissions_dispatcher = "com.github.hotchemi:permissionsdispatcher:${Versions.permissions_dispatcher}"
   val permissions_dispatcher_processor =
     "com.github.hotchemi:permissionsdispatcher-processor:${Versions.permissions_dispatcher}"
+
+  val googleServicesPlugin = "com.google.gms:google-services:${Versions.googleServices}"
+  val fabricPlugin = "io.fabric.tools:gradle:${Versions.fabric}"
+
+  val firebaseCore = "com.google.firebase:firebase-core:${Versions.firebaseCore}"
+  val crashlytics = "com.crashlytics.sdk.android:crashlytics:${Versions.crashlytics}"
 
   val junit = "junit:junit:${Versions.junit}"
   val test_runner = "com.android.support.test:runner:${Versions.test_runner}"
