@@ -11,6 +11,8 @@ dependencies {
 
   testImplementation(Deps.junit)
   testImplementation(Deps.mockito)
+  testImplementation(Deps.randomBeans)
+
   testImplementation(Deps.mockWebServer)
 }
 

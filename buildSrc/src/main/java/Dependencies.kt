@@ -27,6 +27,7 @@ object Versions {
   val fabric = "1.25.4"
   val firebaseCore = "15.0.0"
   val crashlytics = "2.9.5"
+  val randomBeans = "3.7.0"
 }
 
 object Deps {
@@ -94,4 +95,5 @@ object Deps {
   val espresso = "com.android.support.test.espresso:espresso-core:${Versions.espresso}"
   val mockWebServer = "com.squareup.okhttp3:mockwebserver:${Versions.okhttp}"
   val mockito = "com.nhaarman.mockitokotlin2:mockito-kotlin:${Versions.mockito}"
+  val randomBeans = "io.github.benas:random-beans:${Versions.randomBeans}"
 }

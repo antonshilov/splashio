@@ -7,19 +7,14 @@ import io.github.antonshilov.domain.executor.PostExecutionThread
 import io.github.antonshilov.domain.feed.PaginationParams
 import io.github.antonshilov.domain.feed.photos.GetPhotos
 import io.github.antonshilov.domain.feed.photos.model.Photo
-import io.github.antonshilov.domain.feed.photos.model.PhotoLinks
-import io.github.antonshilov.domain.feed.photos.model.ProfileImage
-import io.github.antonshilov.domain.feed.photos.model.Urls
-import io.github.antonshilov.domain.feed.photos.model.User
-import io.github.antonshilov.domain.feed.photos.model.UserLinks
+import io.github.benas.randombeans.api.EnhancedRandom.randomListOf
+
 import io.reactivex.Observable
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
-import java.util.Random
-import java.util.UUID
 
 @RunWith(MockitoJUnitRunner::class)
 class GetPhotosTest {
@@ -34,7 +29,7 @@ class GetPhotosTest {
   @Before
   fun setup() {
     getPhotos = GetPhotos(repo, postExecutionThread)
-    stubRepo(Observable.just(PhotoDataFactory.createPhotoList(10)))
+    stubRepo(Observable.just(randomListOf(10, Photo::class.java)))
   }
 
   @Test
@@ -51,7 +46,7 @@ class GetPhotosTest {
 
   @Test
   fun `get photos returns photos`() {
-    val photos = PhotoDataFactory.createPhotoList(10)
+    val photos = randomListOf(10, Photo::class.java)
     stubRepo(Observable.just(photos))
     val observer = getPhotos.buildObservable(defaultParams).test()
     observer.assertValue(photos)
@@ -61,63 +56,4 @@ class GetPhotosTest {
     whenever(repo.getLatestPhotos(any(), any()))
       .thenReturn(observable)
   }
-}
-
-abstract class BaseDataFactory {
-  private val random = Random()
-  private val intRange = Int.MAX_VALUE
-  fun randomString() = UUID.randomUUID().toString()
-  fun randomInt() = random.nextInt(intRange)
-  fun randomBool() = random.nextBoolean()
-}
-
-object PhotoDataFactory : BaseDataFactory() {
-  fun createPhoto() =
-    Photo(
-      randomString(),
-      randomInt(),
-      randomInt(),
-      randomString(),
-      randomInt(),
-      randomBool(),
-      randomString(),
-      UserDataFactory.createUser(),
-      createUrls(),
-      createLinks()
-    )
-
-  fun createPhotoList(count: Int): List<Photo> {
-    val photos = mutableListOf<Photo>()
-    repeat(count) {
-      photos.add(createPhoto())
-    }
-    return photos
-  }
-
-  private fun createLinks() = PhotoLinks(
-    UserDataFactory.randomString(),
-    UserDataFactory.randomString(),
-    UserDataFactory.randomString()
-  )
-
-  private fun createUrls() = Urls(randomString(), randomString(), randomString(), randomString(), randomString())
-}
-
-object UserDataFactory : BaseDataFactory() {
-  fun createUser() = User(
-    randomString(),
-    randomString(),
-    randomString(),
-    randomString(),
-    randomString(),
-    randomString(),
-    randomInt(),
-    randomInt(),
-    randomInt(),
-    createProfileImage(),
-    createLinks()
-  )
-
-  private fun createProfileImage() = ProfileImage(randomString(), randomString(), randomString())
-  private fun createLinks() = UserLinks(randomString(), randomString(), randomString(), randomString(), randomString())
 }
