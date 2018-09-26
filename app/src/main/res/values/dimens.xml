@@ -4,4 +4,7 @@
     <dimen name="text_margin">16dp</dimen>
     <dimen name="photo_height">150dp</dimen>
   <dimen name="progress_circle">48dp</dimen>
+
+  <dimen name="collection_inner_card_width">72dp</dimen>
+  <dimen name="collection_inner_card_height">48dp</dimen>
 </resources>

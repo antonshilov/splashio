@@ -38,6 +38,12 @@ class CollectionsAdapter :
     private fun bindCoverPhoto(photoEntity: Photo) {
       cover.loadPhoto(photoEntity)
     }
+
+    private fun bindInnerPhotos(urls: List<String>) {
+      first_inner_image.loadPhoto(urls[0])
+      second_inner_image.loadPhoto(urls[1])
+      third_inner_image.loadPhoto(urls[2])
+    }
   }
 
   private class CollectionDiffCallback : DiffUtil.ItemCallback<Collection>() {

@@ -20,3 +20,11 @@ fun ImageView.loadPhoto(photo: Photo) {
     .transition(DrawableTransitionOptions.withCrossFade())
     .into(this)
 }
+
+fun ImageView.loadPhoto(url: String) {
+  GlideApp.with(this)
+    .load(url)
+    .centerCrop()
+    .transition(DrawableTransitionOptions.withCrossFade())
+    .into(this)
+}
