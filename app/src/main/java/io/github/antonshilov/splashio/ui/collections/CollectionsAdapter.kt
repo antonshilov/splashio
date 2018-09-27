@@ -35,9 +35,7 @@ class CollectionsAdapter :
       bindCoverPhoto(collection.coverPhoto)
       bindInnerPhotos(collection.previewPhotosUrls)
       title.text = collection.title
-      val text = getDescription(collection, containerView.resources)
-      description.text = text
-
+      description.text = getDescription(collection, containerView.resources!!)
     }
 
     private fun bindCoverPhoto(photoEntity: Photo) {
@@ -52,12 +50,12 @@ class CollectionsAdapter :
     }
   }
 
-  private fun getDescription(collection: Collection, res: Resources) : String {
+  private fun getDescription(collection: Collection, res: Resources): String {
     val name = collection.userName
     val count = collection.totalPhotos
-    return if(name != null) {
+    return if (name != null) {
       res.getQuantityString(R.plurals.collection_description_plurals_with_curator, count, count, name)
-    } else{
+    } else {
       res.getQuantityString(R.plurals.collection_description_plurals_without_curator, count, count, name)
     }
   }
