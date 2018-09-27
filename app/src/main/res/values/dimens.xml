@@ -5,6 +5,7 @@
     <dimen name="photo_height">150dp</dimen>
   <dimen name="progress_circle">48dp</dimen>
 
-  <dimen name="collection_inner_card_width">72dp</dimen>
-  <dimen name="collection_inner_card_height">48dp</dimen>
+  <dimen name="collection_inner_card_width">84dp</dimen>
+  <dimen name="collection_inner_card_height">56dp</dimen>
+  <dimen name="collection_card_height">300dp</dimen>
 </resources>

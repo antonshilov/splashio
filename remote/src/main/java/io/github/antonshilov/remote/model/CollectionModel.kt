@@ -19,7 +19,8 @@ data class CollectionModel(
   @SerializedName("cover_photo")
   val coverPhoto: PhotoModel,
   @SerializedName("preview_photos")
-  val previewPhotos: List<PreviewPhoto>
+  val previewPhotos: List<PreviewPhoto>?,
+  val user: User?
 )
 
 data class PreviewPhoto(

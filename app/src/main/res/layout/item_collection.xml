@@ -4,8 +4,10 @@
   xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/root"
   android:layout_width="match_parent"
-  android:layout_height="300dp"
+  android:layout_height="@dimen/collection_card_height"
   android:layout_marginBottom="8dp"
+  android:layout_marginStart="8dp"
+  android:layout_marginEnd="8dp"
   app:cardCornerRadius="8dp">
 
   <android.support.constraint.ConstraintLayout
@@ -17,46 +19,40 @@
       android:scaleType="centerCrop"
       android:layout_width="match_parent"
       android:layout_height="0dp"
-      android:layout_marginBottom="8dp"
-      tools:src="@tools:sample/backgrounds/scenic"
-      app:layout_constraintBottom_toTopOf="@+id/title"
+      android:contentDescription="@string/collection_cover_description"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toTopOf="parent"/>
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintBottom_toTopOf="@+id/image_guideline"
+      tools:src="@tools:sample/backgrounds/scenic"/>
 
     <android.support.design.card.MaterialCardView
-      xmlns:card_view="http://schemas.android.com/apk/res-auto"
       xmlns:android="http://schemas.android.com/apk/res/android"
       android:id="@+id/first_inner_image_container"
       android:layout_width="@dimen/collection_inner_card_width"
       android:layout_height="@dimen/collection_inner_card_height"
       android:layout_marginTop="8dp"
       android:layout_marginEnd="24dp"
-      app:cardElevation="0dp"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="@+id/cover"
-      app:layout_constraintBottom_toTopOf="@+id/second_inner_image_container"
-      card_view:cardBackgroundColor="@android:color/transparent">
+      app:layout_constraintBottom_toTopOf="@+id/second_inner_image_container">
 
       <ImageView
         android:id="@+id/first_inner_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        tools:src="@tools:sample/backgrounds/scenic"
-       />
-
+        android:contentDescription="@string/collection_first_preload_image_description"
+        tools:src="@tools:sample/backgrounds/scenic"/>
     </android.support.design.card.MaterialCardView>
 
     <android.support.design.card.MaterialCardView
-      xmlns:card_view="http://schemas.android.com/apk/res-auto"
       xmlns:android="http://schemas.android.com/apk/res/android"
       android:id="@+id/second_inner_image_container"
       android:layout_width="@dimen/collection_inner_card_width"
       android:layout_height="@dimen/collection_inner_card_height"
-      app:cardElevation="4dp" app:layout_constraintEnd_toEndOf="@+id/first_inner_image_container"
       android:layout_marginTop="8dp"
-      android:background="@color/transparent"
+      app:layout_constraintEnd_toEndOf="@+id/first_inner_image_container"
       app:layout_constraintTop_toBottomOf="@+id/first_inner_image_container"
       app:layout_constraintBottom_toTopOf="@+id/third_inner_image_container">
 
@@ -65,43 +61,76 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
+        android:contentDescription="@string/collection_second_preload_image_description"
         tools:src="@tools:sample/backgrounds/scenic"/>
-
     </android.support.design.card.MaterialCardView>
 
     <android.support.design.card.MaterialCardView
       android:id="@+id/third_inner_image_container"
       android:layout_width="@dimen/collection_inner_card_width"
       android:layout_height="@dimen/collection_inner_card_height"
-      app:cardElevation="4dp" app:layout_constraintEnd_toEndOf="@+id/first_inner_image_container"
       android:layout_marginTop="8dp"
-      android:background="@color/transparent"
+      android:layout_marginBottom="8dp"
+      app:layout_constraintEnd_toEndOf="@+id/first_inner_image_container"
       app:layout_constraintTop_toBottomOf="@+id/second_inner_image_container"
-      android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="@+id/cover">
+      app:layout_constraintBottom_toBottomOf="@+id/cover">
 
       <ImageView
         android:id="@+id/third_inner_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
+        android:contentDescription="@string/collection_third_preload_image_description"
         tools:src="@tools:sample/backgrounds/scenic"/>
-
     </android.support.design.card.MaterialCardView>
 
     <TextView
-      android:paddingStart="@dimen/fab_margin"
-      android:paddingEnd="@dimen/fab_margin"
-      android:layout_gravity="bottom|start"
       android:id="@+id/title"
-      android:layout_width="wrap_content"
+      android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-      tools:text="Sunlight, lkdfjglkdjglkjkljfdgkl klffdfdsfdfdfdjglk hfghfghdffhffgfg"
-      android:layout_marginStart="16dp"
+      android:textAppearance="@style/TextAppearance.AppCompat.Title"
       android:maxLines="1"
       android:ellipsize="end"
-      app:layout_constraintStart_toStartOf="parent" android:layout_marginBottom="16dp"
-      app:layout_constraintBottom_toBottomOf="parent"/>
+      android:layout_marginTop="4dp"
+      app:layout_constraintStart_toStartOf="@+id/start_text_guideline"
+      app:layout_constraintTop_toTopOf="@+id/image_guideline"
+      app:layout_constraintHorizontal_bias="1.0"
+      app:layout_constraintEnd_toStartOf="@+id/end_text_guideline"
+      tools:text="Sunlight, lkdfjglkdjglkjkljfdgkl klffdfdsfdfdfdjglk hfghfghdffhffgfg"/>
+
+    <TextView
+      android:id="@+id/description"
+      android:gravity="center"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:maxLines="1"
+      android:ellipsize="end"
+      android:layout_marginTop="2dp"
+      app:layout_constraintStart_toStartOf="@+id/title"
+      app:layout_constraintTop_toBottomOf="@+id/title"
+      tools:text="2341324124 photos * Curated by Otis"/>
+
+    <android.support.constraint.Guideline
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/image_guideline"
+      android:orientation="horizontal"
+      app:layout_constraintGuide_percent="0.78"/>
+
+    <android.support.constraint.Guideline
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/start_text_guideline"
+      android:orientation="vertical"
+      app:layout_constraintGuide_percent="0.09"/>
+
+    <android.support.constraint.Guideline
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/end_text_guideline"
+      android:orientation="vertical"
+      app:layout_constraintGuide_percent="0.91"/>
+
   </android.support.constraint.ConstraintLayout>
 
 </android.support.design.card.MaterialCardView>

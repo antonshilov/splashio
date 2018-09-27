@@ -21,7 +21,8 @@ fun ImageView.loadPhoto(photo: Photo) {
     .into(this)
 }
 
-fun ImageView.loadPhoto(url: String) {
+fun ImageView.loadPhoto(url: String?) {
+  if (url == null) return
   GlideApp.with(this)
     .load(url)
     .centerCrop()

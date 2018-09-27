@@ -13,5 +13,6 @@ data class Collection(
   val private: Boolean,
   val shareKey: String,
   val coverPhoto: Photo,
-  val previewPhotosUrls: List<String>
+  val previewPhotosUrls: List<String>?,
+  val userName: String?
 )
