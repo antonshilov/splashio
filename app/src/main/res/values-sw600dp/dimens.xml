@@ -10,8 +10,8 @@
   <dimen name="collection_card_height">300dp</dimen>
 
   <dimen name="collection_item_margin_start">9dp</dimen>
-  <dimen name="collection_item_margin_end">8dp</dimen>
+  <dimen name="collection_item_margin_end">4dp</dimen>
   <dimen name="collection_item_margin_top">4dp</dimen>
-  <dimen name="collection_item_margin_bottom">4dp</dimen>
+  <dimen name="collection_item_margin_bottom">8dp</dimen>
 
 </resources>

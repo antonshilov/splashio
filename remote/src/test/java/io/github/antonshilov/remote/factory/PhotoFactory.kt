@@ -68,10 +68,10 @@ object PhotoFactory {
     return listOf(makePhotoModel(), makePhotoModel(), makePhotoModel())
   }
 
-  fun makePhotoEntity(): Photo {
+/*  fun makePhotoEntity(): Photo {
     return Photo(
       randomUuid(), randomInt(), randomInt(), randomUuid(), randomInt(), randomBoolean(), randomUuid(),
       randomUuid(), makeUser(), makeLinks()
     )
-  }
+  }*/
 }

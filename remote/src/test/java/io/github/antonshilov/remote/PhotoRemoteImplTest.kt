@@ -26,7 +26,7 @@ class PhotoRemoteImplTest {
   @Test
   fun `get photos completes`() {
     stubPhotoList(Observable.just(PhotoFactory.makePhotoList()))
-    stubMapper(any(), PhotoFactory.makePhotoEntity())
+    //stubMapper(any(), PhotoFactory.makePhotoEntity())
 
     val testObserver = remote.getLatestPhotos(page, pageSize).test()
     testObserver.assertComplete()
@@ -35,7 +35,7 @@ class PhotoRemoteImplTest {
   @Test
   fun `get photos calls server`() {
     stubPhotoList(Observable.just(PhotoFactory.makePhotoList()))
-    stubMapper(any(), PhotoFactory.makePhotoEntity())
+    //stubMapper(any(), PhotoFactory.makePhotoEntity())
 
     remote.getLatestPhotos(page, pageSize).test()
     verify(api).getLatestPhotos(page, pageSize)

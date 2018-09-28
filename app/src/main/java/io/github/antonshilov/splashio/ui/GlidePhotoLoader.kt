@@ -7,6 +7,8 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import io.github.antonshilov.domain.feed.photos.model.Photo
 import io.github.antonshilov.splashio.GlideApp
 
+private const val TIMEOUT = 60000;
+
 fun ImageView.loadPhoto(photo: Photo) {
   val url = photo.urls.regular
   val color = ColorDrawable(photo.color.toColorInt())
@@ -17,6 +19,7 @@ fun ImageView.loadPhoto(photo: Photo) {
     .load(url)
     .placeholder(color)
     .centerCrop()
+    .timeout(TIMEOUT)
     .transition(DrawableTransitionOptions.withCrossFade())
     .into(this)
 }
@@ -26,6 +29,7 @@ fun ImageView.loadPhoto(url: String?) {
   GlideApp.with(this)
     .load(url)
     .centerCrop()
+    .timeout(TIMEOUT)
     .transition(DrawableTransitionOptions.withCrossFade())
     .into(this)
 }

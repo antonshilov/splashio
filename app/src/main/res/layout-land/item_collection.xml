@@ -5,10 +5,10 @@
   android:id="@+id/root"
   android:layout_width="360dp"
   android:layout_height="match_parent"
-  android:layout_marginBottom="@dimen/collection_item_margin_start"
-  android:layout_marginStart="@dimen/collection_item_margin_end"
+  android:layout_marginBottom="@dimen/collection_item_margin_bottom"
+  android:layout_marginStart="@dimen/collection_item_margin_start"
   android:layout_marginTop="@dimen/collection_item_margin_top"
-  android:layout_marginEnd="@dimen/collection_item_margin_bottom"
+  android:layout_marginEnd="@dimen/collection_item_margin_end"
   app:cardCornerRadius="8dp">
 
   <android.support.constraint.ConstraintLayout
