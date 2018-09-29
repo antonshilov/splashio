@@ -11,4 +11,22 @@
   <string name="download_channel_name">Downloads</string>
   <string name="download_channel_description">Image download status notifications</string>
   <string name="transition_photo">photo</string>
+
+  <!-- Plurals from collection card description-->
+  <plurals name="collection_description_plurals_with_curator">
+    <item quantity="zero">No photo \u25CF curated by %2$s</item>
+    <item quantity="one">%1$d photo \u25CF curated by %2$s</item>
+    <item quantity="other">%1$d photos \u25CF curated by %2$s</item>
+  </plurals>
+  <plurals name="collection_description_plurals_without_curator">
+    <item quantity="zero">No photo</item>
+    <item quantity="one">%1$d photo</item>
+    <item quantity="other">%1$d photos</item>
+  </plurals>
+
+  <!--Element descriptions -->
+  <string name="collection_cover_description">Collection cover</string>
+  <string name="collection_first_preload_image_description">First collection image</string>
+  <string name="collection_second_preload_image_description">Second collection image</string>
+  <string name="collection_third_preload_image_description">Third collection image</string>
 </resources>

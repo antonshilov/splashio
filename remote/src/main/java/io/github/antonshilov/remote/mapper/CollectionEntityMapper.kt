@@ -16,7 +16,9 @@ class CollectionEntityMapper(private val photoMapper: PhotoEntityMapper) : Entit
         totalPhotos,
         private,
         shareKey,
-        photoMapper.mapFromRemote(coverPhoto)
+        photoMapper.mapFromRemote(coverPhoto),
+        previewPhotos?.map { it.urls.small },
+        user?.name
       )
     }
   }

@@ -1,6 +1,7 @@
 package io.github.antonshilov.splashio.ui.collections
 
 import android.arch.paging.PagedListAdapter
+import android.content.res.Resources
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -32,11 +33,30 @@ class CollectionsAdapter :
     LayoutContainer {
     fun bind(collection: Collection) {
       bindCoverPhoto(collection.coverPhoto)
+      bindInnerPhotos(collection.previewPhotosUrls)
       title.text = collection.title
+      description.text = getDescription(collection, containerView.resources!!)
     }
 
     private fun bindCoverPhoto(photoEntity: Photo) {
       cover.loadPhoto(photoEntity)
+    }
+
+    private fun bindInnerPhotos(urls: List<String>?) {
+      if (urls == null) return
+      first_inner_image.loadPhoto(urls.getOrNull(1))
+      second_inner_image.loadPhoto(urls.getOrNull(2))
+      third_inner_image.loadPhoto(urls.getOrNull(3))
+    }
+  }
+
+  private fun getDescription(collection: Collection, res: Resources): String {
+    val name = collection.userName
+    val count = collection.totalPhotos
+    return if (name != null) {
+      res.getQuantityString(R.plurals.collection_description_plurals_with_curator, count, count, name)
+    } else {
+      res.getQuantityString(R.plurals.collection_description_plurals_without_curator, count, count, name)
     }
   }
 

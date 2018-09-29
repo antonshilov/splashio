@@ -17,5 +17,13 @@ data class CollectionModel(
   @SerializedName("share_key")
   val shareKey: String,
   @SerializedName("cover_photo")
-  val coverPhoto: PhotoModel
+  val coverPhoto: PhotoModel,
+  @SerializedName("preview_photos")
+  val previewPhotos: List<PreviewPhoto>?,
+  val user: User?
+)
+
+data class PreviewPhoto(
+  val id: Int,
+  val urls: Urls
 )
