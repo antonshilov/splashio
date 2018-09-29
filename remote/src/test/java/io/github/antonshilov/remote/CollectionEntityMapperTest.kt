@@ -29,7 +29,7 @@ class CollectionEntityMapperTest {
 
     Assert.assertEquals(model.id, entity.id)
     Assert.assertEquals(model.description, entity.description)
-    Assert.assertEquals(model.previewPhotos?.map{ it.urls.small }, entity.previewPhotosUrls)
+    Assert.assertEquals(model.previewPhotos?.map { it.urls.small }, entity.previewPhotosUrls)
     Assert.assertEquals(model.user?.name, entity.userName)
   }
 }

@@ -24,6 +24,6 @@ data class CollectionModel(
 )
 
 data class PreviewPhoto(
-  val id : Int,
+  val id: Int,
   val urls: Urls
 )
