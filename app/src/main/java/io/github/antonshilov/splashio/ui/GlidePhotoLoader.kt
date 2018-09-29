@@ -7,7 +7,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import io.github.antonshilov.domain.feed.photos.model.Photo
 import io.github.antonshilov.splashio.GlideApp
 
-private const val TIMEOUT = 60000;
+private const val TIMEOUT = 60000
 
 fun ImageView.loadPhoto(photo: Photo) {
   val url = photo.urls.regular
