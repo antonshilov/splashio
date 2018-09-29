@@ -8,12 +8,15 @@ buildscript {
     google()
     jcenter()
     gradlePluginPortal()
+    maven("https://maven.fabric.io/public")
   }
   dependencies {
     classpath(Deps.android_plugin)
     classpath(Deps.kotlin_plugin)
     classpath(Deps.versions_plugin)
     classpath(Deps.quality_tools_plugin)
+    classpath(Deps.fabricPlugin)
+
   }
 }
 
@@ -22,6 +25,7 @@ allprojects {
     google()
     jcenter()
     maven("https://jitpack.io")
+    maven("https://maven.fabric.io/public")
   }
 }
 

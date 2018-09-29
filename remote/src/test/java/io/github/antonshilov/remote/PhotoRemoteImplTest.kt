@@ -5,10 +5,11 @@ import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import io.github.antonshilov.domain.feed.photos.model.Photo
-import io.github.antonshilov.remote.factory.PhotoFactory
 import io.github.antonshilov.remote.mapper.PhotoEntityMapper
 import io.github.antonshilov.remote.model.PhotoModel
 import io.github.antonshilov.remote.service.UnsplashApi
+import io.github.benas.randombeans.api.EnhancedRandom.random
+import io.github.benas.randombeans.api.EnhancedRandom.randomListOf
 import io.reactivex.Observable
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -25,8 +26,8 @@ class PhotoRemoteImplTest {
 
   @Test
   fun `get photos completes`() {
-    stubPhotoList(Observable.just(PhotoFactory.makePhotoList()))
-    //stubMapper(any(), PhotoFactory.makePhotoEntity())
+    stubPhotoList(Observable.just(randomListOf(10, PhotoModel::class.java)))
+    stubMapper(any(), random(Photo::class.java))
 
     val testObserver = remote.getLatestPhotos(page, pageSize).test()
     testObserver.assertComplete()
@@ -34,8 +35,8 @@ class PhotoRemoteImplTest {
 
   @Test
   fun `get photos calls server`() {
-    stubPhotoList(Observable.just(PhotoFactory.makePhotoList()))
-    //stubMapper(any(), PhotoFactory.makePhotoEntity())
+    stubPhotoList(Observable.just(randomListOf(10, PhotoModel::class.java)))
+    stubMapper(any(), random(Photo::class.java))
 
     remote.getLatestPhotos(page, pageSize).test()
     verify(api).getLatestPhotos(page, pageSize)

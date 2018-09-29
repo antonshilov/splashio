@@ -5,6 +5,7 @@ plugins {
   id("kotlin-android")
   id("kotlin-kapt")
   id("kotlin-android-extensions")
+  id("io.fabric")
 }
 // workaround for the bug in kotlin plugin, taken from https://github.com/gradle/kotlin-dsl/issues/644#issuecomment-398502551
 androidExtensions {
@@ -91,7 +92,9 @@ dependencies {
 
   implementation(Deps.photo_view)
 
-
+  implementation("com.crashlytics.sdk.android:crashlytics:2.9.5@aar") {
+    isTransitive = true
+  }
   testImplementation(Deps.junit)
   androidTestImplementation(Deps.test_runner)
   androidTestImplementation(Deps.espresso)

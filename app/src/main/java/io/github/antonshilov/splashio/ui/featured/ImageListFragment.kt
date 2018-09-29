@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import io.github.antonshilov.splashio.R
 import io.github.antonshilov.splashio.api.model.Photo
 import io.github.antonshilov.splashio.ui.fullscreen.FullscreenImageActivity
+import io.github.antonshilov.splashio.ui.navigation.Scrollable
 import org.koin.android.architecture.ext.android.viewModel
 import timber.log.Timber
 
@@ -25,7 +26,8 @@ import timber.log.Timber
  * displays a grid of the curated images
  * navigates to the [FullscreenImageActivity] on click on the image item
  */
-class ImageListFragment : Fragment() {
+class ImageListFragment : Fragment(), Scrollable {
+
   private val vm by viewModel<PhotoListViewModel>()
 
   private lateinit var adapter: PhotoAdapter
@@ -80,6 +82,10 @@ class ImageListFragment : Fragment() {
     progressBar.setVisibility(networkState?.status == Status.RUNNING)
     imageGrid.setVisibility(networkState?.status == Status.SUCCESS)
     errorText.setVisibility(networkState?.status == Status.FAILED)
+  }
+
+  override fun scrollTop() {
+    imageGrid.smoothScrollToPosition(0)
   }
 
   private fun navigateToFullscreen(img: Photo, sharedView: ImageView) {
