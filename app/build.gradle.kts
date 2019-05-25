@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.internal.AndroidExtensionsExtension
-
 plugins {
   id("com.android.application")
   id("kotlin-android")
@@ -9,9 +7,7 @@ plugins {
 }
 // workaround for the bug in kotlin plugin, taken from https://github.com/gradle/kotlin-dsl/issues/644#issuecomment-398502551
 androidExtensions {
-  configure(delegateClosureOf<AndroidExtensionsExtension> {
-    isExperimental = true
-  })
+  isExperimental = true
 }
 android {
   compileSdkVersion(28)
@@ -79,6 +75,7 @@ dependencies {
 
   implementation(Deps.koin_arch)
   implementation(Deps.koin)
+  implementation(Deps.koin_Android)
 
   implementation(Deps.permissions_dispatcher) {
     // if you don"t use android.app.Fragment you can exclude support for them

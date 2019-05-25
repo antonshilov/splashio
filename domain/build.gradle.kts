@@ -2,13 +2,10 @@ plugins { kotlin("jvm") }
 
 dependencies {
   implementation(Deps.rxkotlin)
+  implementation("io.reactivex.rxjava2:rxjava:2.2.8")
 
   testImplementation(Deps.junit)
   testImplementation(Deps.mockito)
   testImplementation(Deps.randomBeans)
-}
-
-java {
-  sourceCompatibility = JavaVersion.VERSION_1_7
-  targetCompatibility = JavaVersion.VERSION_1_7
+  implementation(kotlin("stdlib-jdk8"))
 }

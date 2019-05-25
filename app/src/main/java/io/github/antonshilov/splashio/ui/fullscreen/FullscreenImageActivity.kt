@@ -25,7 +25,7 @@ import io.github.antonshilov.splashio.R
 import io.github.antonshilov.splashio.api.model.Photo
 import io.github.antonshilov.splashio.ui.featured.setVisibility
 import kotlinx.android.synthetic.main.activity_fullscreen_image.*
-import org.koin.android.architecture.ext.android.viewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.RuntimePermissions
 import timber.log.Timber

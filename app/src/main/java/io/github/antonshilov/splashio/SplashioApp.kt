@@ -4,7 +4,8 @@ import android.app.Application
 import com.crashlytics.android.Crashlytics
 import io.fabric.sdk.android.Fabric
 import io.github.antonshilov.splashio.di.appModule
-import org.koin.android.ext.android.startKoin
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 import timber.log.Timber
 
 /**
@@ -19,6 +20,9 @@ class SplashioApp : Application() {
       Timber.plant(Timber.DebugTree())
       Fabric.with(this, Crashlytics())
     }
-    startKoin(listOf(appModule))
+    startKoin {
+      modules(appModule)
+      androidContext(this@SplashioApp)
+    }
   }
 }

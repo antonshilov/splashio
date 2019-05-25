@@ -14,9 +14,5 @@ dependencies {
   testImplementation(Deps.randomBeans)
 
   testImplementation(Deps.mockWebServer)
-}
-
-java {
-  sourceCompatibility = JavaVersion.VERSION_1_7
-  targetCompatibility = JavaVersion.VERSION_1_7
+  implementation(kotlin("stdlib-jdk8"))
 }

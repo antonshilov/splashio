@@ -22,11 +22,10 @@ import io.github.antonshilov.splashio.ui.featured.PhotoListViewModel
 import io.github.antonshilov.splashio.ui.fullscreen.FullscreenImageViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.koin.android.architecture.ext.koin.viewModel
-import org.koin.dsl.module.Module
-import org.koin.dsl.module.module
+import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.dsl.module
 
-val appModule: Module = module {
+val appModule = module {
   viewModel { PhotoListViewModel(get()) }
   viewModel { FullscreenImageViewModel() }
   viewModel { CollectionListViewModel(get()) }
@@ -35,8 +34,8 @@ val appModule: Module = module {
   factory { CollectionsAdapter() }
 
   single { UiThread() as PostExecutionThread }
-  bean { provideOkHttpClient() }
-  bean { UnsplashApi.create(client = get()) }
+  factory { provideOkHttpClient() }
+  factory { UnsplashApi.create(client = get()) }
 
   single { UnsplashApiFactory.createUnsplashApi(BuildConfig.DEBUG) }
   single {

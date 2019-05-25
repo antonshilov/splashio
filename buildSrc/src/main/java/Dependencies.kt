@@ -1,6 +1,6 @@
 object Versions {
-  const val kotlin = "1.2.70"
-  val android_plugin = "3.3.0-alpha11"
+  const val kotlin = "1.3.31"
+  val android_plugin = "3.4.1"
   val versions_plugin = "0.20.0"
   val quality_tools_plugin = "0.13.0"
   val support = "28.0.0-rc02"
@@ -18,7 +18,7 @@ object Versions {
   val test_runner = "1.0.2"
   val espresso = "3.0.2"
   val mockito = "2.0.0-alpha03"
-  val koin = "1.0.0-alpha-12"
+  val koin = "2.0.0"
   val permissions_dispatcher = "3.2.0"
   val work = "1.0.0-alpha09"
   val rxkotlin = "2.3.0"
@@ -74,8 +74,9 @@ object Deps {
   val navigation_safe_args_plugin = "android.arch.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation}"
   val navigation_testing_ktx = "android.arch.navigation:navigation-testing-ktx:${Versions.navigation}"
 
-  val koin_arch = "org.koin:koin-android-architecture:${Versions.koin}"
+  val koin_arch = "org.koin:koin-android-viewmodel:${Versions.koin}"
   val koin = "org.koin:koin-core:${Versions.koin}"
+  val koin_Android = "org.koin:koin-android:${Versions.koin}"
 
   val rxkotlin = "io.reactivex.rxjava2:rxkotlin:${Versions.rxkotlin}"
   val rxandroid = "io.reactivex.rxjava2:rxandroid:${Versions.rxandroid}"

@@ -17,7 +17,7 @@ import io.github.antonshilov.splashio.R
 import io.github.antonshilov.splashio.api.model.Photo
 import io.github.antonshilov.splashio.ui.fullscreen.FullscreenImageActivity
 import io.github.antonshilov.splashio.ui.navigation.Scrollable
-import org.koin.android.architecture.ext.android.viewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 /**

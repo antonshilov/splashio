@@ -11,8 +11,8 @@ import io.github.antonshilov.splashio.ui.collections.CollectionListViewModel
 import io.github.antonshilov.splashio.ui.collections.CollectionsAdapter
 import io.github.antonshilov.splashio.ui.navigation.Scrollable
 import kotlinx.android.synthetic.main.fragment_collections.*
-import org.koin.android.architecture.ext.android.viewModel
 import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class CollectionsFragment : Fragment(), Scrollable {
   private val vm by viewModel<CollectionListViewModel>()
