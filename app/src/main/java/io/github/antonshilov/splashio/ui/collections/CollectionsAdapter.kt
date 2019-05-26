@@ -1,11 +1,11 @@
 package io.github.antonshilov.splashio.ui.collections
 
-import android.arch.paging.PagedListAdapter
-import android.support.v7.util.DiffUtil
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
 import io.github.antonshilov.domain.feed.collections.Collection
 import io.github.antonshilov.domain.feed.photos.model.Photo
 import io.github.antonshilov.splashio.R

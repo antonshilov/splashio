@@ -4,7 +4,7 @@
             xmlns:tools="http://schemas.android.com/tools"
             app:startDestination="@id/imageListFragment">
 
-  <bottom_fragment
+  <fragment
     android:id="@+id/imageListFragment"
     android:name="io.github.antonshilov.splashio.ui.featured.ImageListFragment"
     android:label="fragment_image_list"
@@ -13,21 +13,21 @@
       android:id="@+id/action_imageListFragment_to_fullscreenImageActivity"
       app:destination="@id/fullscreenImageActivity"
     />
-  </bottom_fragment>
+  </fragment>
   <activity android:id="@+id/fullscreenImageActivity"
             android:name="io.github.antonshilov.splashio.ui.fullscreen.FullscreenImageActivity"
             android:label="activity_fullscreen_image" tools:layout="@layout/activity_fullscreen_image">
   </activity>
-  <bottom_fragment
+  <fragment
     android:id="@+id/collectionsFragment"
     android:name="CollectionsFragment"
     android:label="CollectionsFragment"
     tools:layout="@layout/fragment_collections"/>
-  <bottom_fragment
+  <fragment
     android:id="@+id/profileFragment"
     android:name="io.github.antonshilov.splashio.ui.profile.ProfileFragment"
     android:label="ProfileFragment"/>
-  <bottom_fragment
+  <fragment
     android:id="@+id/searchFragment"
     android:name="io.github.antonshilov.splashio.ui.search.SearchFragment"
     android:label="SearchFragment"/>

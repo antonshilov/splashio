@@ -1,12 +1,12 @@
 package io.github.antonshilov.splashio.ui.featured
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.Transformations.switchMap
-import android.arch.lifecycle.ViewModel
-import android.arch.paging.LivePagedListBuilder
-import android.arch.paging.PagedList
 import android.os.Handler
 import android.os.Looper
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations.switchMap
+import androidx.lifecycle.ViewModel
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import io.github.antonshilov.splashio.api.UnsplashApi
 import io.github.antonshilov.splashio.api.model.Photo
 import timber.log.Timber

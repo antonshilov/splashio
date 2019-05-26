@@ -1,18 +1,18 @@
 package io.github.antonshilov.splashio.ui.featured
 
-import android.arch.lifecycle.Observer
 import android.os.Bundle
-import android.support.v4.app.ActivityOptionsCompat
-import android.support.v4.app.Fragment
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.navigation.ActivityNavigator
+import androidx.core.app.ActivityOptionsCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.navigation.ActivityNavigatorExtras
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import io.github.antonshilov.splashio.R
 import io.github.antonshilov.splashio.api.model.Photo
 import io.github.antonshilov.splashio.ui.fullscreen.FullscreenImageActivity
@@ -90,7 +90,7 @@ class ImageListFragment : Fragment(), Scrollable {
 
   private fun navigateToFullscreen(img: Photo, sharedView: ImageView) {
     val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity!!, sharedView, img.id)
-    val extras = ActivityNavigator.Extras(options)
+    val extras = ActivityNavigatorExtras(options)
     findNavController().navigate(
       R.id.fullscreenImageActivity,
       FullscreenImageActivity.bundleArgs(img), // Bundle of args

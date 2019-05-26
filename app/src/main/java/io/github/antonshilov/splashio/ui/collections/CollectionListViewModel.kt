@@ -1,11 +1,11 @@
 package io.github.antonshilov.splashio.ui.collections
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.ViewModel
-import android.arch.paging.DataSource
-import android.arch.paging.LivePagedListBuilder
-import android.arch.paging.PageKeyedDataSource
-import android.arch.paging.PagedList
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import androidx.paging.DataSource
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PageKeyedDataSource
+import androidx.paging.PagedList
 import io.github.antonshilov.domain.feed.PaginationParams
 import io.github.antonshilov.domain.feed.collections.Collection
 import io.github.antonshilov.domain.feed.collections.GetCollections

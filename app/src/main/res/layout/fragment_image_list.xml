@@ -8,7 +8,7 @@
   android:fitsSystemWindows="true"
   tools:context=".ui.featured.ImageListFragment">
 
-  <android.support.v7.widget.RecyclerView
+  <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/imageGrid"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
     android:paddingBottom="48dp"
     android:paddingStart="8dp"
     android:paddingEnd="8dp"
-    app:layoutManager="android.support.v7.widget.StaggeredGridLayoutManager"
+    app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
     app:spanCount="@integer/photo_grid_amount"
     tools:listitem="@layout/item_photo"/>
   <ProgressBar

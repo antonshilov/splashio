@@ -1,8 +1,8 @@
 package io.github.antonshilov.splashio.ui.fullscreen
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.Transformations
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModel
 import androidx.work.State
 import androidx.work.WorkManager
 import io.github.antonshilov.splashio.api.ImageDownloadWorker
