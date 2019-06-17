@@ -19,6 +19,7 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkRequest
 import androidx.work.Worker
+import androidx.work.WorkerParameters
 import io.github.antonshilov.splashio.R
 import io.github.antonshilov.splashio.api.ImageDownloadWorker.Companion.bundleInput
 import io.github.antonshilov.splashio.api.model.Photo
@@ -34,7 +35,7 @@ import java.io.IOException
  * [ImageDownloadWorker] downloads a file from url passed to [bundleInput]
  * and saves it to the internal application storage.
  */
-class ImageDownloadWorker : Worker() {
+class ImageDownloadWorker(appContext: Context, workerParams: WorkerParameters) : Worker(appContext, workerParams) {
 
   private val client = provideOkHttpClient()
   private val notificationManager by lazy { ImageDownloadNotificationManager(applicationContext) }
@@ -55,7 +56,7 @@ class ImageDownloadWorker : Worker() {
       .build()
     try {
       Timber.d("Execute Load Image")
-      val response = client.newCall(request).execute()!!
+      val response = client.newCall(request).execute()
       if (response.isSuccessful) {
         Timber.d("Load Success")
 
@@ -114,7 +115,7 @@ class ImageDownloadWorker : Worker() {
     } else {
       null
     }
-    cursor.close()
+    cursor?.close()
     return result
   }
 

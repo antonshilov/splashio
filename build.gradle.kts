@@ -41,10 +41,6 @@ allprojects {
 
 codeQualityTools {
   failEarly = true
-
-  findbugs {
-    enabled = false
-  }
   checkstyle {
     enabled = false
   }
@@ -57,11 +53,9 @@ codeQualityTools {
   }
   ktlint {
     enabled = true
-    toolVersion = "0.26.0"
   }
   detekt {
     enabled = true
-    toolVersion = "1.0.0.RC8"
     config = "codeQuality/detekt.yml"
   }
   cpd {

@@ -63,8 +63,6 @@ dependencies {
   implementation(Deps.paging)
   implementation("android.arch.paging:rxjava2:1.0.1")
 
-
-
   implementation(Deps.retrofit)
   implementation(Deps.gson_converter)
   implementation(Deps.okhttp)

@@ -15,6 +15,7 @@ fun ImageView.loadPhoto(photo: Photo) {
     .transition(DrawableTransitionOptions.withCrossFade())
   GlideApp.with(this)
     .load(url)
+    .thumbnail(thumbnailRequest)
     .placeholder(color)
     .centerCrop()
     .transition(DrawableTransitionOptions.withCrossFade())
