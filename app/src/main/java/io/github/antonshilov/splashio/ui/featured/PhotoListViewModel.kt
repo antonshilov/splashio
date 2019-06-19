@@ -19,7 +19,7 @@ import java.util.concurrent.Executors
 class PhotoListViewModel(val api: UnsplashApi) : ViewModel() {
 
   private val factory = PhotoDataSourceFactory(api)
-  val networkState = switchMap(factory.sourceLiveData) { it.networkState }!!
+  val networkState = switchMap(factory.sourceLiveData) { it.networkState }
 
   val photoList: LiveData<PagedList<Photo>>
 

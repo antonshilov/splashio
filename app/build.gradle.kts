@@ -5,7 +5,6 @@ plugins {
   id("kotlin-android-extensions")
   id("io.fabric")
 }
-// workaround for the bug in kotlin plugin, taken from https://github.com/gradle/kotlin-dsl/issues/644#issuecomment-398502551
 androidExtensions {
   isExperimental = true
 }
@@ -36,6 +35,10 @@ android {
     exclude("META-INF/ASL2.0")
     exclude("META-INF/proguard/androidx-annotations.pro")
   }
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    setTargetCompatibility(JavaVersion.VERSION_1_8)
+  }
 }
 
 dependencies {
@@ -43,8 +46,6 @@ dependencies {
   implementation(project(":remote"))
 
   implementation(Deps.kotlin_stdlib)
-  implementation(Deps.support_v4)
-  implementation(Deps.appcompat_v7)
   implementation(Deps.design)
   implementation(Deps.recyclerview_v7)
   implementation(Deps.cardview_v7)

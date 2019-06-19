@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
   id("com.github.ben-manes.versions") version Versions.versions_plugin
   id("com.vanniktech.code.quality.tools") version Versions.quality_tools_plugin
-  kotlin("jvm") version "1.3.30"
+  kotlin("jvm") version "1.3.40"
 }
 buildscript {
   repositories {
