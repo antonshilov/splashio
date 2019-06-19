@@ -98,7 +98,8 @@ data class NetworkState private constructor(
  * This allows us to channel its network request status etc back to the UI.
  */
 class PhotoDataSourceFactory(
-  private val api: PhotoRepo, private val compositeDisposable: CompositeDisposable
+  private val api: PhotoRepo,
+  private val compositeDisposable: CompositeDisposable
 ) : DataSource.Factory<Int, Photo>() {
   val sourceLiveData = MutableLiveData<PhotoDataSource>()
   override fun create(): DataSource<Int, Photo> {

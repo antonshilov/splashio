@@ -7,4 +7,3 @@ data class PhotoLinks(
   val html: String,
   val download: String
 ) : Serializable
-

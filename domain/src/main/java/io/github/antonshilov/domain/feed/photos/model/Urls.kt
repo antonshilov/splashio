@@ -9,4 +9,3 @@ data class Urls(
   val small: String,
   val thumb: String
 ) : Serializable
-
