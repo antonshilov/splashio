@@ -8,8 +8,7 @@ import io.github.antonshilov.domain.feed.PaginationParams
 import io.github.antonshilov.domain.feed.photos.GetPhotos
 import io.github.antonshilov.domain.feed.photos.model.Photo
 import io.github.benas.randombeans.api.EnhancedRandom.randomListOf
-
-import io.reactivex.Observable
+import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -29,7 +28,7 @@ class GetPhotosTest {
   @Before
   fun setup() {
     getPhotos = GetPhotos(repo, postExecutionThread)
-    stubRepo(Observable.just(randomListOf(10, Photo::class.java)))
+    stubRepo(Single.just(randomListOf(10, Photo::class.java)))
   }
 
   @Test
@@ -47,13 +46,13 @@ class GetPhotosTest {
   @Test
   fun `get photos returns photos`() {
     val photos = randomListOf(10, Photo::class.java)
-    stubRepo(Observable.just(photos))
+    stubRepo(Single.just(photos))
     val observer = getPhotos.buildObservable(defaultParams).test()
     observer.assertValue(photos)
   }
 
-  private fun stubRepo(observable: Observable<List<Photo>>) {
+  private fun stubRepo(single: Single<List<Photo>>) {
     whenever(repo.getLatestPhotos(any(), any()))
-      .thenReturn(observable)
+      .thenReturn(single)
   }
 }

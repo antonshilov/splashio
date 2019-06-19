@@ -1,6 +1,5 @@
 package io.github.antonshilov.splashio.ui.fullscreen
 
-import android.Manifest
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Drawable
@@ -19,15 +18,11 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import io.github.antonshilov.domain.feed.photos.model.Photo
 import io.github.antonshilov.splashio.GlideApp
 import io.github.antonshilov.splashio.GlideRequest
 import io.github.antonshilov.splashio.R
-import io.github.antonshilov.splashio.api.model.Photo
-import io.github.antonshilov.splashio.ui.featured.setVisibility
 import kotlinx.android.synthetic.main.activity_fullscreen_image.*
-import org.koin.android.viewmodel.ext.android.viewModel
-import permissions.dispatcher.NeedsPermission
-import permissions.dispatcher.RuntimePermissions
 import timber.log.Timber
 
 private const val ARG_PHOTO = "photo"
@@ -39,9 +34,7 @@ private const val ARG_PHOTO = "photo"
  * Hide/display controls on image tap
  */
 
-@RuntimePermissions
 class FullscreenImageActivity : AppCompatActivity() {
-  private val vm by viewModel<FullscreenImageViewModel>()
   private lateinit var photo: Photo
   private lateinit var progressIndicator: CircularProgressDrawable
 
@@ -49,7 +42,7 @@ class FullscreenImageActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_fullscreen_image)
 
-    photo = intent?.extras?.getParcelable(ARG_PHOTO)
+    photo = intent?.extras?.getSerializable(ARG_PHOTO) as Photo?
       ?: throw IllegalArgumentException("You have to pass a photo to view in fullscreen")
     setupEnterTransition()
     initProgressIndicator()
@@ -87,8 +80,7 @@ class FullscreenImageActivity : AppCompatActivity() {
 
   private fun setInsetListener() {
     ViewCompat.setOnApplyWindowInsetsListener(root) { _, insets ->
-      val lpToolbar = toolbar
-        .layoutParams as ViewGroup.MarginLayoutParams
+      val lpToolbar = toolbar.layoutParams as ViewGroup.MarginLayoutParams
       lpToolbar.topMargin = insets!!.systemWindowInsetTop
       toolbar.layoutParams = lpToolbar
       val lpBottom = bottomContainer
@@ -106,20 +98,17 @@ class FullscreenImageActivity : AppCompatActivity() {
     photoView.setOnPhotoTapListener { _, _, _ ->
       fullScreen(isImmersiveModeEnabled())
     }
-    buttonWallpaper.setOnClickListener {
-      setWallpaperWithPermissionCheck()
-    }
   }
 
   private fun bindPhoto() {
     loadPhoto()
-    userName.text = photo.user?.name
+    userName.text = photo.user.name
     loadAvatar()
   }
 
   private fun loadAvatar() {
     GlideApp.with(this)
-      .load(photo.user?.profileImage?.medium)
+      .load(photo.user.profileImage?.medium)
       .circleCrop()
       .into(avatar)
   }
@@ -160,7 +149,7 @@ class FullscreenImageActivity : AppCompatActivity() {
 
   private fun getThumbnailLoadRequest(): GlideRequest<Drawable> {
     return GlideApp.with(this)
-      .load(photo.url)
+      .load(photo.urls.regular)
       .listener(object : RequestListener<Drawable> {
         override fun onLoadFailed(
           e: GlideException?,
@@ -185,20 +174,6 @@ class FullscreenImageActivity : AppCompatActivity() {
       })
   }
 
-  override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-    super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    onRequestPermissionsResult(requestCode, grantResults)
-  }
-
-  /**
-   * Call view model to set a wallpaper
-   * annotated to generated checked permissions method
-   */
-  @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
-  fun setWallpaper() {
-    vm.setWallpaper(photo)
-  }
-
   override fun onCreateOptionsMenu(menu: Menu?): Boolean {
     menuInflater.inflate(R.menu.menu_fullscreen_image, menu)
     return true
@@ -209,7 +184,7 @@ class FullscreenImageActivity : AppCompatActivity() {
       R.id.action_share -> {
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.type = "text/plain"
-        shareIntent.putExtra(Intent.EXTRA_TEXT, photo.links?.html)
+        shareIntent.putExtra(Intent.EXTRA_TEXT, photo.links.html)
         startActivity(Intent.createChooser(shareIntent, "Share photo using"))
         true
       }
@@ -223,8 +198,8 @@ class FullscreenImageActivity : AppCompatActivity() {
   private fun fullScreen(isEnabled: Boolean) {
     Timber.d("Fullscreen toggle: $isEnabled")
     TransitionManager.beginDelayedTransition(root)
-    toolbar.setVisibility(isEnabled)
-    bottomContainer.setVisibility(isEnabled)
+    toolbar.isVisible = isEnabled
+    bottomContainer.isVisible = isEnabled
   }
 
   private fun isImmersiveModeEnabled(): Boolean = !toolbar.isVisible

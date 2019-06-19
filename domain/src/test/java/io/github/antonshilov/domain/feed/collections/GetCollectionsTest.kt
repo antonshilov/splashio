@@ -6,7 +6,7 @@ import com.nhaarman.mockitokotlin2.whenever
 import io.github.antonshilov.domain.executor.PostExecutionThread
 import io.github.antonshilov.domain.feed.PaginationParams
 import io.github.benas.randombeans.api.EnhancedRandom
-import io.reactivex.Observable
+import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -26,7 +26,7 @@ class GetCollectionsTest {
   @Before
   fun setup() {
     getCollections = GetCollections(repo, postExecutionThread)
-    stubRepo(Observable.just(EnhancedRandom.randomListOf(10, Collection::class.java)))
+    stubRepo(Single.just(EnhancedRandom.randomListOf(10, Collection::class.java)))
   }
 
   @Test
@@ -44,13 +44,13 @@ class GetCollectionsTest {
   @Test
   fun `returns collections`() {
     val collections = EnhancedRandom.randomListOf(10, Collection::class.java)
-    stubRepo(Observable.just(collections))
+    stubRepo(Single.just(collections))
     val observer = getCollections.buildObservable(defaultParams).test()
     observer.assertValue(collections)
   }
 
-  private fun stubRepo(observable: Observable<List<Collection>>) {
+  private fun stubRepo(single: Single<List<Collection>>) {
     whenever(repo.getCollections(any(), any()))
-      .thenReturn(observable)
+      .thenReturn(single)
   }
 }

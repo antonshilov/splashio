@@ -8,15 +8,15 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.ActivityNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import io.github.antonshilov.domain.feed.photos.model.Photo
 import io.github.antonshilov.splashio.R
-import io.github.antonshilov.splashio.api.model.Photo
 import io.github.antonshilov.splashio.ui.fullscreen.FullscreenImageActivity
-import io.github.antonshilov.splashio.ui.navigation.Scrollable
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -26,7 +26,7 @@ import timber.log.Timber
  * displays a grid of the curated images
  * navigates to the [FullscreenImageActivity] on click on the image item
  */
-class ImageListFragment : Fragment(), Scrollable {
+class ImageListFragment : Fragment() {
 
   private val vm by viewModel<PhotoListViewModel>()
 
@@ -79,13 +79,9 @@ class ImageListFragment : Fragment(), Scrollable {
    * Changes the view visibility based on the network state
    */
   private fun showNetworkState(networkState: NetworkState?) {
-    progressBar.setVisibility(networkState?.status == Status.RUNNING)
-    imageGrid.setVisibility(networkState?.status == Status.SUCCESS)
-    errorText.setVisibility(networkState?.status == Status.FAILED)
-  }
-
-  override fun scrollTop() {
-    imageGrid.smoothScrollToPosition(0)
+    progressBar.isVisible = networkState?.status == Status.RUNNING
+    progressBar.isVisible = networkState?.status == Status.SUCCESS
+    progressBar.isVisible = networkState?.status == Status.FAILED
   }
 
   private fun navigateToFullscreen(img: Photo, sharedView: ImageView) {
@@ -97,17 +93,5 @@ class ImageListFragment : Fragment(), Scrollable {
       null, // NavOptions
       extras
     )
-  }
-}
-
-/**
- * Changes view visibility
- * @param isVisible true==VISIBLE false==GONE
- */
-fun View.setVisibility(isVisible: Boolean) {
-  this.visibility = if (isVisible) {
-    View.VISIBLE
-  } else {
-    View.GONE
   }
 }

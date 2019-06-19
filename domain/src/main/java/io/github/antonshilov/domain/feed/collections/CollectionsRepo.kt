@@ -1,6 +1,6 @@
 package io.github.antonshilov.domain.feed.collections
 
-import io.reactivex.Observable
+import io.reactivex.Single
 
 interface CollectionsRepo {
   /**
@@ -8,5 +8,5 @@ interface CollectionsRepo {
    * @param pageSize the number of items returned per page
    * @return the list of latest collections uploaded by all users
    */
-  fun getCollections(page: Int, pageSize: Int): Observable<List<Collection>>
+  fun getCollections(page: Int, pageSize: Int): Single<List<Collection>>
 }

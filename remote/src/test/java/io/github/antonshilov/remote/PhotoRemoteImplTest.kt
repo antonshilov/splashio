@@ -10,7 +10,7 @@ import io.github.antonshilov.remote.model.PhotoModel
 import io.github.antonshilov.remote.service.UnsplashApi
 import io.github.benas.randombeans.api.EnhancedRandom.random
 import io.github.benas.randombeans.api.EnhancedRandom.randomListOf
-import io.reactivex.Observable
+import io.reactivex.Single
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
@@ -26,7 +26,7 @@ class PhotoRemoteImplTest {
 
   @Test
   fun `get photos completes`() {
-    stubPhotoList(Observable.just(randomListOf(10, PhotoModel::class.java)))
+    stubPhotoList(Single.just(randomListOf(10, PhotoModel::class.java)))
     stubMapper(any(), random(Photo::class.java))
 
     val testObserver = remote.getLatestPhotos(page, pageSize).test()
@@ -35,16 +35,16 @@ class PhotoRemoteImplTest {
 
   @Test
   fun `get photos calls server`() {
-    stubPhotoList(Observable.just(randomListOf(10, PhotoModel::class.java)))
+    stubPhotoList(Single.just(randomListOf(10, PhotoModel::class.java)))
     stubMapper(any(), random(Photo::class.java))
 
     remote.getLatestPhotos(page, pageSize).test()
     verify(api).getLatestPhotos(page, pageSize)
   }
 
-  private fun stubPhotoList(observable: Observable<List<PhotoModel>>) {
+  private fun stubPhotoList(single: Single<List<PhotoModel>>) {
     whenever(api.getLatestPhotos(any(), any()))
-      .thenReturn(observable)
+      .thenReturn(single)
   }
 
   private fun stubMapper(model: PhotoModel, entity: Photo) {

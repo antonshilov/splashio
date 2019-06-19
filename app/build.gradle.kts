@@ -76,12 +76,6 @@ dependencies {
   implementation(Deps.koin)
   implementation(Deps.koin_Android)
 
-  implementation(Deps.permissions_dispatcher) {
-    // if you don"t use android.app.Fragment you can exclude support for them
-    exclude(module = "support-v13")
-  }
-  kapt(Deps.permissions_dispatcher_processor)
-
   implementation(Deps.glide)
   kapt(Deps.glide_compiler)
   implementation(Deps.timber)

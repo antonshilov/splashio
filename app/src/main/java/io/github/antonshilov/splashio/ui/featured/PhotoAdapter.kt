@@ -14,14 +14,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import io.github.antonshilov.domain.PhotoRepo
+import io.github.antonshilov.domain.feed.photos.model.Photo
 import io.github.antonshilov.splashio.GlideApp
 import io.github.antonshilov.splashio.R
-import io.github.antonshilov.splashio.api.UnsplashApi
-import io.github.antonshilov.splashio.api.model.Photo
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
+import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.item_photo.view.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import timber.log.Timber
 
 class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -40,7 +40,7 @@ class PhotoAdapter(val context: Context) : PagedListAdapter<Photo, PhotoViewHold
 
   override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
     val photo = getItem(position)!!
-    val url = photo.url
+    val url = photo.urls.regular
     val thumbnailRequest = GlideApp.with(context)
       .load(photo.urls.thumb)
       .transition(DrawableTransitionOptions.withCrossFade())
@@ -98,17 +98,18 @@ data class NetworkState private constructor(
  * This allows us to channel its network request status etc back to the UI.
  */
 class PhotoDataSourceFactory(
-  private val api: UnsplashApi
+  private val api: PhotoRepo, private val compositeDisposable: CompositeDisposable
 ) : DataSource.Factory<Int, Photo>() {
   val sourceLiveData = MutableLiveData<PhotoDataSource>()
   override fun create(): DataSource<Int, Photo> {
-    val source = PhotoDataSource(api)
+    val source = PhotoDataSource(api, compositeDisposable)
     sourceLiveData.postValue(source)
     return source
   }
 }
 
-class PhotoDataSource(val api: UnsplashApi) : PageKeyedDataSource<Int, Photo>() {
+class PhotoDataSource(private val api: PhotoRepo, private val compositeDisposable: CompositeDisposable) :
+  PageKeyedDataSource<Int, Photo>() {
 
   val networkState = MutableLiveData<NetworkState>()
 
@@ -118,34 +119,31 @@ class PhotoDataSource(val api: UnsplashApi) : PageKeyedDataSource<Int, Photo>() 
       Photo>
   ) {
     networkState.postValue(NetworkState.LOADING)
-    api.getCuratedPhotos(limit = params.requestedLoadSize).enqueue(object : Callback<List<Photo>> {
-      override fun onFailure(call: Call<List<Photo>>, t: Throwable) {
-        networkState.postValue(NetworkState.error(t.message ?: "unknown error"))
-        Timber.d(t, "Initial load of curated photos has failed")
-      }
-
-      override fun onResponse(call: Call<List<Photo>>, response: Response<List<Photo>>) {
-        val images = response.body()!!
-        callback.onResult(images, 1, 2)
-        networkState.postValue(NetworkState.LOADED)
-        Timber.d("Initial load of curated photos succeed")
-      }
-    })
+    api.getLatestPhotos(pageSize = params.requestedLoadSize, page = 1)
+      .subscribeBy(
+        onSuccess = {
+          callback.onResult(it, 1, 2)
+          networkState.postValue(NetworkState.LOADED)
+          Timber.d("Initial load of curated photos succeed")
+        },
+        onError = {
+          networkState.postValue(NetworkState.error(it.message ?: "unknown error"))
+          Timber.e(it, "Initial load of curated photos failed")
+        }
+      ).addTo(compositeDisposable)
   }
 
   override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Photo>) {
-    api.getCuratedPhotos(limit = params.requestedLoadSize, page = params.key).enqueue(object :
-      Callback<List<Photo>> {
-      override fun onFailure(call: Call<List<Photo>>, t: Throwable) {
-        Timber.d(t, "Load of curated photos has failed")
-      }
-
-      override fun onResponse(call: Call<List<Photo>>, response: Response<List<Photo>>) {
-        Timber.d("Load of curated photos succeed")
-        val images = response.body()!!
-        callback.onResult(images, params.key + 1)
-      }
-    })
+    api.getLatestPhotos(pageSize = params.requestedLoadSize, page = params.key)
+      .subscribeBy(
+        onSuccess = {
+          Timber.d("Load of curated photos succeed")
+          callback.onResult(it, params.key + 1)
+        },
+        onError = {
+          Timber.e(it, "Load of curated photos has failed")
+        }
+      ).addTo(compositeDisposable)
   }
 
   override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Photo>) {

@@ -3,6 +3,7 @@ package io.github.antonshilov.remote.service
 import io.github.antonshilov.remote.model.CollectionModel
 import io.github.antonshilov.remote.model.PhotoModel
 import io.reactivex.Observable
+import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -20,7 +21,7 @@ interface UnsplashApi {
    * @return [Observable] that emits the page of photo items
    */
   @GET("/photos")
-  fun getLatestPhotos(@Query("page") page: Int, @Query("per_page") pageSize: Int): Observable<List<PhotoModel>>
+  fun getLatestPhotos(@Query("page") page: Int, @Query("per_page") pageSize: Int): Single<List<PhotoModel>>
   // TODO use [Url] parameter annotation to unify new/feed/curated
 
   /**
@@ -33,5 +34,5 @@ interface UnsplashApi {
    * @return [Observable] that emits the page of collection items
    */
   @GET("/collections")
-  fun getLatestCollections(@Query("page") page: Int, @Query("per_page") pageSize: Int): Observable<List<CollectionModel>>
+  fun getLatestCollections(@Query("page") page: Int, @Query("per_page") pageSize: Int): Single<List<CollectionModel>>
 }
