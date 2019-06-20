@@ -8,20 +8,9 @@
   android:layout_margin="2dp"
   app:cardCornerRadius="8dp">
 
-  <androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/parentContsraint"
+  <io.github.antonshilov.splashio.ui.widget.AspectRatioImageView
+    tools:src="@tools:sample/backgrounds/scenic"
+    android:id="@+id/photo"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <ImageView
-      tools:src="@tools:sample/backgrounds/scenic"
-      android:id="@+id/photo"
-      android:layout_width="0dp"
-      android:layout_height="0dp"
-      app:layout_constraintDimensionRatio="1:1"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"/>
-
-  </androidx.constraintlayout.widget.ConstraintLayout>
+    android:layout_height="wrap_content"/>
 </androidx.cardview.widget.CardView>

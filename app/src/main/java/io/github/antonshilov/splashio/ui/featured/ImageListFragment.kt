@@ -30,7 +30,7 @@ class ImageListFragment : Fragment() {
 
   private val vm by viewModel<PhotoListViewModel>()
 
-  private lateinit var adapter: PhotoAdapter
+  private var adapter: PhotoAdapter = PhotoAdapter()
   private lateinit var imageGrid: RecyclerView
   private lateinit var progressBar: ProgressBar
   private lateinit var errorText: TextView
@@ -60,16 +60,15 @@ class ImageListFragment : Fragment() {
   }
 
   /**
-   * Initialize the photo adapter to handle
+   * Initialize the photoView adapter to handle
    * Item clicks
    * PagedList
    * and attach is to the [RecyclerView] to display list of photos
    */
   private fun initAdapter() {
-    adapter = PhotoAdapter(this.context!!)
     adapter.onItemClickListener = { photo, sharedView -> navigateToFullscreen(photo, sharedView) }
     vm.photoList.observe(this, Observer {
-      Timber.d("photo list has been set to the adapter")
+      Timber.d("photoView list has been set to the adapter")
       adapter.submitList(it)
     })
     imageGrid.adapter = adapter

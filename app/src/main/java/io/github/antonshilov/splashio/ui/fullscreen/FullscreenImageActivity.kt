@@ -25,7 +25,7 @@ import io.github.antonshilov.splashio.R
 import kotlinx.android.synthetic.main.activity_fullscreen_image.*
 import timber.log.Timber
 
-private const val ARG_PHOTO = "photo"
+private const val ARG_PHOTO = "photoView"
 
 /**
  * Displays the image details in a full screen.
@@ -43,7 +43,7 @@ class FullscreenImageActivity : AppCompatActivity() {
     setContentView(R.layout.activity_fullscreen_image)
 
     photo = intent?.extras?.getSerializable(ARG_PHOTO) as Photo?
-      ?: throw IllegalArgumentException("You have to pass a photo to view in fullscreen")
+      ?: throw IllegalArgumentException("You have to pass a photoView to view in fullscreen")
     setupEnterTransition()
     initProgressIndicator()
     progress.setImageDrawable(progressIndicator)
@@ -185,7 +185,7 @@ class FullscreenImageActivity : AppCompatActivity() {
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.type = "text/plain"
         shareIntent.putExtra(Intent.EXTRA_TEXT, photo.links.html)
-        startActivity(Intent.createChooser(shareIntent, "Share photo using"))
+        startActivity(Intent.createChooser(shareIntent, "Share photoView using"))
         true
       }
       else -> false

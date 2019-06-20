@@ -1,11 +1,9 @@
 package io.github.antonshilov.splashio.ui.featured
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import androidx.paging.PageKeyedDataSource
@@ -25,40 +23,36 @@ import kotlinx.android.synthetic.main.item_photo.view.*
 import timber.log.Timber
 
 class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-  val photo = itemView.photo!!
-  val constraint = itemView.parentContsraint!!
+  val photoView = itemView.photo!!
+  fun bind(photo: Photo, clickListener: PhotoCardClickListener) {
+    val url = photo.urls.regular
+    val thumbnailRequest = GlideApp.with(itemView)
+      .load(photo.urls.thumb)
+      .transition(DrawableTransitionOptions.withCrossFade())
+    Glide.with(itemView)
+      .load(url)
+      .thumbnail(thumbnailRequest)
+      .transition(DrawableTransitionOptions.withCrossFade())
+      .into(photoView)
+    photoView.setAspectRatio(photo.width, photo.height)
+    photoView.transitionName = photo.id
+    photoView.setOnClickListener {
+      clickListener?.invoke(photo, photoView)
+    }
+  }
 }
+typealias PhotoCardClickListener = ((photo: Photo, sharedImageView: ImageView) -> Unit)?
 
-class PhotoAdapter(val context: Context) : PagedListAdapter<Photo, PhotoViewHolder>(DIFF_CALLBACK) {
-  private val layoutInflater: LayoutInflater = LayoutInflater.from(context)
-  private val set = ConstraintSet()
-  var onItemClickListener: ((photo: Photo, sharedImageView: ImageView) -> Unit)? = null
+class PhotoAdapter : PagedListAdapter<Photo, PhotoViewHolder>(DIFF_CALLBACK) {
+  var onItemClickListener: PhotoCardClickListener = null
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
-    return PhotoViewHolder(layoutInflater.inflate(R.layout.item_photo, parent, false))
+    return PhotoViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_photo, parent, false))
   }
 
   override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
     val photo = getItem(position)!!
-    val url = photo.urls.regular
-    val thumbnailRequest = GlideApp.with(context)
-      .load(photo.urls.thumb)
-      .transition(DrawableTransitionOptions.withCrossFade())
-    Glide.with(context)
-      .load(url)
-      .thumbnail(thumbnailRequest)
-      .transition(DrawableTransitionOptions.withCrossFade())
-      .into(holder.photo)
-
-    // apply aspect ratio to the image
-    val ratio = String.format("%d:%d", photo.width, photo.height)
-    set.clone(holder.constraint)
-    set.setDimensionRatio(holder.photo.id, ratio)
-    set.applyTo(holder.constraint)
-    holder.photo.transitionName = photo.id
-    holder.constraint.setOnClickListener {
-      onItemClickListener?.invoke(photo, holder.photo)
-    }
+    holder.bind(photo, onItemClickListener)
   }
 
   companion object {
