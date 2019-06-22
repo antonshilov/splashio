@@ -24,26 +24,16 @@ android {
       proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
     }
   }
-  packagingOptions {
-    exclude("META-INF/DEPENDENCIES")
-    exclude("META-INF/LICENSE")
-    exclude("META-INF/LICENSE.txt")
-    exclude("META-INF/license.txt")
-    exclude("META-INF/NOTICE")
-    exclude("META-INF/NOTICE.txt")
-    exclude("META-INF/notice.txt")
-    exclude("META-INF/ASL2.0")
-    exclude("META-INF/proguard/androidx-annotations.pro")
-  }
   compileOptions {
     sourceCompatibility = JavaVersion.VERSION_1_8
-    setTargetCompatibility(JavaVersion.VERSION_1_8)
+    targetCompatibility = JavaVersion.VERSION_1_8
   }
 }
 
 dependencies {
   implementation(project(":domain"))
   implementation(project(":remote"))
+  implementation(project(":widgets"))
 
   implementation(Deps.kotlin_stdlib)
   implementation(Deps.design)

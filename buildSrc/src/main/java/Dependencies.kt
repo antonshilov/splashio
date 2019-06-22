@@ -13,6 +13,7 @@ object Versions {
   const val retrofit = "2.5.0"
   const val okhttp = "3.11.0"
   const val junit = "4.12"
+  const val junit5 = "5.4.2"
   const val test_runner = "1.1.0"
   const val espresso = "3.1.0"
   const val mockito = "2.1.0"
@@ -87,6 +88,8 @@ object Deps {
   const val crashlytics = "com.crashlytics.sdk.android:crashlytics:${Versions.crashlytics}"
 
   const val junit = "junit:junit:${Versions.junit}"
+  const val junit_jupiter = "org.junit.jupiter:junit-jupiter-api:${Versions.junit5}"
+  const val junit_params = "org.junit.jupiter:junit-jupiter-params:${Versions.junit5}"
   const val test_runner = "androidx.test:runner:${Versions.test_runner}"
   const val espresso = "androidx.test.espresso:espresso-core:${Versions.espresso}"
   const val mockWebServer = "com.squareup.okhttp3:mockwebserver:${Versions.okhttp}"

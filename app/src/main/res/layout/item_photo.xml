@@ -8,7 +8,7 @@
   android:layout_margin="2dp"
   app:cardCornerRadius="8dp">
 
-  <io.github.antonshilov.splashio.ui.widget.AspectRatioImageView
+  <com.antonshilov.widgets.AspectRatioImageView
     tools:src="@tools:sample/backgrounds/scenic"
     android:id="@+id/photo"
     android:layout_width="match_parent"
