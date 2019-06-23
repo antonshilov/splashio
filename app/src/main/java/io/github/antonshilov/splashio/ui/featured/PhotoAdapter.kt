@@ -1,73 +1,14 @@
 package io.github.antonshilov.splashio.ui.featured
 
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import androidx.paging.PageKeyedDataSource
-import androidx.paging.PagedListAdapter
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import io.github.antonshilov.domain.PhotoRepo
 import io.github.antonshilov.domain.feed.photos.model.Photo
-import io.github.antonshilov.splashio.GlideApp
-import io.github.antonshilov.splashio.R
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
-import kotlinx.android.synthetic.main.item_photo.view.*
 import timber.log.Timber
-
-class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-  val photoView = itemView.photo!!
-  fun bind(photo: Photo, clickListener: PhotoCardClickListener) {
-    val url = photo.urls.regular
-    val thumbnailRequest = GlideApp.with(itemView)
-      .load(photo.urls.thumb)
-      .transition(DrawableTransitionOptions.withCrossFade())
-    Glide.with(itemView)
-      .load(url)
-      .thumbnail(thumbnailRequest)
-      .transition(DrawableTransitionOptions.withCrossFade())
-      .into(photoView)
-    photoView.setAspectRatio(photo.width, photo.height)
-    photoView.transitionName = photo.id
-    photoView.setOnClickListener {
-      clickListener?.invoke(photo, photoView)
-    }
-  }
-}
-typealias PhotoCardClickListener = ((photo: Photo, sharedImageView: ImageView) -> Unit)?
-
-class PhotoAdapter : PagedListAdapter<Photo, PhotoViewHolder>(DIFF_CALLBACK) {
-  var onItemClickListener: PhotoCardClickListener = null
-
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
-    return PhotoViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_photo, parent, false))
-  }
-
-  override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
-    val photo = getItem(position)!!
-    holder.bind(photo, onItemClickListener)
-  }
-
-  companion object {
-    @JvmStatic
-    val DIFF_CALLBACK: DiffUtil.ItemCallback<Photo> = object : DiffUtil.ItemCallback<Photo>() {
-      override fun areItemsTheSame(oldItem: Photo, newItem: Photo): Boolean {
-        return oldItem.id == newItem.id
-      }
-
-      override fun areContentsTheSame(oldItem: Photo, newItem: Photo): Boolean {
-        return oldItem == newItem
-      }
-    }
-  }
-}
 
 enum class Status {
   RUNNING,

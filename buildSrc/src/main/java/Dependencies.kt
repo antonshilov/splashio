@@ -24,6 +24,7 @@ object Versions {
   const val rxandroid = "2.1.0"
   const val googleServices = "4.1.0"
   const val fabric = "1.25.4"
+  const val epoxy = "3.6.0"
   const val firebaseCore = "15.0.0"
   const val crashlytics = "2.9.5"
   const val randomBeans = "3.7.0"
@@ -40,6 +41,9 @@ object Deps {
   const val design = "com.google.android.material:material:1.1.0-alpha07"
   const val cardview_v7 = "androidx.cardview:cardview:1.0.0"
   const val recyclerview_v7 = "androidx.recyclerview:recyclerview:1.1.0-alpha06"
+  const val epoxy = "com.airbnb.android:epoxy:${Versions.epoxy}"
+  const val epoxy_processor = "com.airbnb.android:epoxy-processor:${Versions.epoxy}"
+  const val epoxy_paging = "com.airbnb.android:epoxy-paging:${Versions.epoxy}"
 
   const val constraint_layout = "androidx.constraintlayout:constraintlayout:2.0.0-beta2"
 

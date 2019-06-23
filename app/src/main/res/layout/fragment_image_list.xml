@@ -6,7 +6,7 @@
   android:layout_height="match_parent"
   tools:context=".ui.featured.ImageListFragment">
 
-  <androidx.recyclerview.widget.RecyclerView
+  <com.airbnb.epoxy.EpoxyRecyclerView
     android:id="@+id/imageGrid"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -14,7 +14,7 @@
     android:orientation="vertical"
     android:paddingStart="8dp"
     android:paddingEnd="8dp"
-    android:paddingBottom="48dp"
+    app:itemSpacing="16dp"
     app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
     app:spanCount="@integer/photo_grid_amount"
     tools:listitem="@layout/item_photo" />

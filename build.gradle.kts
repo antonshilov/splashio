@@ -40,7 +40,7 @@ allprojects {
 //}
 
 codeQualityTools {
-  failEarly = true
+  failEarly = false
   checkstyle {
     enabled = false
   }

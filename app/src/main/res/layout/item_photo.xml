@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
+<com.antonshilov.widgets.AspectRatioImageView xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/photo"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
+  android:background="@drawable/rounded_corners_rect"
   android:layout_margin="2dp"
-  app:cardCornerRadius="8dp">
-
-  <com.antonshilov.widgets.AspectRatioImageView
-    tools:src="@tools:sample/backgrounds/scenic"
-    android:id="@+id/photo"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"/>
-</androidx.cardview.widget.CardView>
+  android:elevation="4dp"
+  tools:src="@tools:sample/backgrounds/scenic" />
