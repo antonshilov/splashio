@@ -7,16 +7,16 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.ActivityNavigatorExtras
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.Fade
 import io.github.antonshilov.domain.feed.photos.model.Photo
 import io.github.antonshilov.splashio.R
-import io.github.antonshilov.splashio.ui.fullscreen.FullscreenImageActivity
+import io.github.antonshilov.splashio.ui.fullscreen.FullscreenImageFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -24,7 +24,7 @@ import timber.log.Timber
  * [ImageListFragment]
  *
  * displays a grid of the curated images
- * navigates to the [FullscreenImageActivity] on click on the image item
+ * navigates to the [FullscreenImageFragment] on click on the image item
  */
 class ImageListFragment : Fragment() {
 
@@ -83,12 +83,12 @@ class ImageListFragment : Fragment() {
     progressBar.isVisible = networkState?.status == Status.FAILED
   }
 
-  private fun navigateToFullscreen(img: Photo, sharedView: ImageView) {
-    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity!!, sharedView, img.id)
-    val extras = ActivityNavigatorExtras(options)
+  private fun navigateToFullscreen(photo: Photo, sharedView: ImageView) {
+    val extras = FragmentNavigatorExtras(sharedView to photo.id)
+    returnTransition = Fade()
     findNavController().navigate(
-      R.id.fullscreenImageActivity,
-      FullscreenImageActivity.bundleArgs(img), // Bundle of args
+      R.id.fullscreenImageFragment,
+      FullscreenImageFragment.bundleArgs(photo), // Bundle of args
       null, // NavOptions
       extras
     )
