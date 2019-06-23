@@ -1,5 +1,7 @@
 package io.github.antonshilov.splashio.ui.featured
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.widget.ImageView
 import com.airbnb.epoxy.EpoxyAttribute
@@ -28,25 +30,28 @@ abstract class PhotoItemModel : EpoxyModelWithHolder<Holder>() {
 
   override fun bind(holder: Holder) {
     with(holder) {
-      val url = photo.urls.regular
+      val colorThumbnail = GlideApp.with(photoView)
+        .load(ColorDrawable(Color.parseColor(photo.color)))
       val thumbnailRequest = GlideApp.with(photoView)
         .load(photo.urls.thumb)
+        .thumbnail(colorThumbnail)
         .transition(DrawableTransitionOptions.withCrossFade())
       Glide.with(photoView)
-        .load(url)
+        .load(photo.urls.regular)
         .thumbnail(thumbnailRequest)
         .transition(DrawableTransitionOptions.withCrossFade())
         .into(photoView)
       photoView.setAspectRatio(photo.width, photo.height)
       photoView.setOnClickListener(clickListener)
       photoView.transitionName = photo.id
+      photoView.clipToOutline = true
     }
   }
 
   override fun unbind(holder: Holder) {
     super.unbind(holder)
     holder.photoView.setOnClickListener(null)
-    Glide.with(holder.photoView).clear(holder.photoView)
+    holder.photoView.setImageDrawable(null)
   }
 
   class Holder : KotlinEpoxyHolder() {
