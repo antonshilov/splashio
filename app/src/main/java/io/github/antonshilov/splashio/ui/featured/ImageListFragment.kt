@@ -7,16 +7,18 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.Fade
 import com.airbnb.epoxy.EpoxyRecyclerView
 import io.github.antonshilov.domain.feed.photos.model.Photo
 import io.github.antonshilov.splashio.R
+import io.github.antonshilov.splashio.ui.doOnApplyWindowInsets
 import io.github.antonshilov.splashio.ui.fullscreen.FullscreenImageFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -48,6 +50,19 @@ class ImageListFragment : Fragment() {
     initAdapter()
     initNetworkState()
     return view
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    imageGrid.doOnApplyWindowInsets { insetView, insets, padding ->
+      insetView.updatePadding(
+        top = padding.top + insets.systemWindowInsetTop,
+        bottom = padding.bottom + insets.systemWindowInsetBottom,
+        left = padding.left + insets.systemWindowInsetLeft,
+        right = padding.right + insets.systemWindowInsetRight
+      )
+    }
+    ViewCompat.requestApplyInsets(view)
   }
 
   /**
@@ -84,7 +99,6 @@ class ImageListFragment : Fragment() {
 
   private fun navigateToFullscreen(photo: Photo, sharedView: ImageView) {
     val extras = FragmentNavigatorExtras(sharedView to photo.id)
-    returnTransition = Fade()
     findNavController().navigate(
       R.id.fullscreenImageFragment,
       FullscreenImageFragment.bundleArgs(photo), // Bundle of args

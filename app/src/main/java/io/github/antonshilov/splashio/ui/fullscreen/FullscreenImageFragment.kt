@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
@@ -20,9 +21,9 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import io.github.antonshilov.domain.feed.photos.model.Photo
 import io.github.antonshilov.splashio.GlideApp
-import io.github.antonshilov.splashio.GlideRequest
 import io.github.antonshilov.splashio.R
 import io.github.antonshilov.splashio.ui.DetailsTransition
+import io.github.antonshilov.splashio.ui.doOnApplyWindowInsets
 import kotlinx.android.synthetic.main.fragment_fullscreen_image.*
 import timber.log.Timber
 
@@ -43,6 +44,7 @@ class FullscreenImageFragment : Fragment() {
     sharedElementEnterTransition = DetailsTransition()
     sharedElementReturnTransition = DetailsTransition()
     enterTransition = Fade()
+    exitTransition = Fade()
     parseArguments()
     initProgressIndicator()
   }
@@ -53,6 +55,17 @@ class FullscreenImageFragment : Fragment() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    setUpToolbar()
+    setupEnterTransition()
+    progress.setImageDrawable(progressIndicator)
+    photoView.isEnabled = false
+    bindPhoto()
+    setInsetListener()
+    setUpClickListeners()
+  }
+
+  private fun setUpToolbar() {
+    toolbar.isVisible = true
     toolbar.inflateMenu(R.menu.menu_fullscreen_image)
     toolbar.setOnMenuItemClickListener { item ->
       when (item.itemId) {
@@ -66,12 +79,6 @@ class FullscreenImageFragment : Fragment() {
         else -> false
       }
     }
-    setupEnterTransition()
-    progress.setImageDrawable(progressIndicator)
-    photoView.isEnabled = false
-    bindPhoto()
-    setInsetListener()
-    setUpClickListeners()
   }
 
   private fun parseArguments() {
@@ -98,16 +105,13 @@ class FullscreenImageFragment : Fragment() {
   }
 
   private fun setInsetListener() {
-//    ViewCompat.setOnApplyWindowInsetsListener(root) { _, insets ->
-//      val lpToolbar = toolbar.layoutParams as ViewGroup.MarginLayoutParams
-//      lpToolbar.topMargin = insets!!.systemWindowInsetTop
-//      toolbar.layoutParams = lpToolbar
-//      val lpBottom = bottomContainer
-//        .layoutParams as ViewGroup.MarginLayoutParams
-//      lpBottom.bottomMargin = insets.systemWindowInsetBottom
-//      bottomContainer.layoutParams = lpBottom
-//      insets.consumeSystemWindowInsets()
-//    }
+    toolbar.doOnApplyWindowInsets { insetView, insets, padding ->
+      insetView.updatePadding(
+        top = padding.top + insets.systemWindowInsetTop,
+        left = padding.left + insets.systemWindowInsetLeft,
+        right = padding.right + insets.systemWindowInsetRight
+      )
+    }
   }
 
   private fun setUpClickListeners() {
@@ -159,33 +163,6 @@ class FullscreenImageFragment : Fragment() {
       .into(photoView)
   }
 
-  private fun getThumbnailLoadRequest(): GlideRequest<Drawable> {
-    return GlideApp.with(this)
-      .load(photo.urls.regular)
-      .listener(object : RequestListener<Drawable> {
-        override fun onLoadFailed(
-          e: GlideException?,
-          model: Any?,
-          target: Target<Drawable>?,
-          isFirstResource: Boolean
-        ): Boolean {
-//          startPostponedEnterTransition()
-          return false
-        }
-
-        override fun onResourceReady(
-          resource: Drawable?,
-          model: Any?,
-          target: Target<Drawable>?,
-          dataSource: DataSource?,
-          isFirstResource: Boolean
-        ): Boolean {
-//          startPostponedEnterTransition()
-          return false
-        }
-      })
-  }
-
   /**
    * Hide/show all UI components except the image to give the user some space :)
    */
@@ -197,11 +174,6 @@ class FullscreenImageFragment : Fragment() {
   }
 
   private fun isImmersiveModeEnabled(): Boolean = !toolbar.isVisible
-
-  override fun onStop() {
-    super.onStop()
-    if (isImmersiveModeEnabled()) fullScreen(false)
-  }
 
   companion object {
     @JvmStatic
