@@ -39,6 +39,9 @@ dependencies {
   implementation(Deps.design)
   implementation(Deps.recyclerview_v7)
   implementation(Deps.cardview_v7)
+  implementation(Deps.epoxy)
+  implementation(Deps.epoxy_paging)
+  kapt(Deps.epoxy_processor)
 
   implementation(Deps.constraint_layout)
 

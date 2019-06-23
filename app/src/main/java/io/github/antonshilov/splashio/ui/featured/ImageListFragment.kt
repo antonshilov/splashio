@@ -14,6 +14,7 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.Fade
+import com.airbnb.epoxy.EpoxyRecyclerView
 import io.github.antonshilov.domain.feed.photos.model.Photo
 import io.github.antonshilov.splashio.R
 import io.github.antonshilov.splashio.ui.fullscreen.FullscreenImageFragment
@@ -29,9 +30,8 @@ import timber.log.Timber
 class ImageListFragment : Fragment() {
 
   private val vm by viewModel<PhotoListViewModel>()
-
-  private var adapter: PhotoAdapter = PhotoAdapter()
-  private lateinit var imageGrid: RecyclerView
+  private val controller = PhotoController(this::navigateToFullscreen)
+  private lateinit var imageGrid: EpoxyRecyclerView
   private lateinit var progressBar: ProgressBar
   private lateinit var errorText: TextView
 
@@ -66,12 +66,11 @@ class ImageListFragment : Fragment() {
    * and attach is to the [RecyclerView] to display list of photos
    */
   private fun initAdapter() {
-    adapter.onItemClickListener = { photo, sharedView -> navigateToFullscreen(photo, sharedView) }
     vm.photoList.observe(this, Observer {
       Timber.d("photoView list has been set to the adapter")
-      adapter.submitList(it)
+      controller.submitList(it)
     })
-    imageGrid.adapter = adapter
+    imageGrid.setController(controller)
   }
 
   /**
