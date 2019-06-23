@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.Fade
 import io.github.antonshilov.domain.feed.photos.model.Photo
 import io.github.antonshilov.splashio.R
 import io.github.antonshilov.splashio.ui.fullscreen.FullscreenImageFragment
@@ -82,11 +83,12 @@ class ImageListFragment : Fragment() {
     progressBar.isVisible = networkState?.status == Status.FAILED
   }
 
-  private fun navigateToFullscreen(img: Photo, sharedView: ImageView) {
-    val extras = FragmentNavigatorExtras(sharedView to img.id)
+  private fun navigateToFullscreen(photo: Photo, sharedView: ImageView) {
+    val extras = FragmentNavigatorExtras(sharedView to photo.id)
+    returnTransition = Fade()
     findNavController().navigate(
       R.id.fullscreenImageFragment,
-      FullscreenImageFragment.bundleArgs(img), // Bundle of args
+      FullscreenImageFragment.bundleArgs(photo), // Bundle of args
       null, // NavOptions
       extras
     )
