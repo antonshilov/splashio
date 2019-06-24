@@ -64,6 +64,8 @@ dependencies {
 
   implementation(Deps.rxkotlin)
   implementation(Deps.rxandroid)
+  implementation(Deps.rxrelay)
+  implementation(Deps.rxredux)
 
   implementation(Deps.koin_arch)
   implementation(Deps.koin)

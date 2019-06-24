@@ -1,15 +1,17 @@
 package io.github.antonshilov.splashio.ui.featured
 
+import android.content.Context
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
+import android.util.AttributeSet
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.ImageView
 import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyAttribute.Option.DoNotHash
-import com.airbnb.epoxy.EpoxyModel
+import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
-import com.airbnb.epoxy.paging.PagedListEpoxyController
+import com.airbnb.epoxy.ModelView
 import com.antonshilov.widgets.AspectRatioImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -30,11 +32,8 @@ abstract class PhotoItemModel : EpoxyModelWithHolder<Holder>() {
 
   override fun bind(holder: Holder) {
     with(holder) {
-      val colorThumbnail = GlideApp.with(photoView)
-        .load(ColorDrawable(Color.parseColor(photo.color)))
       val thumbnailRequest = GlideApp.with(photoView)
         .load(photo.urls.thumb)
-        .thumbnail(colorThumbnail)
         .transition(DrawableTransitionOptions.withCrossFade())
       Glide.with(photoView)
         .load(photo.urls.regular)
@@ -43,6 +42,7 @@ abstract class PhotoItemModel : EpoxyModelWithHolder<Holder>() {
         .into(photoView)
       photoView.setAspectRatio(photo.width, photo.height)
       photoView.setOnClickListener(clickListener)
+      photoView.background.setTint(Color.parseColor(photo.color))
       photoView.transitionName = photo.id
       photoView.clipToOutline = true
     }
@@ -59,13 +59,41 @@ abstract class PhotoItemModel : EpoxyModelWithHolder<Holder>() {
   }
 }
 
-class PhotoController(private val photoCardClickListener: PhotoCardClickListener) : PagedListEpoxyController<Photo>() {
-  override fun buildItemModel(currentPosition: Int, item: Photo?): EpoxyModel<*> {
-    return PhotoItemModel_()
-      .photo(item!!)
-      .clickListener { _: PhotoItemModel_?, parentView: Holder?, _: View?, _: Int ->
-        photoCardClickListener.invoke(item, parentView!!.photoView)
+@ModelView(autoLayout = ModelView.Size.MATCH_WIDTH_WRAP_HEIGHT)
+class LoadingRow @JvmOverloads constructor(
+  context: Context,
+  attrs: AttributeSet? = null,
+  defStyleAttr: Int = 0
+) : FrameLayout(context, attrs, defStyleAttr) {
+
+  init {
+    inflate(context, R.layout.loading_row, this)
+  }
+}
+
+class PhotoController(private val photoCardClickListener: PhotoCardClickListener) : EpoxyController() {
+
+  private var photos: List<Photo> = emptyList()
+  private var isLoadingNext = false
+  fun setItems(photos: List<Photo>, isLoadingNext: Boolean) {
+    this.photos = photos
+    this.isLoadingNext = isLoadingNext
+  }
+
+  override fun buildModels() {
+    photos.forEach {
+      photoItem {
+        id(it.id)
+        photo(it)
+        clickListener { model, parentView, _, _ ->
+          photoCardClickListener.invoke(model.photo, parentView.photoView)
+        }
       }
-      .id(item.id)
+    }
+    if (isLoadingNext) {
+      loadingRow {
+        id("loadingRow")
+      }
+    }
   }
 }
