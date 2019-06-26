@@ -11,8 +11,7 @@
     tools:layout="@layout/fragment_image_list">
     <action
       android:id="@+id/action_imageListFragment_to_fullscreenImageFragment"
-      app:destination="@id/fullscreenImageFragment"
-      app:popUpTo="@+id/imageListFragment" />
+      app:destination="@id/fullscreenImageFragment" />
   </fragment>
 
   <fragment

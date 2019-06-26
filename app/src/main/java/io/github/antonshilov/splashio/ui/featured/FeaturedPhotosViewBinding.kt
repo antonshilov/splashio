@@ -21,7 +21,9 @@ class FeaturedPhotosViewBinding(protected val root: ViewGroup, protected val nav
   protected val imageGrid: EpoxyRecyclerView = root.findViewById(R.id.imageGrid)
   protected val progressBar: ProgressBar = root.findViewById(R.id.progress)
   protected val errorText: TextView = root.findViewById(R.id.errorText)
-  protected val controller = PhotoController(this::navigateToFullscreen)
+  val controller = PhotoController(this::navigateToFullscreen).apply {
+    isDebugLoggingEnabled = true
+  }
 
   val endOfListReached = Observable.create<Unit> { emitter ->
     val listener = object : RecyclerView.OnScrollListener() {
@@ -67,13 +69,13 @@ class FeaturedPhotosViewBinding(protected val root: ViewGroup, protected val nav
     progressBar.gone()
     errorText.gone()
     imageGrid.visible()
-    controller.setItems(photos, loadingNextPage)
+    controller.setData(photos, loadingNextPage)
   }
 
   private fun navigateToFullscreen(photo: Photo, sharedView: ImageView) {
     val extras = FragmentNavigatorExtras(sharedView to photo.id)
     navigator.navigate(
-      R.id.fullscreenImageFragment,
+      R.id.action_imageListFragment_to_fullscreenImageFragment,
       FullscreenImageFragment.bundleArgs(photo), // Bundle of args
       null, // NavOptions
       extras

@@ -1,5 +1,8 @@
 package io.github.antonshilov.splashio.di
 
+import io.github.antonshilov.domain.PhotoRepo
+import io.github.antonshilov.domain.executor.PostExecutionThread
+import io.github.antonshilov.domain.feed.collections.CollectionsRepo
 import io.github.antonshilov.domain.feed.collections.GetCollections
 import io.github.antonshilov.domain.feed.photos.GetPhotos
 import io.github.antonshilov.remote.AuthInterceptor
@@ -34,10 +37,10 @@ val appModule = module {
   factory { GetPhotos(get(), get()) }
   factory { PaginationStateMachine(get()) }
 
-  single { UiThread() }
+  single<PostExecutionThread> { UiThread() }
   factory { provideOkHttpClient() }
   single { UnsplashApiFactory.createUnsplashApi(BuildConfig.DEBUG) }
-  single { PhotoRemoteImpl(get(), get()) }
+  single<PhotoRepo> { PhotoRemoteImpl(get(), get()) }
   single {
     PhotoEntityMapper(
       UserEntityMapper(
@@ -48,7 +51,7 @@ val appModule = module {
       PhotoLinksMapper()
     )
   }
-  single {
+  single<CollectionsRepo> {
     CollectionsRepoRemoteImpl(get(), CollectionEntityMapper(get()))
   }
 }

@@ -8,10 +8,10 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyAttribute.Option.DoNotHash
-import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import com.airbnb.epoxy.ModelView
+import com.airbnb.epoxy.Typed2EpoxyController
 import com.antonshilov.widgets.AspectRatioImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -71,16 +71,9 @@ class LoadingRow @JvmOverloads constructor(
   }
 }
 
-class PhotoController(private val photoCardClickListener: PhotoCardClickListener) : EpoxyController() {
+class PhotoController(private val photoCardClickListener: PhotoCardClickListener) : Typed2EpoxyController<List<Photo>, Boolean>() {
 
-  private var photos: List<Photo> = emptyList()
-  private var isLoadingNext = false
-  fun setItems(photos: List<Photo>, isLoadingNext: Boolean) {
-    this.photos = photos
-    this.isLoadingNext = isLoadingNext
-  }
-
-  override fun buildModels() {
+  override fun buildModels(photos: List<Photo>, isLoadingNext: Boolean) {
     photos.forEach {
       photoItem {
         id(it.id)
