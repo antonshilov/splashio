@@ -41,7 +41,7 @@ object UnsplashApiFactory {
    */
   private fun createLoggingInterceptor(isDebug: Boolean): HttpLoggingInterceptor {
     return HttpLoggingInterceptor().apply {
-      level = if (isDebug) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
+      level = if (isDebug) HttpLoggingInterceptor.Level.HEADERS else HttpLoggingInterceptor.Level.NONE
     }
   }
 }

@@ -4,6 +4,7 @@ import io.github.antonshilov.domain.PhotoRepo
 import io.github.antonshilov.domain.executor.PostExecutionThread
 import io.github.antonshilov.domain.feed.collections.CollectionsRepo
 import io.github.antonshilov.domain.feed.collections.GetCollections
+import io.github.antonshilov.domain.feed.photos.GetPhotos
 import io.github.antonshilov.remote.AuthInterceptor
 import io.github.antonshilov.remote.CollectionsRepoRemoteImpl
 import io.github.antonshilov.remote.PhotoRemoteImpl
@@ -20,22 +21,26 @@ import io.github.antonshilov.splashio.UiThread
 import io.github.antonshilov.splashio.ui.collections.CollectionListViewModel
 import io.github.antonshilov.splashio.ui.collections.CollectionsAdapter
 import io.github.antonshilov.splashio.ui.featured.PhotoListViewModel
+import io.github.antonshilov.splashio.ui.featured.pagination.PaginationStateMachine
+import io.reactivex.android.schedulers.AndroidSchedulers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val appModule = module {
-  viewModel { PhotoListViewModel(get()) }
+  viewModel { PhotoListViewModel(get(), AndroidSchedulers.mainThread()) }
   viewModel { CollectionListViewModel(get()) }
 
   factory { GetCollections(get(), get()) }
   factory { CollectionsAdapter() }
+  factory { GetPhotos(get(), get()) }
+  factory { PaginationStateMachine(get()) }
 
-  single { UiThread() as PostExecutionThread }
+  single<PostExecutionThread> { UiThread() }
   factory { provideOkHttpClient() }
   single { UnsplashApiFactory.createUnsplashApi(BuildConfig.DEBUG) }
-  single { PhotoRemoteImpl(get(), get()) as PhotoRepo }
+  single<PhotoRepo> { PhotoRemoteImpl(get(), get()) }
   single {
     PhotoEntityMapper(
       UserEntityMapper(
@@ -46,8 +51,8 @@ val appModule = module {
       PhotoLinksMapper()
     )
   }
-  single {
-    CollectionsRepoRemoteImpl(get(), CollectionEntityMapper(get())) as CollectionsRepo
+  single<CollectionsRepo> {
+    CollectionsRepoRemoteImpl(get(), CollectionEntityMapper(get()))
   }
 }
 

@@ -22,6 +22,8 @@ object Versions {
   const val work = "1.0.0-alpha09"
   const val rxkotlin = "2.3.0"
   const val rxandroid = "2.1.0"
+  const val rxrelay = "2.1.0"
+  const val rxredux = "1.0.1"
   const val googleServices = "4.1.0"
   const val fabric = "1.25.4"
   const val epoxy = "3.6.0"
@@ -80,6 +82,8 @@ object Deps {
 
   const val rxkotlin = "io.reactivex.rxjava2:rxkotlin:${Versions.rxkotlin}"
   const val rxandroid = "io.reactivex.rxjava2:rxandroid:${Versions.rxandroid}"
+  const val rxrelay = "com.jakewharton.rxrelay2:rxrelay:${Versions.rxrelay}"
+  const val rxredux = "com.freeletics.rxredux:rxredux:${Versions.rxredux}"
 
   const val permissions_dispatcher = "com.github.hotchemi:permissionsdispatcher:${Versions.permissions_dispatcher}"
   const val permissions_dispatcher_processor =
