@@ -27,7 +27,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class ImageListFragment : Fragment() {
 
   private val vm by viewModel<PhotoListViewModel>()
-  private val binding by lazy { FeaturedPhotosViewBinding(rootView, findNavController()) }
+  private lateinit var binding: FeaturedPhotosViewBinding
   private val disposables = CompositeDisposable()
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,6 +46,7 @@ class ImageListFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     applyWindowInsets()
+    binding = FeaturedPhotosViewBinding(rootView, findNavController())
     vm.state.observe(this, Observer { binding.render(it) })
     binding.endOfListReached
       .map { Action.LoadNextPageAction }
