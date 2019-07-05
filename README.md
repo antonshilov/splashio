@@ -9,5 +9,7 @@ Unsplash client for Android
 * run `./gradlew assembleDebug`
 * You're good to go! :)
 
+To run tests and lint checks execute `./gradlew check`
+
 ## References
 Thanks to [@hitherejoe](https://github.com/hitherejoe) for his cool example of Clean Architecture approach for android
